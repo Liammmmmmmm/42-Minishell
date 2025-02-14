@@ -90,3 +90,60 @@ tputs
 Infos a regarder
 
 https://en.wikipedia.org/wiki/Abstract_syntax_tree
+
+
+
+ETAPES POSSIBLES :
+1. Commencer par split la command en un tableau de structures contenant chacune une string et une variable replace_vars a 0 ou 1. Un espace crée une nouvelle string dans le tableau sauf dans le cas ou il y a des quotes, et on peut alors avoir un element du tableau contenant des espaces. **Truc qui va pas auquel j'ai pensé apres : le parsing va etre bien plus complexe et on va pas pouvoir juste split aux espaces car genre ls|cat fonctionne comme ls | cat**
+   > Ex `echo "username : $USER" && echo 'username : $USER'` donne
+   ```json
+   [
+      {"replace_vars": 1, "string": "echo"},
+      {"replace_vars": 1, "string": "username : $USER"},
+      {"replace_vars": 1, "string": "&&"},
+      {"replace_vars": 1, "string": "echo"},
+      {"replace_vars": 0, "string": "username : $USER"}    
+   ]
+   ```
+2. On remplace les variables par leur valeur si replace_vars == 1
+   > Avec le meme example cela devient
+   ```json
+   [
+      {"replace_vars": 1, "string": "echo"},
+      {"replace_vars": 1, "string": "username : lilefebv"},
+      {"replace_vars": 1, "string": "&&"},
+      {"replace_vars": 1, "string": "echo"},
+      {"replace_vars": 0, "string": "username : $USER"}    
+   ]
+   ``` 
+3. On remplace tout ca par des tokens (faudra voir exactement comment on forme la liste)
+   > Avec le meme example cela devient
+   ```json
+   [
+      {"token":COMMAND, "string": "echo"},
+      {"token":ARG, "string": "username : lilefebv"},
+      {"token":AND, "string": "&&"},
+      {"token":COMMAND, "string": "echo"},
+      {"token":ARG, "string": "username : $USER"}    
+   ]
+   ``` 
+4. Organiser tout les tokens en un arbre (potentiellement en regroupant les commandes avec leurs arg, les redirecteurs avec leur fichier, etc)
+   > Ici l'example est assez simple
+   ```
+            AND
+            / \
+     COMMAND   COMMAND
+   ```
+5. Executer l'arbre
+   > Encore une fois avec cet example c'est vraiment simple :
+   
+   On decend a la branche la plus en bas a gauche de maniere recursive. On execute la commande de ce coté la. Quand on a fini cette branche, on remonte d'un cran et execute, regarde quel type de liaison c'est, ici par exemple avec un && on verifie que l'output de la commande precedente soit bien 0 et si c'est le cas on execute la branche de droite, on remonte de nouveau, on voit qu'on a tout executé on rend le promput user
+
+
+Pour une bonne navigation, chaque node de l'arbre doit contenir au moins :
+- Son token (son type)
+- les "details", a voir comment les stoquer mais pour une commande par exemple c'est le nom de la commande et ses arguments, pour un AND il n'y en a aucun
+- un pointeur vers son parent. On peut alors savoir que si il est null on est en haut de l'arbre
+- un pointeur vers son enfant de gauche
+- un pointeur vers sont enfant de droite
+- Le resultat de l'execution, encore une fois a reflechir sur comment le stocker pour qu'on puisse par exemple differencier pas executé de executé avec erreur et executé avec succes, tout en gardant les output via les pipes
