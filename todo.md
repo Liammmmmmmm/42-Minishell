@@ -11,7 +11,7 @@
     - [ ] `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, it doesn’t have to update the history!
     - [ ] `>>` should redirect output in append mode.
   - [ ] Pipes (`|`) pour avoir chaque commande qui prend l'output de la precedente en input via des pipe
-  - [ ] Gerer les variables d'environement : un utilisateur peut definir et reutiliser une variable avec $VARIABLE_NAME
+  - [ ] Gerer les variables d'environement (pas besoin de gerer la creation de variables)
   - [ ] Gerer `$?` (which should expand to the exit status of the most recently executed foreground pipeline)
   - [ ] Gerer les controls :
     - [ ] `Ctrl-C` Afficher un nouveau prompt avec une newline (kill le programme en cours)
