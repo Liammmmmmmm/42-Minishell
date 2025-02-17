@@ -95,6 +95,7 @@ https://en.wikipedia.org/wiki/Abstract_syntax_tree
 
 ETAPES POSSIBLES :
 1. Commencer par split la command en un tableau de structures contenant chacune une string et une variable replace_vars a 0 ou 1. Un espace crée une nouvelle string dans le tableau sauf dans le cas ou il y a des quotes, et on peut alors avoir un element du tableau contenant des espaces. **Truc qui va pas auquel j'ai pensé apres : le parsing va etre bien plus complexe et on va pas pouvoir juste split aux espaces car genre ls|cat fonctionne comme ls | cat**
+   Peut etre changer ce truc car il fonctionne pas non plus dans un cas comme `ech'o bon'jour`
    > Ex `echo "username : $USER" && echo 'username : $USER'` donne
    ```json
    [
@@ -147,3 +148,54 @@ Pour une bonne navigation, chaque node de l'arbre doit contenir au moins :
 - un pointeur vers son enfant de gauche
 - un pointeur vers sont enfant de droite
 - Le resultat de l'execution, encore une fois a reflechir sur comment le stocker pour qu'on puisse par exemple differencier pas executé de executé avec erreur et executé avec succes, tout en gardant les output via les pipes
+
+---
+
+Idees pour les etapes du parsing :
+## 1
+
+Premiere verification de "est ce que tout est bon" au niveau des parentheses et guillemets. On peut alors avoir 3 retours differents :
+- le cas ou tout est bon : `((command " " | command) && (command ' ' || command))`, avec autant de parentheses ouvertes que fermees, idem pour les guillemets et le tout dans le bon ordre (ex `))"(("` a en terme de nombre uniquement la bonne quantité, mais pas dans le bon ordre).
+- le cas ou il y a un probleme qui ne peut etre resolut : trop de parenthese fermées comme `)`, ou `(command (command)))` ne fonctionne pas et ne le pourront jamais
+- le cas ou c'est pas bon mais on peut completer la commande que ca le devienne : `echo "`, `(command |`, ... et il faut alors afficher > jusqu'a ce que la command soit dans un des deux autres etats, ou que 
+
+Attention a un detail qui est l'ordre et la prise en compte ou non de certains elements, par exemple si on est rentré dans des guillemets, les autres types de guillemets et parentheses comptent plus : `(")"` la deuxieme parentheses de compte pas.
+Il faut aussi penser aux `\`, par exemple avec \" ne comptant pas comme une guillemet mais un caractere quelconque
+
+## 2
+
+Remplacer les variables et wildcards : on parcours la string en la copiant et remplacant les variables par leurs valeurs et les wildcard.
+Attention : variables a remplacer sauf si on est entre single quotes, et les wildcard sont a remplacer sauf si on est entre single OU double quote
+
+## 3
+
+On tokenize. Pour cela on parcours la string : au debut ou apres un operateur, le premier mot est une command et tout ceux qui suivent sont des arguments. On considere comme un mot une suite de caractere quelconque, et les separateurs sont les les differents operateurs : &, |, >, < ainsi que l'espace. Dans le cas ou nous sommes entre des quotes, aucun de ces characteres sont considérés comme etant des separateurs.
+On enregistre chaque mot en retirant les espace avant et apres celui ci, sauf dans le cas ou il y avait des guillemets, on garde ceux qui etaient a l'interieur
+
+On enregistre correctement les differents tokens en fonction des mots et des espaces et des operateurs (faire gaffe a pas confondre | | ou || par ex)
+
+> Ex `echo "username : $USER   " deuxieme      argument && echo 'username : $USER'` donne
+```json
+[
+   {"token":COMMAND, "string": "echo"},
+   {"token":ARG, "string": "username : lilefebv   "},
+   {"token":ARG, "string": "deuxieme"},
+   {"token":ARG, "string": "argument"},
+   {"token":AND, "string": NULL},
+   {"token":COMMAND, "string": "echo"},
+   {"token":ARG, "string": "username : $USER"}    
+]
+``` 
+
+## 4
+
+Renvoyer une erreur si il y a quelque chose d'invalide dans les tokens : 2 operateurs sans command entre eux, une parentheses ouverte sans operateur devant, une parenthese fermée sans operateur derriere (pour les parenthese un debut ou fin de commande fonctionne aussi bien sur)
+
+## 5
+
+Si on arrive a cette etape, la commande est sytaxiquement correcte on peut donc passer a la creation de l'arbre.
+Je sais pas exactement comment s'y prendre encore mais faut creer l'arbre (potentiellement recursivement pour gerer facilement les parentheses)
+
+## 6
+
+On execute, et c'est a ce niveau que peuvent survenir les erreurs du genre command not found et tout

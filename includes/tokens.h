@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:58:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/14 12:22:36 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/14 14:32:38 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
  */
 typedef enum e_token_type
 {
+	PARENTHESIS,
 	PAREN_OPEN,				/* (										*/
 	PAREN_CLOSE,			/* )										*/
 	PIPE,					/* |										*/
