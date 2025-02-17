@@ -1,0 +1,8 @@
+a.out
+
+*.o
+.obj
+
+libft/libft.a
+libft/.obj
+libft/*.o
