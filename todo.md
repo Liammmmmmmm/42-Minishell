@@ -160,12 +160,18 @@ Premiere verification de "est ce que tout est bon" au niveau des parentheses et 
 - le cas ou c'est pas bon mais on peut completer la commande que ca le devienne : `echo "`, `(command |`, ... et il faut alors afficher > jusqu'a ce que la command soit dans un des deux autres etats, ou que 
 
 Attention a un detail qui est l'ordre et la prise en compte ou non de certains elements, par exemple si on est rentré dans des guillemets, les autres types de guillemets et parentheses comptent plus : `(")"` la deuxieme parentheses de compte pas.
-Il faut aussi penser aux `\`, par exemple avec \" ne comptant pas comme une guillemet mais un caractere quelconque
+
 
 ## 2
 
+**En fait on peut pas faire ca la a cause d'un truc comme ca**
+`export test="lol quel enfer" && echo $test`
+
+
 Remplacer les variables et wildcards : on parcours la string en la copiant et remplacant les variables par leurs valeurs et les wildcard.
 Attention : variables a remplacer sauf si on est entre single quotes, et les wildcard sont a remplacer sauf si on est entre single OU double quote
+Si une variable contient une quote ou parenthese
+On remplace de cette maniere : Ex test="echo a > b", $test est remplace par "echo" "a" ">" "b"
 
 ## 3
 
@@ -199,3 +205,13 @@ Je sais pas exactement comment s'y prendre encore mais faut creer l'arbre (poten
 ## 6
 
 On execute, et c'est a ce niveau que peuvent survenir les erreurs du genre command not found et tout
+
+
+
+
+
+# A savoir :
+
+### Env variables
+Voici les caracteres acceptés pour le nom d'une variable d'environement : a-z, A-Z, _, 0-9.
+UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
