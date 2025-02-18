@@ -6,11 +6,11 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:54:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/17 14:38:06 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/18 10:16:34 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenisation.h"
+#include "tokenization.h"
 
 /**
  * Verifie si une commande envoyée est est correcte (en terme du nombre de quote
