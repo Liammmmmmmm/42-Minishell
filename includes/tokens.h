@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:58:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/14 14:32:38 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/18 12:03:59 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,12 @@ typedef enum e_token_type
 	REDIRECT_IN,			/* <										*/
 	HERE_DOC,				/* <<										*/
 	END_VAL,				/* Val to end <<							*/
-	FILE,					/* A file (for <, >, >>)					*/
+	FILE_R,					/* A file (for <, >, >>)					*/
 	COMMAND,				/* executable name (with or without path)	*/
 	ARG,					/* arguments avec managment de "" et '		*/
+	NEW_L					/* \n										*/
 }	t_token_type;
+
+int		is_valid_command(const char *cmd);
 
 #endif

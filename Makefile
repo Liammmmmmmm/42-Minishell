@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/02/18 10:46:24 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/02/18 11:33:25 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ INCLUDES = -I includes/ -I $(LIBFTDIR)includes/
 # Source files
 SRC_DIR  = src/
 SRCS     = parsing/tokenization/expand_vars.c parsing/tokenization/expand_vars_utils.c parsing/tokenization/valid_command.c \
+           parsing/errors/unexpected_token.c \
            shell/user_input.c  \
 		   main.c
 
