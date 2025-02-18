@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/02/18 11:33:25 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/02/18 14:58:27 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ INCLUDES = -I includes/ -I $(LIBFTDIR)includes/
 
 # Source files
 SRC_DIR  = src/
-SRCS     = parsing/tokenization/expand_vars.c parsing/tokenization/expand_vars_utils.c parsing/tokenization/valid_command.c \
+SRCS     = parsing/tokenization/expand_vars.c parsing/tokenization/expand_vars_utils.c parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c \
            parsing/errors/unexpected_token.c \
            shell/user_input.c  \
 		   main.c
@@ -97,6 +97,9 @@ end_message:
 	@echo "$(WHITE)║ $(GREEN)> make all                                   $(WHITE)║$(NC)"
 	@echo "$(WHITE)║ $(GREEN)Minishell compiled !                         $(WHITE)║$(NC)"
 	@echo "$(WHITE)║ $(GREEN)> $(BLINK)_                                          $(WHITE)║$(NC)"
+	@echo "$(WHITE)║                                              $(WHITE)║$(NC)"
+	@echo "$(WHITE)║                                              $(WHITE)║$(NC)"
+	@echo "$(WHITE)║                                              $(WHITE)║$(NC)"
 	@echo "$(WHITE)╚══════════════════════════════════════════════╝$(NC)"
 	@echo "\n$(NORM_RET)";
 
@@ -132,5 +135,11 @@ re : fclean
 norminette:
 	@norminette srcs/ libft/ includes/
 
+run:
+	./minishell
 
-.PHONY: all clean fclean fclean_fdf_only re end_message libft_make norminette
+rund:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
+
+
+.PHONY: all clean fclean nothing_to_be_done re end_message libft_make norminette run rund

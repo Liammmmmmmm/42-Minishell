@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/18 12:13:47 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/18 15:52:29 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ int	read_until_complete(char **rl)
 	int		is_valid_synax;
 	char	*second_line;
 
-	*rl = readline("minishell$ ");
+	*rl = readline("mishell$ ");
 	is_valid_synax = is_valid_command(*rl);
-
 	while (is_valid_synax != 1)
 	{
 		if (is_valid_synax == -1)
@@ -37,16 +36,20 @@ int	read_until_complete(char **rl)
 	return (1);
 }
 
-void	display_prompt(int *stop)
+void	display_prompt(int *stop, t_minishell *minishell)
 {
 	char	*rl;
 
 	rl = NULL;
 	if (read_until_complete(&rl) == -1)
 		return ;
+	if (tokenize(&rl, minishell) == -1) // appeller avant le add history car il peut lui meme ajouter des truc dans la rl si c'est pas complet
+		return ;
+	add_history(rl);
 	printf("Command : %s\n", rl);
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;
+	clean_tokenized_cmd(minishell);
 	free(rl);
 }
 
