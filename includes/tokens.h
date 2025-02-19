@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:58:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/18 16:28:37 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/19 10:35:45 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ typedef enum e_token_type
 	HERE_DOC,				/* <<										*/
 	COMMAND,				/* executable name (with or without path)	*/
 	END_VAL,				/* Val to end <<							*/
+	FILE_R,					
 	NEW_L,					/* \n										*/
-	AMPERSTAND
+	AMPERSTAND,
+	NULL_TOKEN
 }	t_token_type;
 
 int		is_valid_command(const char *cmd);

@@ -6,11 +6,11 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:54:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/18 10:16:34 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/19 10:50:31 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenization.h"
+#include "minishell.h"
 
 /**
  * Verifie si une commande envoyée est est correcte (en terme du nombre de quote
@@ -42,7 +42,7 @@ int	is_valid_command(const char *cmd)
 		else if (cmd[i] == ')' && !simple_quote && !double_quote)
 			paren_open--;
 		if (paren_open == -1)
-			return (-1);
+			return (unexpected_token_error(PAREN_CLOSE, NULL), -1);
 	}
 	if (simple_quote || double_quote || paren_open)
 		return (0);
