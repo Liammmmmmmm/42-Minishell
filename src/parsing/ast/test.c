@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:30:28 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/19 08:53:33 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/19 17:01:58 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_ast_node  *new_tree(void)
     tree->child_right = NULL;
     tree->parent = NULL;
     tree->text = NULL;
-    tree->token = NULL;
+    tree->token = NULL_TOKEN;
     return (tree);
 }
 
@@ -44,26 +44,29 @@ t_ast_node  *new_tkn_node(t_token_type	token)
     node->token = token;
     return (node);
 }
-void    print_tree(t_ast_node  *tree, int right)
+void printf_tree(t_ast_node *tree, int niveau) 
 {
+    int i;
+
+    i = -1;
     if (tree == NULL)
     {
-        ft_printf("(nill)");
-        if (right == 2)
-            ft_printf("\n");
+        while(++i < niveau)
+            ft_printf("        ");
+        ft_printf("--| (nil)\n\n");
+        return ;
     }
-    if (right == 0 && tree->parent != NULL)
-        return (print_tree(tree->parent, right));
-    else if (right == 0)
-    {
-        ft_printf("== %s ==\n", get_token(tree->token));
-        right = 2;
-    }
-    print_tree(tree->child_left, 1);
-    print_tree(tree->child_right, 1 + (right == 2));
-    if (right == 2)
-        ft_printf("\n");
+    if (niveau == -1 && tree->parent == NULL) 
+        niveau = 0;
+    if (niveau == -1)
+        return printf_tree(tree->parent, niveau);
+    printf_tree(tree->child_right, niveau + 1);
+    while(++i < niveau)
+        ft_printf("        ");
+    ft_printf("--| %s\n\n", get_token(tree->token));
+    printf_tree(tree->child_left, niveau + 1);
 }
+
 int fill_tree(t_ast_node  *tree, t_cmd_part *cmd, int depth)
 {
     t_ast_node  *n_parent;
@@ -94,7 +97,7 @@ int fill_tree(t_ast_node  *tree, t_cmd_part *cmd, int depth)
     else if (cmd->token == REDIRECT_OUT || cmd->token == REDIRECT_OUT_APPEND
         || cmd->token == REDIRECT_IN || cmd->token == HERE_DOC)
     {
-        if (tree->token = NULL)
+        if (tree->token = NULL_TOKEN)
         {
             tree = new_tkn_node(cmd->token);
             if (tree == NULL)
@@ -134,6 +137,9 @@ int main(void)
     t_ast_node *tree;
 
     tree = new_tree();
-    
+    if (tree == NULL)
+        return (0);
+    // fill_tree(tree, cmd, 0);
+    printf_tree(tree, -1);
     return (1);
 }
