@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/19 11:38:14 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/21 13:42:30 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	}
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;
+	cmd_to_tree(minishell->cmd_tokens);
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }
