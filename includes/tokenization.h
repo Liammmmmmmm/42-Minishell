@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:41:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/19 10:40:17 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/24 10:27:31 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ typedef struct s_cmd_part
 t_token_type	tget_a(t_cmd_part *cmd_part);
 t_token_type	tget_p(t_cmd_part *cmd_part);
 t_token_type	tget_n(t_cmd_part *cmd_part);
+char			*sget_n(t_cmd_part *cmd_part);
 
 #endif
