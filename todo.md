@@ -244,6 +244,6 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
 - [ ] Signaux
   - [ ] Same jsp trop
 - [ ] Fonctions random utilisables de maniere independantes
-  - [x] Replace des variables d'env
+  - [x] Replace des variables d'env  -> en fait j'ai fais de la merde
   - [ ] Replace avec les wildcard *
   - [ ] Split des commandes en un tableau de commandes et args
