@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   m_signals.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 12:24:30 by lilefebv         ###   ########lyon.fr   */
+/*   Created: 2025/02/25 11:47:24 by lilefebv          #+#    #+#             */
+/*   Updated: 2025/02/25 12:07:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef M_SIGNALS_H
+# define M_SIGNALS_H
 
-int	g_signal = -1;
+extern int	g_signal;
 
-void	signal_handler(int signum)
-{
-	g_signal = signum;
-	if (signum == SIGINT)
-	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		write(1, "\n", 1);
-		rl_redisplay();
-	}
-}
+/**
+ * sighandler
+ */
+void	init_sighandler(void);
 
-void	init_sighandler(void)
-{
-	signal(SIGINT, signal_handler);
-}
+#endif

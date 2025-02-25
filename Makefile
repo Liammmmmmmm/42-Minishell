@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/02/24 13:13:37 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/02/25 12:08:24 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRCS     = parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c 
            shell/user_input.c  \
 		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c \
 		   execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c \
+		   signals/signals.c \
 		   main.c
 
 # Object files directory
@@ -60,7 +61,7 @@ OBJ       = $(SRCS:%.c=$(OBJ_DIR)%.o)
 
 # Remake all if modified
 REMAKE   = libft/includes/libft.h libft/includes/ft_printf.h libft/includes/get_next_line.h libft/Makefile  \
-           Makefile includes/ast.h includes/minishell.h includes/tokenization.h includes/tokens.h
+           Makefile includes/ast.h includes/minishell.h includes/m_signals.h includes/tokenization.h includes/tokens.h
 
 # NORMINETTE
 NORM_RET = $(RED)[ERROR]$(BOLD) Norminette Disable$(NC)

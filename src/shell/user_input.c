@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 10:56:52 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 12:28:08 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	if (read_until_complete(&rl) == -1)
 		return ;
 	add_history(rl);
-	if (tokenize(&rl, minishell) == -1) // appeller avant le add history car il peut lui meme ajouter des truc dans la rl si c'est pas complet // en fait on gere pas ca
+	if (tokenize(&rl, minishell) == -1)
 		return ;
-	if (verify_tokens(minishell) == 1) // gerer aussi le 0 ou faut que ca redonne a nouveau le prompt // en fait non :)
+	if (verify_tokens(minishell) == 1)
 	{
 		printf("\nCommand : %s\n\n", rl);
 		cmd_to_tree(minishell->cmd_tokens);

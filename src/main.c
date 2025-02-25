@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 11:42:13 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 11:58:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(void)
 	minishell.ast_root = NULL;
 	minishell.cmd_tokens = NULL;
 	stop = 0;
+	init_sighandler();
 	while (stop == 0)
 		display_prompt(&stop, &minishell);
 	rl_clear_history();

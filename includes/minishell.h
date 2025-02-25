@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 10:54:05 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 12:07:58 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <signal.h>
 # include "libft.h"
 # include "tokens.h"
 # include "tokenization.h"
+# include "m_signals.h"
 # include "ast.h"
 
 typedef struct s_minishell
