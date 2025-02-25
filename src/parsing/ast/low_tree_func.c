@@ -6,11 +6,21 @@
 /*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/21 14:30:15 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:36:25 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_ast_node	*go_up_tree(t_ast_node *tree)
+{
+	if (tree == NULL)
+		return (NULL);
+	if (tree->parent == NULL)
+		return (tree);
+	else
+		return (go_up_tree(tree->parent));
+}
 
 void	free_ast_node(t_ast_node *tree)
 {
@@ -24,8 +34,8 @@ void	free_tree(t_ast_node *tree)
 {
 	if (tree != NULL)
 	{
-		free_ast_node(tree->child_left);
-		free_ast_node(tree->child_right);
+		free_tree(tree->child_left);
+		free_tree(tree->child_right);
 		free_ast_node(tree);
 	}
 }
