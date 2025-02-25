@@ -1,28 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 11:42:13 by lilefebv         ###   ########lyon.fr   */
+/*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
+/*   Updated: 2025/02/25 11:43:44 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	main(void)
-{
-	int	stop;
-	t_minishell	minishell;
-
-	// printf("%s", replace_variables("$test '$test' \"$test\""));
-	// char **tabs = split_args(replace_variables("$test '$test' \"$test\""));
-	minishell.ast_root = NULL;
-	minishell.cmd_tokens = NULL;
-	stop = 0;
-	while (stop == 0)
-		display_prompt(&stop, &minishell);
-	rl_clear_history();
-}

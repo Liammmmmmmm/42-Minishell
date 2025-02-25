@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 15:17:47 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 10:54:05 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ int		is_valid_variable_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
 char	*replace_variables(const char *cmd);
+
+// SPLIT ARGS
+
+char	**split_args(char *line);
+
 
 // shell
 
