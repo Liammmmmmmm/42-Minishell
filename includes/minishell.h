@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 12:07:58 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 15:33:43 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <errno.h>   
 # include "libft.h"
 # include "tokens.h"
 # include "tokenization.h"
@@ -30,7 +31,19 @@ typedef struct s_minishell
 	t_cmd_part		*cmd_tokens;
 	t_token_type	cmd_token_last;
 	t_ast_node		*ast_root;
+	char			**env;
 }	t_minishell;
+
+typedef struct s_cmd_exec
+{
+	char	*og_text;
+	char	*full_cmd;
+	char	**cmd_n_args;
+	char	*path;
+	char	**paths;
+	char	*right_path;
+	int		cmd_perm;
+}	t_cmd_exec;
 
 // EXPAND VARS
 
@@ -54,6 +67,8 @@ void	display_prompt(int *stop, t_minishell *minishell);
 void	other_error(char *err);
 void	unexpected_token_error(t_token_type token, char *text);
 void	incomplete_cmd_error(void);
+void	cmd_not_found(char *cmd);
+void	permission_denied(char *path, char *cmd);
 
 
 // tokenize
@@ -68,5 +83,15 @@ int		tokenize(char **rl, t_minishell *minishell);
 void	clean_tokenized_cmd(t_minishell *minishell);
 
 int		verify_tokens(t_minishell *minishell);
+
+
+// CREATE AST
+int cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
+
+// EXECUTE
+
+int		exec_cmd(t_ast_node *command, t_minishell *minishell);
+void	execute_ast(t_minishell *minishell);
+
 
 #endif

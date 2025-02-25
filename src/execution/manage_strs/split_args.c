@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 13:52:08 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 11:40:03 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 13:49:14 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ char	**split_args(char *line)
 		argl = arg_real_len(line, i);
 		if (argl)
 			res[y] = ft_substr_rmq(line, i, arg_len(line, i));
-		ft_printf("%d [%s]\n", y, res[y]);
+		ft_printf("%d [%s]\n", y, res[y]); // TODO protect le malloc du substr_rmq
 		i += argl;
 	}
 	res[y] = NULL;

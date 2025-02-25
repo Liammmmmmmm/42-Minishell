@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 12:28:08 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 14:35:25 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	if (verify_tokens(minishell) == 1)
 	{
 		printf("\nCommand : %s\n\n", rl);
-		cmd_to_tree(minishell->cmd_tokens);
-		
+		cmd_to_tree(minishell->cmd_tokens, minishell);
+		execute_ast(minishell);
+		free_tree(minishell->ast_root);
 	}
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;

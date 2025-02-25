@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:00:30 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 12:34:32 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 13:39:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	line_to_tokens(char *rl, t_minishell *minishell)
 		}
 		else if (rl[i] == '&' && rl[i + 1] != '&')
 			res = add_token_last(AMPERSTAND, NULL, minishell);
-		else if (rl[i] == '>' && rl[i + 1] == '>')
+		else if (rl[i] == '>' && rl[i + 1] == '>') // TODO Faut modifier tous les redirecteurs car en fait ils prennent en argument que le premier mot et les autres sont refusionnés en arg de la commande precedente genre `cat < file1 file2` va juste afficher le file2 car c'est l'arg du cat, et le file1 sera envoye au cat en standard input mais avec des arg cat ne prend pas de std in
 		{
 			res = add_token_last(REDIRECT_OUT_APPEND, NULL, minishell);
 			i++;

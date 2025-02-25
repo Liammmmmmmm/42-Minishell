@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   low_tree_func.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/21 14:30:15 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:19:06 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_ast_node	*new_node(void)
 	tree->parent = NULL;
 	tree->text = NULL;
 	tree->token = NULL_TOKEN;
+	tree->cmd_res = -2;
 	return (tree);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:19:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 12:09:34 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 14:30:07 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	verify_tokens(t_minishell *minishell)
 
 	i = 0;
 	cmd_part = minishell->cmd_tokens;
+	if (!cmd_part)
+		return (-1);
 	while (cmd_part)
 	{
 		if (i == 0) // first
