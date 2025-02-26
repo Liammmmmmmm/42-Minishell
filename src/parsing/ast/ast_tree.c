@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:30:28 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:19 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/26 19:05:59 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_cmd_part	*fill_tree(t_ast_node *tree, t_cmd_part *cmd, int *flag)
 	return (cmd);
 }
 
-int	cmd_to_tree(t_cmd_part *cmd)
+int	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell)
 {
 	t_ast_node	*tree;
 	int			flag;
@@ -50,9 +50,6 @@ int	cmd_to_tree(t_cmd_part *cmd)
 		free(tree->parent);
 		tree->parent = NULL;
 	}
-	ft_printf("--------------\n");
-	printf_tree(tree, -1);
-	ft_printf("--------------\n");
-	free_tree(go_up_tree(tree));
+	minishell->ast_root = tree;
 	return (1);
 }
