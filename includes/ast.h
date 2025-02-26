@@ -6,15 +6,15 @@
 /*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:31:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/21 14:35:57 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:24:55 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AST_H
 # define AST_H
 
-#include "tokens.h"
-#include "tokenization.h"
+# include "tokens.h"
+# include "tokenization.h"
 
 typedef struct s_ast_node	t_ast_node;
 
@@ -25,18 +25,28 @@ typedef struct s_ast_node
 	t_ast_node		*parent;
 	t_ast_node		*child_left;
 	t_ast_node		*child_right;
-	
 }	t_ast_node;
 
-t_ast_node  *new_node(void);
-t_ast_node  *new_tkn_node(t_token_type	token);
+void		*flag_off(int *flag);
 
-void printf_tree(t_ast_node *tree, int niveau);
-void	free_tree(t_ast_node *tree);
+char		*null_or_txt(char *str);
 
-int cmd_to_tree(t_cmd_part *cmd);
-int fill_tree(t_ast_node  *tree, t_cmd_part *cmd, int depth);
+int			cmd_to_tree(t_cmd_part *cmd);
+int			check_parent(t_ast_node *tree);
 
-char *null_or_txt(char *str);
+void		free_tree(t_ast_node *tree);
+void		printf_tree(t_ast_node *tree, int niveau);
+void		cpy_node(t_ast_node *tree, t_ast_node *tree2);
+void		insert_node(t_ast_node *tree, t_ast_node *n_node);
+
+t_ast_node	*new_node(void);
+t_ast_node	*go_up_tree(t_ast_node *tree);
+
+t_cmd_part	*fill_tree(t_ast_node *tree, t_cmd_part *cmd, int *flag);
+t_cmd_part	*manage_pipe(t_ast_node *tree, t_cmd_part *cmd, int *flag);
+t_cmd_part	*manage_open(t_ast_node *tree, t_cmd_part *cmd, int *flag);
+t_cmd_part	*manage_nnode(t_ast_node *tree, t_cmd_part *cmd, int *flag);
+t_cmd_part	*manage_orand(t_ast_node *tree, t_cmd_part *cmd, int *flag);
+t_cmd_part	*manage_redirect(t_ast_node *tree, t_cmd_part *cmd, int *flag);
 
 #endif

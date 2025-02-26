@@ -6,7 +6,7 @@
 #    By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/02/21 13:44:42 by agantaum         ###   ########.fr        #
+#    Updated: 2025/02/26 18:07:58 by agantaum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ SRC_DIR  = src/
 SRCS     = parsing/tokenization/expand_vars.c parsing/tokenization/expand_vars_utils.c parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c parsing/tokenization/manage_token_list.c parsing/tokenization/manage_token_list2.c parsing/tokenization/verify_tokens.c \
            parsing/errors/unexpected_token.c \
            shell/user_input.c  \
-		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c \
+		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c parsing/ast/manage_nodes.c parsing/ast/low_node_func.c\
 		   main.c
 
 # Object files directory

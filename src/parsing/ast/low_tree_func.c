@@ -6,27 +6,32 @@
 /*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/21 14:30:15 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:14:43 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_ast_node(t_ast_node *tree)
+t_ast_node	*go_up_tree(t_ast_node *tree)
 {
-	if (tree != NULL && tree->text != NULL)
-		free(tree->text);
-	if (tree != NULL)
-		free(tree);
+	if (tree == NULL)
+		return (NULL);
+	if (tree->parent == NULL)
+		return (tree);
+	else
+		return (go_up_tree(tree->parent));
 }
 
 void	free_tree(t_ast_node *tree)
 {
 	if (tree != NULL)
 	{
-		free_ast_node(tree->child_left);
-		free_ast_node(tree->child_right);
-		free_ast_node(tree);
+		free_tree(tree->child_left);
+		free_tree(tree->child_right);
+		if (tree != NULL && tree->text != NULL)
+			free(tree->text);
+		if (tree != NULL)
+			free(tree);
 	}
 }
 
@@ -45,43 +50,34 @@ t_ast_node	*new_node(void)
 	return (tree);
 }
 
-t_ast_node  *new_tkn_node(t_token_type	token)
-{
-	t_ast_node	*node;
-
-	node = new_node();
-	if (node == NULL)
-		return (NULL);
-	node->token = token;
-	return (node);
-}
-
-char *null_or_txt(char *str)
+char	*null_or_txt(char *str)
 {
 	if (str == NULL)
 		return ("(nil)");
-	else return (str);
+	else
+		return (str);
 }
 
-void printf_tree(t_ast_node *tree, int niveau) 
+void	printf_tree(t_ast_node *tree, int niveau)
 {
 	int	i;
 
 	i = -1;
 	if (tree == NULL)
 	{
-		while(++i < niveau)
+		while (++i < niveau)
 			ft_printf("        ");
 		ft_printf("--| (nil)\n\n");
 		return ;
 	}
-	if (niveau == -1 && tree->parent == NULL) 
+	if (niveau == -1 && tree->parent == NULL)
 		niveau = 0;
 	if (niveau == -1)
-		return printf_tree(tree->parent, niveau);
+		return (printf_tree(tree->parent, niveau));
 	printf_tree(tree->child_right, niveau + 1);
-	while(++i < niveau)
+	while (++i < niveau)
 		ft_printf("        ");
-	ft_printf("--| %s txt %s\n\n", get_token(tree->token), null_or_txt(tree->text));
+	ft_printf("--| %s txt %s\n\n", get_token(tree->token), \
+		null_or_txt(tree->text));
 	printf_tree(tree->child_left, niveau + 1);
 }
