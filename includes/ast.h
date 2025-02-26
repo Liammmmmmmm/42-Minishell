@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:31:18 by lilefebv          #+#    #+#             */
 /*   Updated: 2025/02/26 18:24:55 by agantaum         ###   ########.fr       */
@@ -25,6 +25,8 @@ typedef struct s_ast_node
 	t_ast_node		*parent;
 	t_ast_node		*child_left;
 	t_ast_node		*child_right;
+	int				cmd_res;
+	pid_t			pid;
 }	t_ast_node;
 
 void		*flag_off(int *flag);
@@ -34,6 +36,7 @@ char		*null_or_txt(char *str);
 int			cmd_to_tree(t_cmd_part *cmd);
 int			check_parent(t_ast_node *tree);
 
+t_cmd_part	*fill_tree(t_ast_node  *tree, t_cmd_part *cmd, int depth);
 void		free_tree(t_ast_node *tree);
 void		printf_tree(t_ast_node *tree, int niveau);
 void		cpy_node(t_ast_node *tree, t_ast_node *tree2);

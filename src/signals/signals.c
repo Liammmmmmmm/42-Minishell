@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 15:45:24 by lilefebv         ###   ########lyon.fr   */
+/*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
+/*   Updated: 2025/02/26 13:49:13 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
-{
-	int	stop;
-	t_minishell	minishell;
+int	g_signal = -1;
 
-	(void)argc;
-	(void)argv;
-	minishell.ast_root = NULL;
-	minishell.cmd_tokens = NULL;
-	minishell.env = env;
-	stop = 0;
-	init_sighandler();
-	while (stop == 0)
-		display_prompt(&stop, &minishell);
-	rl_clear_history();
+void	signal_handler(int signum)
+{
+	g_signal = signum;
+	if (signum == SIGINT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		write(1, "\n", 1);
+		rl_redisplay(); // TODO regler une petite couille qu'il y a avec l'historique
+	}
+}
+
+void	init_sighandler(void)
+{
+	signal(SIGINT, signal_handler);
 }

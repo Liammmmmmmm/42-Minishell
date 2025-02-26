@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+         #
+#    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
 #    Updated: 2025/02/26 18:07:58 by agantaum         ###   ########.fr        #
@@ -47,11 +47,15 @@ INCLUDES = -I includes/ -I $(LIBFTDIR)includes/
 
 # Source files
 SRC_DIR  = src/
-SRCS     = parsing/tokenization/expand_vars.c parsing/tokenization/expand_vars_utils.c parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c parsing/tokenization/manage_token_list.c parsing/tokenization/manage_token_list2.c parsing/tokenization/verify_tokens.c \
+SRCS     = parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c parsing/tokenization/tokenize_utils.c parsing/tokenization/tokenize_utils2.c parsing/tokenization/manage_token_list.c parsing/tokenization/manage_token_list2.c parsing/tokenization/verify_tokens.c \
            parsing/errors/unexpected_token.c \
            shell/user_input.c  \
-		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c parsing/ast/manage_nodes.c parsing/ast/low_node_func.c\
-		   main.c
+		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c parsing/ast/manage_nodes.c parsing/ast/low_node_func.c \
+		   execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c \
+		   execution/ast/read.c execution/ast/exec_cmd.c \
+		   signals/signals.c \
+		   main.c debug.c
+
 
 # Object files directory
 OBJ_DIR   = .obj/
@@ -59,7 +63,7 @@ OBJ       = $(SRCS:%.c=$(OBJ_DIR)%.o)
 
 # Remake all if modified
 REMAKE   = libft/includes/libft.h libft/includes/ft_printf.h libft/includes/get_next_line.h libft/Makefile  \
-           Makefile includes/ast.h includes/minishell.h includes/tokenization.h includes/tokens.h
+           Makefile includes/ast.h includes/minishell.h includes/m_signals.h includes/tokenization.h includes/tokens.h
 
 # NORMINETTE
 NORM_RET = $(RED)[ERROR]$(BOLD) Norminette Disable$(NC)
