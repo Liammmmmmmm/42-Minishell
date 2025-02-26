@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/25 14:36:25 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:04:30 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_ast_node	*go_up_tree(t_ast_node *tree)
 
 void	free_ast_node(t_ast_node *tree)
 {
-	if (tree != NULL && tree->text != NULL)
-		free(tree->text);
+	// if (tree != NULL && tree->text != NULL)
+	// 	free(tree->text);
 	if (tree != NULL)
 		free(tree);
 }
@@ -53,6 +53,7 @@ t_ast_node	*new_node(void)
 	tree->text = NULL;
 	tree->token = NULL_TOKEN;
 	tree->cmd_res = -2;
+	tree->pid = -1;
 	return (tree);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 12:24:30 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 13:49:13 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		write(1, "\n", 1);
-		rl_redisplay();
+		rl_redisplay(); // TODO regler une petite couille qu'il y a avec l'historique
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:41:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 10:27:31 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 14:06:24 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ t_token_type	tget_a(t_cmd_part *cmd_part);
 t_token_type	tget_p(t_cmd_part *cmd_part);
 t_token_type	tget_n(t_cmd_part *cmd_part);
 char			*sget_n(t_cmd_part *cmd_part);
+
+int				is_op_t(t_token_type token);
+int				is_redir_t(t_token_type token);
 
 #endif

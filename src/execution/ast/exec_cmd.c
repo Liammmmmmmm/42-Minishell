@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 15:56:16 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 14:34:14 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	char_tab_len(char **tab)
 
 void	free_cmd(t_cmd_exec *cmd)
 {
-	if (cmd->og_text)
-		free(cmd->og_text);
+	// if (cmd->og_text) // ca fait des double free ca !!!!
+	// 	free(cmd->og_text);
 	if (cmd->full_cmd)
 		free(cmd->full_cmd);
 	if (cmd->cmd_n_args)
@@ -71,8 +71,8 @@ void	find_right_path(t_cmd_exec *cmd)
 	}
 }
 
-int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text)   // TODO Fix segfault si cmd = ""
-{
+int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text)
+{ // TODO Fix segfault si cmd = ""
 	cmd->cmd_perm = 0;
 	cmd->cmd_n_args = NULL;
 	cmd->full_cmd = NULL;
@@ -87,11 +87,21 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text)   // TODO Fix segfault si cmd
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
 	if (!cmd->cmd_n_args)
 		return (free_cmd(cmd), -1);
-	cmd->path = getenv("PATH");
-	cmd->paths = ft_split(cmd->path, ":");
-	if (!cmd->paths)
-		return (free_cmd(cmd), -1);
-	find_right_path(cmd);
+	if (ft_strchr(cmd->cmd_n_args[0], '/'))
+	{
+		cmd->right_path = ft_strdup(cmd->cmd_n_args[0]);
+		cmd->cmd_perm = -3;
+		if (cmd->right_path)
+			cmd->cmd_perm = 1;
+	}
+	else
+	{
+		cmd->path = getenv("PATH");
+		cmd->paths = ft_split(cmd->path, ":");
+		if (!cmd->paths)
+			return (free_cmd(cmd), -1);
+		find_right_path(cmd);
+	}
 	return (0);
 }
 
@@ -101,22 +111,34 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 
 	if (init_cmd_exec(&cmd, command->text) == -1)
 		return (1);
-	// si c'est une des commandes "brutes" l'executer
+	// TODO si c'est une des commandes "brutes" l'executer
 	if (cmd.cmd_perm == 1)
 	{
-		// (void)minishell;
-		printf("try : %s\n", cmd.right_path);
-		printf("%d\n", access(cmd.right_path, X_OK)); // TODO gerer le retour pour bien avoir le retours de la commande ou autre si autre erreure genre malloc
-		printf("%d\n", execve(cmd.right_path, cmd.cmd_n_args, minishell->env)); // TODO gerer le retour pour bien avoir le retours de la commande ou autre si autre erreure genre malloc
-		free(cmd.right_path);
-		perror("minishell");
+		command->pid = fork();
+		if (command->pid == -1)
+			perror("minishell");
+		else if (command->pid == 0)
+		{
+			if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1) // TODO gerer le retour pour bien avoir le retours de la commande ou autre si autre erreure genre malloc -> faut le faire avec waitpid, mais dcp faut le faire que sur les trucs avant les operteurs || ou && et sur le dernier node
+			{
+				// TODO y'a une erreur donc faut bien tout free
+				free(cmd.right_path);
+				free_cmd(&cmd);
+				exit(1);
+			}
+		}
+		else
+			free(cmd.right_path);
 	}
 	else
 	{
 		if (cmd.cmd_perm == -2)
 			permission_denied(cmd.right_path, cmd.cmd_n_args[0]);
+		if (cmd.cmd_perm == -3)
+			other_error("Malloc failed");
 		else
 			cmd_not_found(cmd.cmd_n_args[0]);
 	}
+	free_cmd(&cmd);
 	return (0);
 }

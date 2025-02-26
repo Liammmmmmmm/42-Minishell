@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 15:33:43 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 14:06:37 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ int		tokenize(char **rl, t_minishell *minishell);
 void	clean_tokenized_cmd(t_minishell *minishell);
 
 int		verify_tokens(t_minishell *minishell);
+int		add_token_bfr_redic(t_token_type token, char *text, t_minishell *msh);
 
 
 // CREATE AST
-int cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
+int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
 
 // EXECUTE
 
