@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/02/25 14:26:14 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/02/26 18:22:22 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,14 +47,14 @@ INCLUDES = -I includes/ -I $(LIBFTDIR)includes/
 
 # Source files
 SRC_DIR  = src/
-SRCS     = parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c parsing/tokenization/manage_token_list.c parsing/tokenization/manage_token_list2.c parsing/tokenization/verify_tokens.c \
+SRCS     = parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c parsing/tokenization/tokenize_utils.c parsing/tokenization/tokenize_utils2.c parsing/tokenization/manage_token_list.c parsing/tokenization/manage_token_list2.c parsing/tokenization/verify_tokens.c \
            parsing/errors/unexpected_token.c \
            shell/user_input.c  \
 		   parsing/ast/ast_tree.c parsing/ast/low_tree_func.c \
 		   execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c \
 		   execution/ast/read.c execution/ast/exec_cmd.c \
 		   signals/signals.c \
-		   main.c
+		   main.c debug.c
 
 # Object files directory
 OBJ_DIR   = .obj/

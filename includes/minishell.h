@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 14:06:37 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 18:21:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,21 @@ typedef struct s_cmd_exec
 
 // EXPAND VARS
 
-int		is_valid_variable_char(char c);
+typedef struct s_cor_infos
+{
+	int		i;
+	int		is_sq;
+	int		is_dq;
+	const char	*cmd;
+	char	*new_str;
+	int		*n;
+}	t_cor_infos;
+
+int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
 char	*replace_variables(const char *cmd);
+void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 
 // SPLIT ARGS
 
@@ -65,7 +76,7 @@ void	display_prompt(int *stop, t_minishell *minishell);
 // ERR
 
 void	other_error(char *err);
-void	unexpected_token_error(t_token_type token, char *text);
+int		unexpected_token_error(t_token_type token, char *text);
 void	incomplete_cmd_error(void);
 void	cmd_not_found(char *cmd);
 void	permission_denied(char *path, char *cmd);
@@ -76,8 +87,6 @@ void	permission_denied(char *path, char *cmd);
 int		add_token_last(t_token_type token, char *text, t_minishell *minishell);
 int		add_token(t_token_type token, char *text, t_cmd_part **last);
 void	clean_tokenized_cmd(t_minishell *minishell);
-void	print_token_list(t_minishell *minishell);
-char	*get_token(t_token_type token);
 
 int		tokenize(char **rl, t_minishell *minishell);
 void	clean_tokenized_cmd(t_minishell *minishell);
@@ -85,6 +94,14 @@ void	clean_tokenized_cmd(t_minishell *minishell);
 int		verify_tokens(t_minishell *minishell);
 int		add_token_bfr_redic(t_token_type token, char *text, t_minishell *msh);
 
+void	move_to_next_op(char *rl, int *y);
+void	move_to_next_word(char *rl, int *y);
+int		get_word(char **text, char *rl, int	*i);
+int		get_text(char **text, char *rl, int	*i);
+int		add_tok_and_incr(t_token_type token, t_minishell *minishell, int *i);
+int		case_text(char *rl, t_minishell *minishell, int *i);
+int		directly_after_filer(char *rl, t_minishell *minishell, int *i);
+int		directly_after_redirector(char *rl, t_minishell *minishell, int *i);
 
 // CREATE AST
 int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
@@ -93,6 +110,10 @@ int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
 
 int		exec_cmd(t_ast_node *command, t_minishell *minishell);
 void	execute_ast(t_minishell *minishell);
+
+// DEBUG
+void	print_token_list(t_minishell *minishell);
+char	*get_token(t_token_type token);
 
 
 #endif

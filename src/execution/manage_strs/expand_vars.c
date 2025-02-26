@@ -6,38 +6,11 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 09:51:58 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 15:33:57 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	copy_var_and_quotes(const char *var_content, char *new_str, int *n)
-{
-	int	i;
-	int	was_space;
-
-	if (var_content == NULL)
-		return ;
-	i = -1;
-	was_space = 1;
-	while (var_content[++i])
-	{
-		if (var_content[i] != ' ' && was_space == 1)
-		{
-			was_space = 0;
-			new_str[(*n)++] = '"';
-		}
-		else if (var_content[i] == ' ' && was_space == 0)
-		{
-			was_space = 1;
-			new_str[(*n)++] = '"';
-		}
-		new_str[(*n)++] = var_content[i];
-	}
-	if (was_space == 0)
-		new_str[(*n)++] = '"';
-}
 
 int	copy_variable(const char *cmd, char *new_str, int *i, int *n)
 {
@@ -87,38 +60,48 @@ int	copy_var_dq(const char *cmd, char *new_str, int *i, int *n)
 	return (0);
 }
 
+static int	count_or_rep_itt(t_cor_infos *c)
+{
+	if (c->cmd[c->i] == '"')
+		c->is_dq = !c->is_dq;
+	if (c->cmd[c->i] == '\'' && !c->is_dq)
+		c->is_sq = !c->is_sq;
+	if (c->cmd[c->i] == '$'
+		&& is_valid_var_char(c->cmd[c->i + 1]) && !c->is_sq && c->is_dq)
+	{
+		if (copy_var_dq(c->cmd, c->new_str, &c->i, c->n) == -1)
+			return (-1);
+	}
+	else if (c->cmd[c->i] == '$'
+		&& is_valid_var_char(c->cmd[c->i + 1]) && !c->is_sq)
+	{
+		if (copy_variable(c->cmd, c->new_str, &c->i, c->n) == -1)
+			return (-1);
+	}
+	else
+	{
+		if (c->new_str)
+			c->new_str[*c->n] = c->cmd[c->i];
+		c->i++;
+		(*c->n)++;
+	}
+	return (0);
+}
+
 int	count_or_replace(const char *cmd, char *new_str, int *n)
 {
-	int	is_sq;
-	int	is_dq;
-	int	i;
+	t_cor_infos	cor;
 
-	i = 0;
-	is_sq = 0;
-	is_dq = 0;
-	while (cmd[i])
+	cor.i = 0;
+	cor.is_sq = 0;
+	cor.is_dq = 0;
+	cor.n = n;
+	cor.cmd = cmd;
+	cor.new_str = new_str;
+	while (cmd[cor.i])
 	{
-		if (cmd[i] == '"')
-			is_dq = !is_dq;
-		if (cmd[i] == '\'' && !is_dq)
-			is_sq = !is_sq;
-		if (cmd[i] == '$' && is_valid_variable_char(cmd[i + 1]) && !is_sq && is_dq)
-		{
-			if (copy_var_dq(cmd, new_str, &i, n) == -1)
-				return (-1);
-		}
-		else if (cmd[i] == '$' && is_valid_variable_char(cmd[i + 1]) && !is_sq)
-		{
-			if (copy_variable(cmd, new_str, &i, n) == -1)
-				return (-1);
-		}
-		else
-		{
-			if (new_str)
-				new_str[*n] = cmd[i];
-			i++;
-			(*n)++;
-		}
+		if (count_or_rep_itt(&cor) == -1)
+			return (-1);
 	}
 	return (0);
 }
@@ -139,32 +122,3 @@ char	*replace_variables(const char *cmd)
 	new_str[n] = '\0';
 	return (new_str);
 }
-
-
-/*
-
-#include <stdio.h>
-
-int main(int argc, char **argv)
-{
-	if (argc < 2)
-	{
-		char *cmd = "'$USER'\"$HOME_test]123'$PATH'\"$PWD_$SHELL\"'$VAR_name'\"$HOME_test]123";
-		char *newstr = replace_variables(cmd);
-		printf("%s\n%s\n", cmd, newstr);
-		free(newstr);
-	}
-	else
-	{
-		char *newstr = replace_variables(argv[1]);
-		printf("%s\n%s\n", argv[1], newstr);
-		free(newstr);
-	}
-}
-
-
-output bash :
-$USER]123'/home/lilefebv/bin:/home/lilefebv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/lilefebv/.dotnet/tools'/bin/zsh'']123
-
-output moi
-'$USER'"]123'"/home/lilefebv/bin:/home/lilefebv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/lilefebv/.dotnet/tools"'""/bin/zsh""''"]123*/

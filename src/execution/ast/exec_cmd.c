@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 14:34:14 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 16:58:34 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 			perror("minishell");
 		else if (command->pid == 0)
 		{
+			// TODO la dcp faut free tout le programme en gros
 			if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1) // TODO gerer le retour pour bien avoir le retours de la commande ou autre si autre erreure genre malloc -> faut le faire avec waitpid, mais dcp faut le faire que sur les trucs avant les operteurs || ou && et sur le dernier node
 			{
 				// TODO y'a une erreur donc faut bien tout free

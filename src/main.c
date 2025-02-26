@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/25 14:10:13 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/26 15:45:24 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	// printf("%s", replace_variables("$test '$test' \"$test\""));
-	// char **tabs = split_args(replace_variables("$test '$test' \"$test\""));
 	minishell.ast_root = NULL;
 	minishell.cmd_tokens = NULL;
 	minishell.env = env;
