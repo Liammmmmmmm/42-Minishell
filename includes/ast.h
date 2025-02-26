@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:31:18 by lilefebv          #+#    #+#             */
 /*   Updated: 2025/02/25 12:47:46 by agantaum         ###   ########.fr       */
@@ -25,7 +25,7 @@ typedef struct s_ast_node
 	t_ast_node		*parent;
 	t_ast_node		*child_left;
 	t_ast_node		*child_right;
-	
+	int				cmd_res;
 }	t_ast_node;
 
 t_ast_node  *new_node(void);

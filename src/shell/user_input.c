@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/21 13:42:30 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:35:25 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,18 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	rl = NULL;
 	if (read_until_complete(&rl) == -1)
 		return ;
-	if (tokenize(&rl, minishell) == -1) // appeller avant le add history car il peut lui meme ajouter des truc dans la rl si c'est pas complet
+	add_history(rl);
+	if (tokenize(&rl, minishell) == -1)
 		return ;
-	if (verify_tokens(minishell) == 1) // gerer aussi le 0 ou faut que ca redonne a nouveau le prompt
+	if (verify_tokens(minishell) == 1)
 	{
-		add_history(rl);
-		printf("Command : %s\n", rl);
+		printf("\nCommand : %s\n\n", rl);
+		cmd_to_tree(minishell->cmd_tokens, minishell);
+		execute_ast(minishell);
+		free_tree(minishell->ast_root);
 	}
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;
-	cmd_to_tree(minishell->cmd_tokens);
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }
@@ -59,7 +61,7 @@ void	display_prompt(int *stop, t_minishell *minishell)
 /*
 
 Attention, le truc pour continuer a prendre l'input ne fonctionne ici que pour
-si y'a pas le bon nb de parentheses ou de quotes. Si par ex une commande finie par
+si y'a pas le bon nb de parentheses ou de quotes. Si par ex 	une commande finie par
 &&, et est donc pas encore valid il faudra gerer le fait de continuer a lire
 apres la tokenization
 

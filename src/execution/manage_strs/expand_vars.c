@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/18 11:09:05 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 09:51:58 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,38 @@ int	copy_variable(const char *cmd, char *new_str, int *i, int *n)
 	return (0);
 }
 
+int	copy_var_dq(const char *cmd, char *new_str, int *i, int *n)
+{
+	char	*var_content;
+	char	*var_name;
+	int		y;
+
+	y = get_variable_length(cmd + *i + 1);
+	var_name = malloc((y + 1) * sizeof(char));
+	if (!var_name)
+		return (-1);
+	ft_strlcpy(var_name, cmd + *i + 1, y + 1);
+	var_content = getenv(var_name);
+	*i += y + 1;
+	if (new_str == NULL)
+		*n += ft_sstrlen(var_content);
+	else
+	{
+		if (var_content == NULL)
+			return (free(var_name), 0);
+		y = -1;
+		while (var_content[++y])
+			new_str[(*n)++] = var_content[y];
+	}
+	free(var_name);
+	return (0);
+}
+
 int	count_or_replace(const char *cmd, char *new_str, int *n)
 {
-	int		is_sq;
-	int		is_dq;
-	int		i;
+	int	is_sq;
+	int	is_dq;
+	int	i;
 
 	i = 0;
 	is_sq = 0;
@@ -75,7 +102,12 @@ int	count_or_replace(const char *cmd, char *new_str, int *n)
 			is_dq = !is_dq;
 		if (cmd[i] == '\'' && !is_dq)
 			is_sq = !is_sq;
-		if (cmd[i] == '$' && is_valid_variable_char(cmd[i + 1]) && !is_sq)
+		if (cmd[i] == '$' && is_valid_variable_char(cmd[i + 1]) && !is_sq && is_dq)
+		{
+			if (copy_var_dq(cmd, new_str, &i, n) == -1)
+				return (-1);
+		}
+		else if (cmd[i] == '$' && is_valid_variable_char(cmd[i + 1]) && !is_sq)
 		{
 			if (copy_variable(cmd, new_str, &i, n) == -1)
 				return (-1);

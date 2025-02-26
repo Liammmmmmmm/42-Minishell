@@ -6,22 +6,37 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:00:30 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/19 10:21:24 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/25 13:39:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	move_to_next_op(char *rl, int *y)
+{
+	int	is_sq;
+	int	is_dq;
+
+	is_dq = 0;
+	is_sq = 0;
+	while (ft_strchr("()|&<>", rl[*y]) == NULL || is_sq != 0 || is_dq != 0)
+	{
+		if (rl[*y] == '"' && is_sq == 0)
+			is_dq = !is_dq;
+		else if (rl[*y] == '\'' && is_dq == 0)
+			is_sq = !is_sq;
+		(*y)++;
+	}
+}
 
 int	get_text(char **text, char *rl, int	*i)
 {
 	int	y;
 	int	s_spaces;
 	int	e_spaces;
-	
+
 	y = *i;
-	while (ft_strchr("()|&<>", rl[y]) == NULL)
-		y++;
+	move_to_next_op(rl, &y);
 	s_spaces = 0;
 	while (rl[*i + s_spaces] == ' ')
 		s_spaces++;
@@ -72,7 +87,7 @@ int	line_to_tokens(char *rl, t_minishell *minishell)
 		}
 		else if (rl[i] == '&' && rl[i + 1] != '&')
 			res = add_token_last(AMPERSTAND, NULL, minishell);
-		else if (rl[i] == '>' && rl[i + 1] == '>')
+		else if (rl[i] == '>' && rl[i + 1] == '>') // TODO Faut modifier tous les redirecteurs car en fait ils prennent en argument que le premier mot et les autres sont refusionnés en arg de la commande precedente genre `cat < file1 file2` va juste afficher le file2 car c'est l'arg du cat, et le file1 sera envoye au cat en standard input mais avec des arg cat ne prend pas de std in
 		{
 			res = add_token_last(REDIRECT_OUT_APPEND, NULL, minishell);
 			i++;
@@ -116,7 +131,5 @@ int	tokenize(char **rl, t_minishell *minishell)
 	if (line_to_tokens(*rl, minishell) == -1)
 		return (-1);
 	print_token_list(minishell);
-	// appel a line_to_token
-	// boucle while sur les verifs qui sort si la commande est plus valide ou si elle est fini qui permet de completer tant qu'on continue
 	return (1);
 }

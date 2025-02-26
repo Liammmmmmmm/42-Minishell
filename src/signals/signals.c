@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenization.h                                     :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 14:41:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/24 10:27:31 by lilefebv         ###   ########lyon.fr   */
+/*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
+/*   Updated: 2025/02/25 12:24:30 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef tokenization_H
-# define tokenization_H
+#include "minishell.h"
 
-#include "tokens.h"
+int	g_signal = -1;
 
-typedef struct s_cmd_part	t_cmd_part;
-
-typedef struct s_cmd_part
+void	signal_handler(int signum)
 {
-	t_token_type	token;
-	char			*text;
-	t_cmd_part		*previous;
-	t_cmd_part		*next;
-}	t_cmd_part;
+	g_signal = signum;
+	if (signum == SIGINT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		write(1, "\n", 1);
+		rl_redisplay();
+	}
+}
 
-t_token_type	tget_a(t_cmd_part *cmd_part);
-t_token_type	tget_p(t_cmd_part *cmd_part);
-t_token_type	tget_n(t_cmd_part *cmd_part);
-char			*sget_n(t_cmd_part *cmd_part);
-
-#endif
+void	init_sighandler(void)
+{
+	signal(SIGINT, signal_handler);
+}

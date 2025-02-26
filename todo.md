@@ -1,6 +1,6 @@
 - [ ] Bases
-  - [ ] Prompt qui attend une commande
-  - [ ] Historique des commandes
+  - [x] Prompt qui attend une commande
+  - [x] Historique des commandes
   - [ ] Pouvoir trouver en lancer un executable demandé
 - [ ] Ce qu'on doit gerer en parametre
   - [ ] single quote `'` (which should prevent the shell from interpreting the meta-characters in the quoted sequence)
@@ -215,3 +215,35 @@ On execute, et c'est a ce niveau que peuvent survenir les erreurs du genre comma
 ### Env variables
 Voici les caracteres acceptés pour le nom d'une variable d'environement : a-z, A-Z, _, 0-9.
 UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
+
+
+
+## TODO
+
+- [ ] Parsing
+  - [x] Verif parentheses et quotes
+  - [x] Tokenization (ca semble pas trop mal mais y'a ptet des couilles)
+  - [x] Verification des tokens (same)
+  - [ ] Gestion des Here doc
+    - [ ] Recup correctement les differents contenus
+    - [ ] Creer un fichier tempo et ecrire ce qu'ecrit la personne dedans
+    - [ ] bien suppr le fichier a la fin
+    - [ ] Je crois c'est a peu pres tout
+  - [ ] AST
+    - [ ] Audric les etapes demerde toi
+- [ ] Execution
+  - [ ] Jsp trop encore toutes les etapes
+- [ ] Commandes hard coded
+  - [ ] `echo`, et gerer l'option -n
+  - [ ] `cd`, avec seulement un path relatif ou absolut
+  - [ ] `pwd` sans options
+  - [ ] `export` sans options
+  - [ ] `unset` sans options
+  - [ ] `env` sans options ni arg
+  - [ ] `exit` sans options
+- [ ] Signaux
+  - [ ] Same jsp trop
+- [ ] Fonctions random utilisables de maniere independantes
+  - [x] Replace des variables d'env  -> en fait j'ai fais de la merde
+  - [ ] Replace avec les wildcard *
+  - [ ] Split des commandes en un tableau de commandes et args

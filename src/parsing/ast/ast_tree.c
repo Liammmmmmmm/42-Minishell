@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ast_tree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:30:28 by agantaum          #+#    #+#             */
 /*   Updated: 2025/02/25 15:48:34 by agantaum         ###   ########.fr       */
@@ -186,9 +186,10 @@ t_cmd_part  *fill_tree(t_ast_node  *tree, t_cmd_part *cmd, int depth)
     }
     go_up_tree(tree);
     return (cmd);
+
 }
 
-int cmd_to_tree(t_cmd_part *cmd)
+int cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell)
 {
     t_ast_node *tree;
     
@@ -206,6 +207,6 @@ int cmd_to_tree(t_cmd_part *cmd)
     ft_printf("--------------\n");
     printf_tree(tree, -1);
     ft_printf("--------------\n");
-    free_tree(go_up_tree(tree));
+    minishell->ast_root = tree;
     return (1);
 }
