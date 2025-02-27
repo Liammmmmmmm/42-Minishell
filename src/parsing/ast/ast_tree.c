@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:30:28 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/26 19:05:59 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 09:47:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell)
 	t_ast_node	*tree;
 	int			flag;
 
+	flag = 1;
 	tree = new_node();
 	if (tree == NULL)
 		return (-1);

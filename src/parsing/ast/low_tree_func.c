@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/26 15:04:30 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 09:50:16 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	free_tree(t_ast_node *tree)
 	{
 		free_tree(tree->child_left);
 		free_tree(tree->child_right);
-		if (tree != NULL && tree->text != NULL)
-			free(tree->text);
+		// if (tree != NULL && tree->text != NULL)
+		// 	free(tree->text);
 		if (tree != NULL)
 			free(tree);
 	}

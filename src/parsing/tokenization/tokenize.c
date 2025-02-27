@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:00:30 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:56 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 09:37:31 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,5 @@ int	tokenize(char **rl, t_minishell *minishell)
 {
 	if (line_to_tokens(*rl, minishell) == -1)
 		return (-1);
-	print_token_list(minishell);
 	return (1);
 }

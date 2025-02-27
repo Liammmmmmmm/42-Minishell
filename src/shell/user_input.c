@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 14:20:41 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 09:38:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,33 +45,23 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	add_history(rl);
 	if (tokenize(&rl, minishell) == -1)
 		return ;
+	print_token_list(minishell);
 	if (verify_tokens(minishell) == 1)
 	{
 		printf("\nCommand : %s\n\n", rl);
-		cmd_to_tree(minishell->cmd_tokens, minishell);
-		execute_ast(minishell);
-		free_tree(minishell->ast_root);
+		if (cmd_to_tree(minishell->cmd_tokens, minishell) == 1)
+		{
+			printf_tree(minishell->ast_root, -1);
+			execute_ast(minishell);
+			free_tree(minishell->ast_root);
+		}
+		else
+		{
+			printf("Bah jsp trop la frerot l'arbre s'est pas construit\n");
+		}
 	}
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }
-
-/*
-
-Attention, le truc pour continuer a prendre l'input ne fonctionne ici que pour
-si y'a pas le bon nb de parentheses ou de quotes. Si par ex 	une commande finie par
-&&, et est donc pas encore valid il faudra gerer le fait de continuer a lire
-apres la tokenization
-
-Va aussi falloir modifier la facon dont ca nous demande de completer : va falloir faire tout de suite la tokenization
-
-apres re reflection va falloir virer completement car selon les contextes il le prend differament :
-$ (ls |
-> cat)
-est bien prit comme (ls | cat) par ex, mais
-$ (echo aaa
-> bbb)
-est prit comme (echo aaa; bbb) et sort donc aaa et bbb command not found 
-*/
