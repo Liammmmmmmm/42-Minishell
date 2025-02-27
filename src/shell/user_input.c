@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 09:38:35 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 12:27:14 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	add_history(rl);
 	if (tokenize(&rl, minishell) == -1)
 		return ;
-	print_token_list(minishell);
 	if (verify_tokens(minishell) == 1)
 	{
+		all_here_doc(minishell);
+		print_token_list(minishell);
 		printf("\nCommand : %s\n\n", rl);
 		if (cmd_to_tree(minishell->cmd_tokens, minishell) == 1)
 		{
@@ -60,6 +61,8 @@ void	display_prompt(int *stop, t_minishell *minishell)
 			printf("Bah jsp trop la frerot l'arbre s'est pas construit\n");
 		}
 	}
+	else
+		print_token_list(minishell);
 	if (ft_strncmp(rl, "exit", 5) == 0)
 		*stop = 1;
 	clean_tokenized_cmd(minishell);

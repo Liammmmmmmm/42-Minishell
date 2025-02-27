@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_nodes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:57:57 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/26 18:19:13 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:18:43 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_cmd_part	*manage_redirect(t_ast_node *tree, t_cmd_part *cmd, int *flag)
 {
 	t_ast_node	*n_node;
 
-	if (cmd->token == REDIRECT_IN
+	if (cmd->token == REDIRECT_IN || cmd->token == HERE_DOC
 		|| cmd->token == REDIRECT_OUT || cmd->token == REDIRECT_OUT_APPEND)
 	{
 		n_node = new_node();

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 19:05:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 11:58:04 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <errno.h>   
 # include "libft.h"
 # include "tokens.h"
@@ -115,5 +116,9 @@ void	execute_ast(t_minishell *minishell);
 void	print_token_list(t_minishell *minishell);
 char	*get_token(t_token_type token);
 
+
+// HERE DOC
+
+void	all_here_doc(t_minishell *minishell);
 
 #endif

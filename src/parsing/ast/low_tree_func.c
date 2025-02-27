@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/27 10:29:12 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 12:21:11 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	free_tree_rec(t_ast_node *tree)
 
 void	free_tree(t_ast_node *tree)
 {
-	while (tree->parent)
-		tree = tree->parent;
-	free_tree_rec(tree);
+	free_tree_rec(go_up_tree(tree));
 }
 
 t_ast_node	*new_node(void)

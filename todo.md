@@ -225,8 +225,8 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
   - [x] Tokenization (ca semble pas trop mal mais y'a ptet des couilles)
   - [x] Verification des tokens (same)
   - [ ] Gestion des Here doc
-    - [ ] Recup correctement les differents contenus
-    - [ ] Creer un fichier tempo et ecrire ce qu'ecrit la personne dedans
+    - [x] Recup correctement les differents contenus
+    - [x] Creer un fichier tempo et ecrire ce qu'ecrit la personne dedans
     - [ ] bien suppr le fichier a la fin
     - [ ] Je crois c'est a peu pres tout
   - [ ] AST
