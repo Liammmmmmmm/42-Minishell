@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 16:32:24 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 17:32:27 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,21 @@ int exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and)
 	}
 	if (!is_and && status == 0)
 	{
-		printf("La j'exit hehehehe je suis un connnnard\n");
 		free_msh(minishell);
 		exit(status);
 	}
-	pid = fork();
-	if (pid == -1)
-		return (perror_ret(minishell));
-	else if (pid == 0)
-	{
+	// pid = fork();
+	// if (pid == -1)
+	// 	return (perror_ret(minishell));
+	// else if (pid == 0)
+	// {
 		status = recursive_tree_read(minishell, node->child_right);
 		free_msh(minishell);
-		printf("status2 -> %d\n", status);
 		exit(status);
-	}
-	status = 1;
-	waitpid(pid, &status, 0);
-	printf("status -> %d\n", status);
+	// }
+	// status = 1;
+	// waitpid(pid, &status, 0);
+	// printf("status -> %d\n", status);
 	return (status);
 }
 
@@ -96,7 +94,7 @@ void	execute_ast(t_minishell *minishell)
 	pid_t	pid;
 	int		status;
 
-	printf("ok %d, %s\n", minishell->ast_root->token, minishell->ast_root->text);
+	// printf("ok %d, %s\n", minishell->ast_root->token, minishell->ast_root->text);
 	// deja faire une premiere fork ici dans tous les cas pour eviter d'avoir des pb genre si on a que une seule commande ici je peux mettre des <3 !!
 	
 	

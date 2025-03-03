@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:12:08 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 16:49:47 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 16:56:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int exec_right_pipe(t_minishell *minishell, t_ast_node *node)
 		return (perror_ret(minishell));
 	if (pid == 0)
 	{	
-		close(minishell->pipe_fd[1]);
 		dup2(minishell->pipe_fd[0], STDIN_FILENO);
 		close(minishell->pipe_fd[0]);
 		ret = recursive_tree_read(minishell, node->child_right);

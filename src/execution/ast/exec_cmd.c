@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 16:51:07 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 17:18:11 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 {
 	t_cmd_exec	cmd;
 
-	minishell->pid = fork();
-	if (minishell->pid == 0)
-	{
+	
 	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
 	// TODO si c'est une des commandes "brutes" l'executer
@@ -144,14 +142,14 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		}
 		free_msh(minishell);
 		free_cmd(&cmd);
-		// je crois y'a une grosse couille avec le status
+		// TODO je crois y'a une grosse couille avec le status
 		exit(cmd.status);
 	}
 	free_cmd(&cmd);
 	return (1);
-}
-waitpid(minishell->pid, NULL, 0);
-return (0);
+
+// waitpid(minishell->pid, NULL, 0);
+// return (0);
 }
 
 
