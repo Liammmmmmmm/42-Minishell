@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 11:58:04 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 16:17:30 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_minishell
 	t_token_type	cmd_token_last;
 	t_ast_node		*ast_root;
 	char			**env;
+	int				last_res;
 }	t_minishell;
 
 typedef struct s_cmd_exec
@@ -50,19 +51,21 @@ typedef struct s_cmd_exec
 
 typedef struct s_cor_infos
 {
-	int		i;
-	int		is_sq;
-	int		is_dq;
+	int			i;
+	int			is_sq;
+	int			is_dq;
 	const char	*cmd;
-	char	*new_str;
-	int		*n;
+	char		*new_str;
+	int			*n;
+	int			last_res;
 }	t_cor_infos;
 
 int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
-char	*replace_variables(const char *cmd);
+char	*replace_variables(const char *cmd, int last_res);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
+int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 
 // SPLIT ARGS
 

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 16:58:34 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 16:16:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	find_right_path(t_cmd_exec *cmd)
 	}
 }
 
-int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text)
+int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 { // TODO Fix segfault si cmd = ""
 	cmd->cmd_perm = 0;
 	cmd->cmd_n_args = NULL;
@@ -81,7 +81,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text)
 	cmd->right_path = NULL;
 	cmd->og_text = cmd_text;
 	// verif si la command est pas export pour mettre l'arg 1 entre double quotes
-	cmd->full_cmd = replace_variables(cmd_text);
+	cmd->full_cmd = replace_variables(cmd_text, minishell->last_res);
 	if (!cmd->full_cmd)
 		return (free_cmd(cmd), -1);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
@@ -109,7 +109,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 {
 	t_cmd_exec	cmd;
 
-	if (init_cmd_exec(&cmd, command->text) == -1)
+	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
 	// TODO si c'est une des commandes "brutes" l'executer
 	if (cmd.cmd_perm == 1)
@@ -134,11 +134,20 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 	else
 	{
 		if (cmd.cmd_perm == -2)
+		{
 			permission_denied(cmd.right_path, cmd.cmd_n_args[0]);
-		if (cmd.cmd_perm == -3)
+			minishell->last_res = 126;
+		}
+		else if (cmd.cmd_perm == -3)
+		{
 			other_error("Malloc failed");
+			minishell->last_res = 1;
+		}
 		else
+		{
 			cmd_not_found(cmd.cmd_n_args[0]);
+			minishell->last_res = 127;
+		}
 	}
 	free_cmd(&cmd);
 	return (0);

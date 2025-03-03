@@ -6,47 +6,51 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 15:33:57 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/02/27 16:17:09 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	copy_variable(const char *cmd, char *new_str, int *i, int *n)
+int	copy_variable(t_cor_infos *c, int last_res, int *i, int *n)
 {
 	char	*var_content;
 	char	*var_name;
 	int		var_name_length;
 
-	var_name_length = get_variable_length(cmd + *i + 1);
+	if (c->cmd[*i + 1] == '?')
+		return (copy_qmark(c, last_res, i, n));
+	var_name_length = get_variable_length(c->cmd + *i + 1);
 	var_name = malloc((var_name_length + 1) * sizeof(char));
 	if (!var_name)
 		return (-1);
-	ft_strlcpy(var_name, cmd + *i + 1, var_name_length + 1);
+	ft_strlcpy(var_name, c->cmd + *i + 1, var_name_length + 1);
 	var_content = getenv(var_name);
 	*i += var_name_length + 1;
-	if (new_str == NULL)
+	if (c->new_str == NULL)
 		*n += ft_sstrlen(var_content) + count_quotes_to_add(var_content);
 	else
-		copy_var_and_quotes(var_content, new_str, n);
+		copy_var_and_quotes(var_content, c->new_str, n);
 	free(var_name);
 	return (0);
 }
 
-int	copy_var_dq(const char *cmd, char *new_str, int *i, int *n)
+int	copy_var_dq(t_cor_infos *c, int last_res, int *i, int *n)
 {
 	char	*var_content;
 	char	*var_name;
 	int		y;
 
-	y = get_variable_length(cmd + *i + 1);
+	if (c->cmd[*i + 1] == '?')
+		return (copy_qmark(c, last_res, i, n));
+	y = get_variable_length(c->cmd + *i + 1);
 	var_name = malloc((y + 1) * sizeof(char));
 	if (!var_name)
 		return (-1);
-	ft_strlcpy(var_name, cmd + *i + 1, y + 1);
+	ft_strlcpy(var_name, c->cmd + *i + 1, y + 1);
 	var_content = getenv(var_name);
 	*i += y + 1;
-	if (new_str == NULL)
+	if (c->new_str == NULL)
 		*n += ft_sstrlen(var_content);
 	else
 	{
@@ -54,7 +58,7 @@ int	copy_var_dq(const char *cmd, char *new_str, int *i, int *n)
 			return (free(var_name), 0);
 		y = -1;
 		while (var_content[++y])
-			new_str[(*n)++] = var_content[y];
+			c->new_str[(*n)++] = var_content[y];
 	}
 	free(var_name);
 	return (0);
@@ -66,16 +70,16 @@ static int	count_or_rep_itt(t_cor_infos *c)
 		c->is_dq = !c->is_dq;
 	if (c->cmd[c->i] == '\'' && !c->is_dq)
 		c->is_sq = !c->is_sq;
-	if (c->cmd[c->i] == '$'
-		&& is_valid_var_char(c->cmd[c->i + 1]) && !c->is_sq && c->is_dq)
+	if (c->cmd[c->i] == '$' && (is_valid_var_char(c->cmd[c->i + 1])
+			|| c->cmd[c->i + 1] == '?') && !c->is_sq && c->is_dq)
 	{
-		if (copy_var_dq(c->cmd, c->new_str, &c->i, c->n) == -1)
+		if (copy_var_dq(c, c->last_res, &c->i, c->n) == -1)
 			return (-1);
 	}
-	else if (c->cmd[c->i] == '$'
-		&& is_valid_var_char(c->cmd[c->i + 1]) && !c->is_sq)
+	else if (c->cmd[c->i] == '$' && (is_valid_var_char(c->cmd[c->i + 1])
+			|| c->cmd[c->i + 1] == '?') && !c->is_sq)
 	{
-		if (copy_variable(c->cmd, c->new_str, &c->i, c->n) == -1)
+		if (copy_variable(c, c->last_res, &c->i, c->n) == -1)
 			return (-1);
 	}
 	else
@@ -88,7 +92,7 @@ static int	count_or_rep_itt(t_cor_infos *c)
 	return (0);
 }
 
-int	count_or_replace(const char *cmd, char *new_str, int *n)
+int	count_or_replace(const char *cmd, char *new_str, int *n, int last_res)
 {
 	t_cor_infos	cor;
 
@@ -98,6 +102,7 @@ int	count_or_replace(const char *cmd, char *new_str, int *n)
 	cor.n = n;
 	cor.cmd = cmd;
 	cor.new_str = new_str;
+	cor.last_res = last_res;
 	while (cmd[cor.i])
 	{
 		if (count_or_rep_itt(&cor) == -1)
@@ -106,18 +111,18 @@ int	count_or_replace(const char *cmd, char *new_str, int *n)
 	return (0);
 }
 
-char	*replace_variables(const char *cmd)
+char	*replace_variables(const char *cmd, int last_res)
 {
 	int		n;
 	char	*new_str;
 
 	n = 0;
 	new_str = NULL;
-	if (count_or_replace(cmd, new_str, &n) == -1)
+	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
 		return (NULL);
 	new_str = malloc((n + 1) * sizeof(char));
 	n = 0;
-	if (count_or_replace(cmd, new_str, &n) == -1)
+	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
 		return (free(new_str), NULL);
 	new_str[n] = '\0';
 	return (new_str);

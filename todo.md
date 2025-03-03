@@ -1,7 +1,7 @@
 - [ ] Bases
   - [x] Prompt qui attend une commande
   - [x] Historique des commandes
-  - [ ] Pouvoir trouver en lancer un executable demandé
+  - [x] Pouvoir trouver en lancer un executable demandé
 - [ ] Ce qu'on doit gerer en parametre
   - [ ] single quote `'` (which should prevent the shell from interpreting the meta-characters in the quoted sequence)
   - [ ] double quote `"` (which should prevent the shell from interpreting the meta-characters in the quoted sequence except for $ (dollar sign))
@@ -11,8 +11,8 @@
     - [ ] `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, it doesn’t have to update the history!
     - [ ] `>>` should redirect output in append mode.
   - [ ] Pipes (`|`) pour avoir chaque commande qui prend l'output de la precedente en input via des pipe
-  - [ ] Gerer les variables d'environement (pas besoin de gerer la creation de variables)
-  - [ ] Gerer `$?` (which should expand to the exit status of the most recently executed foreground pipeline)
+  - [x] Gerer les variables d'environement
+  - [x] Gerer `$?` (which should expand to the exit status of the most recently executed foreground pipeline)
   - [ ] Gerer les controls :
     - [ ] `Ctrl-C` Afficher un nouveau prompt avec une newline (kill le programme en cours)
     - [ ] `Ctrl-D` exit le shell
@@ -232,6 +232,7 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
   - [ ] AST
     - [ ] Audric les etapes demerde toi
 - [ ] Execution
+  - [ ] 
   - [ ] Jsp trop encore toutes les etapes
 - [ ] Commandes hard coded
   - [ ] `echo`, et gerer l'option -n
@@ -244,6 +245,6 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
 - [ ] Signaux
   - [ ] Same jsp trop
 - [ ] Fonctions random utilisables de maniere independantes
-  - [x] Replace des variables d'env  -> en fait j'ai fais de la merde
+  - [x] Replace des variables d'env
   - [ ] Replace avec les wildcard *
-  - [ ] Split des commandes en un tableau de commandes et args
+  - [x] Split des commandes en un tableau de commandes et args
