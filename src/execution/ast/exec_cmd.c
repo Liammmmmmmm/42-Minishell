@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 16:16:00 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 16:51:07 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,46 +109,54 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 {
 	t_cmd_exec	cmd;
 
+	minishell->pid = fork();
+	if (minishell->pid == 0)
+	{
 	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
 	// TODO si c'est une des commandes "brutes" l'executer
 	if (cmd.cmd_perm == 1)
 	{
-		command->pid = fork();
-		if (command->pid == -1)
-			perror("minishell");
-		else if (command->pid == 0)
+		free_msh(minishell);
+		if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1)
 		{
-			// TODO la dcp faut free tout le programme en gros
-			if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1) // TODO gerer le retour pour bien avoir le retours de la commande ou autre si autre erreure genre malloc -> faut le faire avec waitpid, mais dcp faut le faire que sur les trucs avant les operteurs || ou && et sur le dernier node
-			{
-				// TODO y'a une erreur donc faut bien tout free
-				free(cmd.right_path);
-				free_cmd(&cmd);
-				exit(1);
-			}
-		}
-		else
 			free(cmd.right_path);
+			free_cmd(&cmd);
+			exit(1);
+		}
 	}
 	else
 	{
 		if (cmd.cmd_perm == -2)
 		{
 			permission_denied(cmd.right_path, cmd.cmd_n_args[0]);
-			minishell->last_res = 126;
+			cmd.status = 126;
 		}
 		else if (cmd.cmd_perm == -3)
 		{
 			other_error("Malloc failed");
-			minishell->last_res = 1;
+			cmd.status = 1;
 		}
 		else
 		{
 			cmd_not_found(cmd.cmd_n_args[0]);
-			minishell->last_res = 127;
+			cmd.status = 127;
 		}
+		free_msh(minishell);
+		free_cmd(&cmd);
+		// je crois y'a une grosse couille avec le status
+		exit(cmd.status);
 	}
 	free_cmd(&cmd);
-	return (0);
+	return (1);
 }
+waitpid(minishell->pid, NULL, 0);
+return (0);
+}
+
+
+// // call this function if the node is a command or a redirector
+// int	exec_cmd_type_node(t_ast_node *node)
+// {
+	
+// }

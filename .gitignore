@@ -6,3 +6,10 @@ a.out
 libft/libft.a
 libft/.obj
 libft/*.o
+
+minishell
+valgrind-out.txt
+
+.vscode
+
+test*.txt

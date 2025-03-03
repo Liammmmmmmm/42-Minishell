@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 16:17:30 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 14:30:42 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <errno.h>   
@@ -34,6 +35,8 @@ typedef struct s_minishell
 	t_ast_node		*ast_root;
 	char			**env;
 	int				last_res;
+	pid_t			pid;
+	int				pipe_fd[2];
 }	t_minishell;
 
 typedef struct s_cmd_exec
@@ -45,6 +48,7 @@ typedef struct s_cmd_exec
 	char	**paths;
 	char	*right_path;
 	int		cmd_perm;
+	int		status;
 }	t_cmd_exec;
 
 // EXPAND VARS
@@ -84,6 +88,7 @@ int		unexpected_token_error(t_token_type token, char *text);
 void	incomplete_cmd_error(void);
 void	cmd_not_found(char *cmd);
 void	permission_denied(char *path, char *cmd);
+int		perror_ret(t_minishell *minishell);
 
 
 // tokenize
@@ -114,6 +119,8 @@ int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
 
 int		exec_cmd(t_ast_node *command, t_minishell *minishell);
 void	execute_ast(t_minishell *minishell);
+int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
+int		exec_pipe(t_minishell *minishell, t_ast_node *node);
 
 // DEBUG
 void	print_token_list(t_minishell *minishell);
@@ -121,7 +128,10 @@ char	*get_token(t_token_type token);
 
 
 // HERE DOC
-
 void	all_here_doc(t_minishell *minishell);
+
+
+// FREEEE 
+void	free_msh(t_minishell *minishell);
 
 #endif

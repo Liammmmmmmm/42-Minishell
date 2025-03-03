@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 16:19:47 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 13:48:13 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ void	cmd_not_found(char *cmd)
 void	permission_denied(char *path, char *cmd)
 {
 	printf("minishell: %s/%s: Permission denied\n", path, cmd);
+}
+
+int	perror_ret(t_minishell *minishell)
+{
+	perror("minishell");
+	minishell->last_res = 1;
+	return (1);
 }

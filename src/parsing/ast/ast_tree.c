@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:30:28 by agantaum          #+#    #+#             */
-/*   Updated: 2025/02/27 09:47:00 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/03 11:21:06 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd_part	*fill_tree(t_ast_node *tree, t_cmd_part *cmd, int *flag)
 			return (flag_off(flag));
 		return (fill_tree(tree->parent, cmd, flag));
 	}
-	if (tree->token == REDIRECT_IN
+	if (tree->token == REDIRECT_IN || cmd->token == HERE_DOC
 		|| tree->token == REDIRECT_OUT || tree->token == REDIRECT_OUT_APPEND)
 		return (manage_redirect(tree, cmd, flag));
 	if (tree->token == PIPE)
