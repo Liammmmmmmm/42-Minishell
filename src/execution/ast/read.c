@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 12:30:27 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:51:26 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 					perror_ret(minishell);
 		}
 	}
-	if (node->child_left == NULL)
-	{
-		// TODO cas ou y'a pas de commande. un redirecteur in ou out ca fait la merde, 1 de chaque y pete son crane mais au niveau de l'ast
-	}
 	return (recursive_tree_read(minishell, node->child_left));
 }
 
@@ -68,34 +64,17 @@ int exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and)
 	else if (pid == 0)
 	{
 		status = recursive_tree_read(minishell, node->child_left);
-		free_msh(minishell);
-		exit(status);
+		free_exit(minishell, status);
 	}
 	status = 1;
 	waitpid(pid, &status, 0);
 	if (is_and && status != 0)
-	{
-		free_msh(minishell);
-		exit(status);
-	}
+		free_exit(minishell, status);
 	if (!is_and && status == 0)
-	{
-		free_msh(minishell);
-		exit(status);
-	}
-	// pid = fork();
-	// if (pid == -1)
-	// 	return (perror_ret(minishell));
-	// else if (pid == 0)
-	// {
-		status = recursive_tree_read(minishell, node->child_right);
-		free_msh(minishell);
-		exit(status);
-	// }
-	// status = 1;
-	// waitpid(pid, &status, 0);
-	// printf("status -> %d\n", status);
-	return (status);
+		free_exit(minishell, status);
+	status = recursive_tree_read(minishell, node->child_right);
+	free_exit(minishell, status);
+	return (1);
 }
 
 int	recursive_tree_read(t_minishell *minishell, t_ast_node *node)
@@ -131,8 +110,7 @@ void	execute_ast(t_minishell *minishell)
 	else if (pid == 0)
 	{
 		status = recursive_tree_read(minishell, minishell->ast_root);
-		free_msh(minishell);
-		exit(status);
+		free_exit(minishell, status);
 	}
 	status = 0;
 	waitpid(pid, &status, 0);

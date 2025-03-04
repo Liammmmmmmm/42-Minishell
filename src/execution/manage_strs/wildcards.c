@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:43:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:06:48 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 17:11:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	pattern_next_word(t_cor_infos *c)
 	pattern = ft_substr_rmq((char *)c->cmd, c->i, arg_len((char *)c->cmd, c->i));
 	if (!pattern)
 		return (-1);
-	replacement = ft_strdup("TEST RANDOM");
-	//replacement = get_replacement(pattern);
+	//replacement = ft_strdup("TEST RANDOM");
+	replacement = concat_wildcard(pattern);
 	free(pattern);
 	if (!replacement)
 		return (-1);

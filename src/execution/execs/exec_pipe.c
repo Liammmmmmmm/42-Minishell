@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:12:08 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 10:46:27 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:52:01 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int exec_left_pipe(t_minishell *minishell, t_ast_node *node)
 	if (close(minishell->pipe_fd[1]) == -1)
 		perror_ret(minishell);
 	ret = recursive_tree_read(minishell, node->child_left);
-	free_msh(minishell);
-	exit(ret);
+	free_exit(minishell, ret);
+	return (1);
 }
 
 int exec_right_pipe(t_minishell *minishell, t_ast_node *node)
@@ -39,8 +39,7 @@ int exec_right_pipe(t_minishell *minishell, t_ast_node *node)
 		dup2(minishell->pipe_fd[0], STDIN_FILENO);
 		close(minishell->pipe_fd[0]);
 		ret = recursive_tree_read(minishell, node->child_right);
-		free_msh(minishell);
-		exit(ret);
+		free_exit(minishell, ret);
 	}
 	waitpid(pid, &ret, 0);
 	return (ret);

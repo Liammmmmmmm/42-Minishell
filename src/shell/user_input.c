@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 11:40:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:50:37 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	read_until_complete(char **rl)
 	return (1);
 }
 
-void	display_prompt(int *stop, t_minishell *minishell)
+void	display_prompt(t_minishell *minishell)
 {
 	char	*rl;
 
@@ -64,8 +64,6 @@ void	display_prompt(int *stop, t_minishell *minishell)
 	}
 	else
 		print_token_list(minishell);
-	if (ft_strncmp(rl, "exit", 5) == 0)
-		*stop = 1;
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }

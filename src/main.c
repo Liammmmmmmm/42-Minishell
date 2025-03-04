@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 12:30:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:50:26 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_msh(t_minishell *minishell)
 
 int	main(int argc, char **argv, char **env)
 {
-	int	stop;
 	t_minishell	minishell;
 
 	(void)argc;
@@ -32,9 +31,7 @@ int	main(int argc, char **argv, char **env)
 	minishell.last_res = 0;
 	minishell.have_red_in = 0;
 	minishell.have_red_out = 0;
-	stop = 0;
 	init_sighandler();
-	while (stop == 0)
-		display_prompt(&stop, &minishell);
-	rl_clear_history();
+	while (1)
+		display_prompt(&minishell);
 }

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 15:56:12 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:57:11 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,15 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	cmd->paths = NULL;
 	cmd->right_path = NULL;
 	cmd->og_text = cmd_text;
-	// verif si la command est pas export pour mettre l'arg 1 entre double quotes
+	// TODO verif si la command est pas export pour mettre l'arg 1 entre double quotes
 	cmd->full_cmd = replace_variables(cmd_text, minishell->last_res);
 	cmd->full_cmd = replace_wildcards(cmd->full_cmd);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
 	if (!cmd->cmd_n_args[0])
 	{
 		cmd_not_found("");
-		free_msh(minishell);
 		free_cmd(cmd);
-		exit(127);
+		free_exit(minishell, 127);
 	}
 	if (!cmd->cmd_n_args)
 		return (free_cmd(cmd), -1);
@@ -124,9 +123,31 @@ int	manage_null_cmd(t_minishell *minishell)
 			free(line);
 			line = get_next_line(0);
 		}
-		free_msh(minishell);
 	}
-	exit(0);
+	free_exit(minishell, 0);
+	return (1);
+}
+
+int	is_builtins(t_minishell *minishell, t_cmd_exec *cmd)
+{
+	if (strcmp(cmd->cmd_n_args[0], "echo") == 0)
+		echo_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "cd") == 0)
+		cd_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "pwd") == 0)
+		pwd_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "export") == 0)
+		export_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "unset") == 0)
+		unset_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "env") == 0)
+		env_bc(minishell, cmd);
+	else if (strcmp(cmd->cmd_n_args[0], "exit") == 0)
+		exit_bc(minishell, cmd);
+	else
+		return (0);
+	free_exit(minishell, 0);
+	return (1);
 }
 
 int	exec_cmd(t_ast_node *command, t_minishell *minishell)
@@ -137,7 +158,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		return (manage_null_cmd(minishell));
 	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
-	// TODO si c'est une des commandes "brutes" l'executer
+	is_builtins(minishell, &cmd);	
 	if (cmd.cmd_perm == 1)
 	{
 		free_msh(minishell);
@@ -145,6 +166,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		{
 			free(cmd.right_path);
 			free_cmd(&cmd);
+			rl_clear_history();
 			exit(1);
 		}
 	}
@@ -165,9 +187,8 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 			cmd_not_found(cmd.cmd_n_args[0]);
 			cmd.status = 127;
 		}
-		free_msh(minishell);
 		free_cmd(&cmd);
-		exit(cmd.status);
+		free_exit(minishell, 0);
 	}
 	free_cmd(&cmd);
 	return (1);

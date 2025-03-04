@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:02:46 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 17:13:07 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 
 int		is_next_word_wildcard(char *line, int i);
 char	*replace_wildcards(char *cmd);
-
+char	*concat_wildcard(const char *pattern);
 // SPLIT ARGS
 
 char	**split_args(char *line);
@@ -86,8 +86,9 @@ int		arg_real_len(char *line, int i);
 
 // shell
 
-void	display_prompt(int *stop, t_minishell *minishell);
+void	display_prompt(t_minishell *minishell);
 
+void	free_exit(t_minishell *minishell, int ret);
 
 // ERR
 
@@ -131,6 +132,8 @@ int		exec_cmd(t_ast_node *command, t_minishell *minishell);
 void	execute_ast(t_minishell *minishell);
 int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
 int		exec_pipe(t_minishell *minishell, t_ast_node *node);
+int		char_tab_len(char **tab);
+void	free_cmd(t_cmd_exec *cmd);
 
 // DEBUG
 void	print_token_list(t_minishell *minishell);
@@ -143,5 +146,14 @@ void	all_here_doc(t_minishell *minishell);
 
 // FREEEE 
 void	free_msh(t_minishell *minishell);
+
+// BRUT CMDS
+void	echo_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	cd_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	pwd_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	unset_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	env_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	exit_bc(t_minishell *minishell, t_cmd_exec *cmd);
+void	export_bc(t_minishell *minishell, t_cmd_exec *cmd);
 
 #endif

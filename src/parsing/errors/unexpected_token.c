@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 10:46:06 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:26:31 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ int	unexpected_token_error(t_token_type token, char *text)
 	else if (token == COMMAND)
 		printf("minishell: syntax error near unexpected token `%s'\n", text);
 	return (-1);
+}
+
+void	free_exit(t_minishell *minishell, int ret)
+{
+	free_msh(minishell);
+	rl_clear_history();
+	exit(ret);
 }
 
 void	incomplete_cmd_error(void)
@@ -63,8 +70,7 @@ int	perror_ret(t_minishell *minishell)
 void	perror_exit(t_minishell *minishell)
 {
 	perror("minishell");
-	free_msh(minishell);
-	exit(1);
+	free_exit(minishell, 1);
 }
 
 int	perror_file(t_minishell *minishell, char *filename)

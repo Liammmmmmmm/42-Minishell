@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/03/04 15:55:21 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/03/04 16:57:00 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ SRCS     =	parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c 
 			execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c execution/manage_strs/wildcards.c execution/manage_strs/wildcards_utils.c\
 			execution/ast/read.c execution/ast/exec_cmd.c execution/ast/ast_move.c \
 			execution/execs/exec_pipe.c \
+			execution/builtins/cd.c execution/builtins/echo.c execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/pwd.c execution/builtins/unset.c \
 			signals/signals.c \
 			main.c debug.c
 
