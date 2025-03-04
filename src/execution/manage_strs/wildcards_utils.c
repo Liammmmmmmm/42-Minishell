@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 17:18:29 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 18:12:17 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,75 @@ char	*wildcard_loop(char *result, DIR *dir, const char *pattern)
 	return (result);
 }
 
+int case_insensitive_cmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+    while (s1[i] && s2[i] && ft_tolower(s1[i]) == ft_tolower(s2[i]))
+		i++;
+    return (ft_tolower(s1[i]) - ft_tolower(s2[i]));
+}
+
+void bubble_sort_tab(char **tab, int n)
+{
+	int	i;
+	int	j;
+	char *tmp;
+	
+	i = 0;
+    if (n <= 1)
+        return ;
+    while (i < n - 1) {
+        j = 0;
+        while (j < n - i - 1) {
+            if (case_insensitive_cmp(tab[j], tab[j + 1]) > 0)
+			{
+                tmp = tab[j];
+                tab[j] = tab[j + 1];
+                tab[j + 1] = tmp;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
+char	*tab_to_str(char *result, char **tab)
+{
+	size_t	total_length;
+	int		i;
+	
+	i = 0;
+	total_length = 1;
+	while (tab[i] != NULL) 
+	{
+	
+		total_length += ft_sstrlen(tab[i]) + 2;
+		ft_strcat(result, " ");
+		ft_strcat(result, tab[i]);
+		free(tab[i]);
+		i++;
+	}
+	return (result);
+}
+
+int	len_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
 char	*concat_wildcard(const char *pattern)
 {
 	DIR		*dir;
 	char	*result;
-
+	char	**tab;
+	
 	dir  = opendir(".");
 	if (!dir) {
 		perror("opendir");
@@ -110,5 +174,16 @@ char	*concat_wildcard(const char *pattern)
 		return (NULL);
 	if (result[0] == '\0')
 		return (ft_strdup(pattern));
+	tab = ft_split(result, " ");
+	if (tab == NULL)
+	{
+		perror("malloc");
+		closedir(dir);
+		return NULL;
+	}
+	bubble_sort_tab(tab, len_tab(tab));
+	result[0] = '\0';
+	result = tab_to_str(result, tab);
+	free(tab);
 	return (result);
 }
