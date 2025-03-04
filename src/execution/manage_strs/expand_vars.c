@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 16:17:09 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 15:31:19 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	count_or_replace(const char *cmd, char *new_str, int *n, int last_res)
 	return (0);
 }
 
-char	*replace_variables(const char *cmd, int last_res)
+char	*replace_variables(char *cmd, int last_res)
 {
 	int		n;
 	char	*new_str;
@@ -119,11 +119,12 @@ char	*replace_variables(const char *cmd, int last_res)
 	n = 0;
 	new_str = NULL;
 	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
-		return (NULL);
+		return (cmd);
 	new_str = malloc((n + 1) * sizeof(char));
 	n = 0;
 	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
-		return (free(new_str), NULL);
+		return (free(new_str),
+			cmd);
 	new_str[n] = '\0';
 	return (new_str);
 }

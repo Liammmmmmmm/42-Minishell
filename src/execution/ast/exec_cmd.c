@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 17:18:11 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 15:56:12 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	find_right_path(t_cmd_exec *cmd)
 }
 
 int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
-{ // TODO Fix segfault si cmd = ""
+{
 	cmd->cmd_perm = 0;
 	cmd->cmd_n_args = NULL;
 	cmd->full_cmd = NULL;
@@ -82,9 +82,15 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	cmd->og_text = cmd_text;
 	// verif si la command est pas export pour mettre l'arg 1 entre double quotes
 	cmd->full_cmd = replace_variables(cmd_text, minishell->last_res);
-	if (!cmd->full_cmd)
-		return (free_cmd(cmd), -1);
+	cmd->full_cmd = replace_wildcards(cmd->full_cmd);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
+	if (!cmd->cmd_n_args[0])
+	{
+		cmd_not_found("");
+		free_msh(minishell);
+		free_cmd(cmd);
+		exit(127);
+	}
 	if (!cmd->cmd_n_args)
 		return (free_cmd(cmd), -1);
 	if (ft_strchr(cmd->cmd_n_args[0], '/'))
@@ -105,11 +111,30 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	return (0);
 }
 
+int	manage_null_cmd(t_minishell *minishell)
+{
+	char	*line;
+
+	if (minishell->have_red_in && minishell->have_red_out)
+	{
+		line = get_next_line(0);
+		while (line)
+		{
+			write(1, line, ft_strlen(line));
+			free(line);
+			line = get_next_line(0);
+		}
+		free_msh(minishell);
+	}
+	exit(0);
+}
+
 int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 {
 	t_cmd_exec	cmd;
 
-	
+	if (command->text == NULL)
+		return (manage_null_cmd(minishell));
 	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
 	// TODO si c'est une des commandes "brutes" l'executer
@@ -142,19 +167,8 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		}
 		free_msh(minishell);
 		free_cmd(&cmd);
-		// TODO je crois y'a une grosse couille avec le status
 		exit(cmd.status);
 	}
 	free_cmd(&cmd);
 	return (1);
-
-// waitpid(minishell->pid, NULL, 0);
-// return (0);
 }
-
-
-// // call this function if the node is a command or a redirector
-// int	exec_cmd_type_node(t_ast_node *node)
-// {
-	
-// }

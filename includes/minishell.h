@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 10:07:59 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 16:02:46 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
-# include <errno.h>   
+# include <errno.h>
+# include <dirent.h>
 # include "libft.h"
 # include "tokens.h"
 # include "tokenization.h"
@@ -37,6 +38,8 @@ typedef struct s_minishell
 	int				last_res;
 	pid_t			pid;
 	int				pipe_fd[2];
+	int				have_red_in;
+	int				have_red_out;
 }	t_minishell;
 
 typedef struct s_cmd_exec
@@ -67,14 +70,19 @@ typedef struct s_cor_infos
 int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
-char	*replace_variables(const char *cmd, int last_res);
+char	*replace_variables(char *cmd, int last_res);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
+
+int		is_next_word_wildcard(char *line, int i);
+char	*replace_wildcards(char *cmd);
 
 // SPLIT ARGS
 
 char	**split_args(char *line);
-
+int		arg_len(char *line, int i);
+char	*ft_substr_rmq(char *line, int i, int len);
+int		arg_real_len(char *line, int i);
 
 // shell
 
@@ -90,7 +98,7 @@ void	cmd_not_found(char *cmd);
 void	permission_denied(char *path, char *cmd);
 int		perror_ret(t_minishell *minishell);
 int		perror_file(t_minishell *minishell, char *filename);
-
+void	perror_exit(t_minishell *minishell);
 
 // tokenize
 
@@ -100,7 +108,8 @@ void	clean_tokenized_cmd(t_minishell *minishell);
 
 int		tokenize(char **rl, t_minishell *minishell);
 void	clean_tokenized_cmd(t_minishell *minishell);
-
+int		add_token_mid(t_token_type token, char *text, t_cmd_part **last,
+			t_minishell *msh);
 int		verify_tokens(t_minishell *minishell);
 int		add_token_bfr_redic(t_token_type token, char *text, t_minishell *msh);
 

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 10:11:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 12:30:27 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,56 +18,41 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 
 	if (node->text)
 	{
+		fd = -1;
 		if (node->token == REDIRECT_IN)
-		{
 			fd = open(node->text, O_RDONLY);
-			if (fd == -1)
-				perror_file(minishell, node->text);
-			else
-			{
-				dup2(fd, STDIN_FILENO);
-				if (close(fd) == -1)
-					perror_ret(minishell);
-			}
-		}
 		else if (node->token == HERE_DOC)
-		{
 			fd = open(node->text, O_RDONLY);
-			if (fd == -1)
-				perror_file(minishell, node->text);
+		else if (node->token == REDIRECT_OUT)
+			fd = open(node->text, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		else if (node->token == REDIRECT_OUT_APPEND)
+			fd = open(node->text, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (fd == -1)
+			perror_file(minishell, node->text);
+		else
+		{
+			if (node->token == REDIRECT_IN || node->token == HERE_DOC)
+			{
+				minishell->have_red_in = 1;
+				if (dup2(fd, STDIN_FILENO) == -1)
+					perror_exit(minishell);
+			}	
 			else
 			{
-				dup2(fd, STDIN_FILENO);
-				if (close(fd) == -1)
-					perror_ret(minishell);
+				minishell->have_red_out = 1;
+				if (dup2(fd, STDOUT_FILENO) == -1)
+					perror_exit(minishell);
+			}
+			if (close(fd) == -1)
+				perror_ret(minishell);
+			if (node->token == HERE_DOC)
 				if (unlink(node->text) == -1)
 					perror_ret(minishell);
-			}
 		}
-		else if (node->token == REDIRECT_OUT)
-		{
-			fd = open(node->text, O_CREAT | O_WRONLY | O_TRUNC);
-			if (fd == -1)
-				perror_file(minishell, node->text);
-			else
-			{
-				dup2(fd, STDOUT_FILENO);
-				if (close(fd) == -1)
-					perror_ret(minishell);
-			}
-		}
-		else if (node->token == REDIRECT_OUT_APPEND)
-		{
-			fd = open(node->text, O_CREAT | O_WRONLY);
-			if (fd == -1)
-				perror_file(minishell, node->text);
-			else
-			{
-				dup2(fd, STDOUT_FILENO);
-				if (close(fd) == -1)
-					perror_ret(minishell);
-			}
-		}
+	}
+	if (node->child_left == NULL)
+	{
+		// TODO cas ou y'a pas de commande. un redirecteur in ou out ca fait la merde, 1 de chaque y pete son crane mais au niveau de l'ast
 	}
 	return (recursive_tree_read(minishell, node->child_left));
 }

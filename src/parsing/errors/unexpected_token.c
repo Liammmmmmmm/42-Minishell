@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 10:09:56 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 10:46:06 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ int	perror_ret(t_minishell *minishell)
 	perror("minishell");
 	minishell->last_res = 1;
 	return (1);
+}
+
+void	perror_exit(t_minishell *minishell)
+{
+	perror("minishell");
+	free_msh(minishell);
+	exit(1);
 }
 
 int	perror_file(t_minishell *minishell, char *filename)
