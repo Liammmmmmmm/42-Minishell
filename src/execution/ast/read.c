@@ -6,28 +6,70 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 17:32:27 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 10:11:26 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_cmd_test(t_minishell *minishell, t_ast_node *node)
-{
-	(void)minishell;
-	if (node != NULL && node->text[0] == 'o')
-		return (0);
-	return (1);
-}
-
 int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 {
-	// quand on est la on est deja dans un child, on peut donc modifier les fd comme des porcs on s'en fou
-	// 
-	(void)minishell;
-	if (node != NULL && node->text[0] == 'o')
-		return (0);
-	return (1);
+	int	fd;
+
+	if (node->text)
+	{
+		if (node->token == REDIRECT_IN)
+		{
+			fd = open(node->text, O_RDONLY);
+			if (fd == -1)
+				perror_file(minishell, node->text);
+			else
+			{
+				dup2(fd, STDIN_FILENO);
+				if (close(fd) == -1)
+					perror_ret(minishell);
+			}
+		}
+		else if (node->token == HERE_DOC)
+		{
+			fd = open(node->text, O_RDONLY);
+			if (fd == -1)
+				perror_file(minishell, node->text);
+			else
+			{
+				dup2(fd, STDIN_FILENO);
+				if (close(fd) == -1)
+					perror_ret(minishell);
+				if (unlink(node->text) == -1)
+					perror_ret(minishell);
+			}
+		}
+		else if (node->token == REDIRECT_OUT)
+		{
+			fd = open(node->text, O_CREAT | O_WRONLY | O_TRUNC);
+			if (fd == -1)
+				perror_file(minishell, node->text);
+			else
+			{
+				dup2(fd, STDOUT_FILENO);
+				if (close(fd) == -1)
+					perror_ret(minishell);
+			}
+		}
+		else if (node->token == REDIRECT_OUT_APPEND)
+		{
+			fd = open(node->text, O_CREAT | O_WRONLY);
+			if (fd == -1)
+				perror_file(minishell, node->text);
+			else
+			{
+				dup2(fd, STDOUT_FILENO);
+				if (close(fd) == -1)
+					perror_ret(minishell);
+			}
+		}
+	}
+	return (recursive_tree_read(minishell, node->child_left));
 }
 
 int exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and)

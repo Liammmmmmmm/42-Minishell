@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 14:30:42 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 10:07:59 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	incomplete_cmd_error(void);
 void	cmd_not_found(char *cmd);
 void	permission_denied(char *path, char *cmd);
 int		perror_ret(t_minishell *minishell);
+int		perror_file(t_minishell *minishell, char *filename);
 
 
 // tokenize

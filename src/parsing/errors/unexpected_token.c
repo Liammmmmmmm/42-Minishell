@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 13:48:13 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/04 10:09:56 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ void	permission_denied(char *path, char *cmd)
 int	perror_ret(t_minishell *minishell)
 {
 	perror("minishell");
+	minishell->last_res = 1;
+	return (1);
+}
+
+int	perror_file(t_minishell *minishell, char *filename)
+{
+	printf("minishell: %s: No such file or directory\n", filename);
 	minishell->last_res = 1;
 	return (1);
 }

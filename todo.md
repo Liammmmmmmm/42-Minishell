@@ -229,8 +229,8 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
     - [x] Creer un fichier tempo et ecrire ce qu'ecrit la personne dedans
     - [ ] bien suppr le fichier a la fin
     - [ ] Je crois c'est a peu pres tout
-  - [ ] AST
-    - [ ] Audric les etapes demerde toi
+  - [x] AST
+    - [x] Audric les etapes demerde toi
 - [ ] Execution
   - [ ] 
   - [ ] Jsp trop encore toutes les etapes
