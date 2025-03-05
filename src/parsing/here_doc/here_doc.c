@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/27 12:28:20 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 10:21:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename)
 		ln = readline("> ");
 	}
 	free(ln);
+	close(fd); // TODO ptet secur par la
 	free(cmd_p->text);
 	cmd_p->text = filename;
 }

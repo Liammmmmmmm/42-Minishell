@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:51:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 11:47:28 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 		}
 	}
 	return (recursive_tree_read(minishell, node->child_left));
+	// dcp la on return pas et on redup pour remettre bien le stdin / out qu'il y avait avant
 }
 
 int exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and)

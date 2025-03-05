@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:00:30 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 12:26:13 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 11:39:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ int	add_fantom_cmd(t_minishell *minishell)
 	node = minishell->cmd_tokens;
 	while (node)
 	{
-	//	printf("%s <- %s\n", get_token(tget_p(node)), get_token(tget_a(node)));
-		if (is_redir_t(tget_a(node)) && !is_redir_t(tget_p(node)) && tget_p(node) != COMMAND && tget_p(node) != FILE_R)
+		if (is_redir_t(tget_a(node)) && !is_redir_t(tget_p(node)) && tget_p(node) != PAREN_CLOSE && tget_p(node) != COMMAND && tget_p(node) != FILE_R)
 		{
-	//		printf("j'ajoute\n");	
 			if (add_token_mid(COMMAND, NULL, &node, minishell) == -1)
 				return (0);
 		}

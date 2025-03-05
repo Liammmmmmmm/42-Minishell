@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 17:13:07 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 12:43:53 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <dirent.h>
+# include <linux/limits.h>
 # include "libft.h"
 # include "tokens.h"
 # include "tokenization.h"

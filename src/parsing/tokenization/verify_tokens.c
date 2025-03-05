@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:19:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 16:19:27 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 15:29:48 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,29 @@ static int	verify_token_itt(t_cmd_part *cmd_part)
 {
 	if (!cmd_part->previous)
 		if (is_op_t(tget_a(cmd_part)))
-			return (unexpected_token_error(tget_a(cmd_part), NULL), -1);
+			return (unexpected_token_error(tget_a(cmd_part), NULL));
 	if (!cmd_part->next)
 		if (is_op_t(tget_a(cmd_part)))
-			return (incomplete_cmd_error(), 0);
-	if (is_op_t(tget_a(cmd_part)) && is_op_or_pc_t(tget_n(cmd_part)))
-		return (unexpected_token_error(tget_n(cmd_part), NULL), -1);
+			return (incomplete_cmd_error(), -1);
+	if (tget_a(cmd_part) == AMPERSTAND)
+		return (unexpected_token_error(AMPERSTAND, NULL));
+	if (is_op_t(tget_a(cmd_part)) && (is_op_or_pc_t(tget_n(cmd_part)) || tget_n(cmd_part) == NULL_TOKEN))
+		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (tget_a(cmd_part) == PAREN_OPEN && tget_n(cmd_part) != COMMAND
 		&& !is_redir_t(tget_n(cmd_part)))
-		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)), -1);
+		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)));
 	if (tget_a(cmd_part) == PAREN_CLOSE && tget_n(cmd_part) != NULL_TOKEN
 		&& !is_op_t(tget_n(cmd_part)) && !is_redir_t(tget_n(cmd_part)))
-		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)), -1);
+		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)));
 	if ((!is_op_t(tget_a(cmd_part)) && tget_a(cmd_part) != NULL_TOKEN)
 		&& tget_n(cmd_part) == PAREN_OPEN)
-		return (unexpected_token_error(tget_n(cmd_part), NULL), -1);
+		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (is_redir_t(tget_a(cmd_part)) && (tget_n(cmd_part) == NULL_TOKEN
 			|| is_op_or_pc_t(tget_n(cmd_part))))
-		return (unexpected_token_error(tget_n(cmd_part), NULL), -1);
+		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (tget_a(cmd_part) == HERE_DOC && tget_n(cmd_part) != FILE_R)
-		return (unexpected_token_error(tget_n(cmd_part), NULL), -1);
+		return (unexpected_token_error(tget_n(cmd_part), NULL));
+	
 	return (0);
 }
 

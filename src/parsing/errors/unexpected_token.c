@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:26:31 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 12:36:45 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	unexpected_token_error(t_token_type token, char *text)
 		printf("minishell: syntax error near unexpected token `%s'\n", text);
 	return (-1);
 }
+
+// TODO toutes les erreures doivent aller dans la sortie d'erreur et pas la standard
 
 void	free_exit(t_minishell *minishell, int ret)
 {

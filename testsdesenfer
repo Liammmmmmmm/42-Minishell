@@ -5,3 +5,4 @@ command | (command || command) | command
 command | (command && command) | command
 echo aaa && (echdddo bbb || ecddho ccc) || echo ddd
 echdddo bbb || ecddho ccc || echo ddd
+cat << eof > test.txt

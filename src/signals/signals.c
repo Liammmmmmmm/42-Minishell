@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/03 16:00:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/05 16:38:43 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ void	signal_handler(int signum)
 
 void	init_sighandler(void)
 {
-	//signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler);
 }
+
+// Faire un sighandler custom pour le here doc. le here donc on dup la sortie standard et on la close pour exit direct 

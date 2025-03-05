@@ -28,7 +28,7 @@
 - [ ] BONUS
   - [ ] Gerer `||` avec prio de parentheses
   - [ ] Gerer `&&` avec prio de parentheses
-  - [ ] Gerer les wildcards * pour le dossier dans lequel on est
+  - [x] Gerer les wildcards * pour le dossier dans lequel on est
 
 
 Fonctions autorisées :
@@ -244,7 +244,7 @@ UN DETAIL : les nombres ne peuvent pas etre au debut du nom de la variable
   - [ ] `exit` sans options
 - [ ] Signaux
   - [ ] Same jsp trop
-- [ ] Fonctions random utilisables de maniere independantes
+- [x] Fonctions random utilisables de maniere independantes
   - [x] Replace des variables d'env
-  - [ ] Replace avec les wildcard *
+  - [x] Replace avec les wildcard *
   - [x] Split des commandes en un tableau de commandes et args

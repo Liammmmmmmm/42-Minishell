@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 18:12:17 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/03/05 09:48:23 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
