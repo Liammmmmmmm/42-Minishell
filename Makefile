@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/03/05 15:35:49 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/03/06 10:43:57 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,8 +53,7 @@ SRCS     =	parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c 
 			shell/user_input.c  \
 			parsing/ast/ast_tree.c parsing/ast/low_tree_func.c parsing/ast/manage_nodes.c parsing/ast/low_node_func.c \
 			execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c execution/manage_strs/wildcards.c execution/manage_strs/wildcards_utils.c\
-			execution/ast/read.c execution/ast/exec_cmd.c execution/ast/ast_move.c \
-			execution/execs/exec_pipe.c \
+			execution/ast/read.c execution/ast/exec_cmd.c execution/ast/exec_pipe.c execution/ast/exec_or_and.c execution/ast/exec_redirect.c \
 			execution/builtins/cd.c execution/builtins/echo.c execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/pwd.c execution/builtins/unset.c \
 			signals/signals.c \
 			main.c debug.c

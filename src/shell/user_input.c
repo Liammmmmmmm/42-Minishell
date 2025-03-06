@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 10:18:45 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 12:04:38 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	display_prompt(t_minishell *minishell)
 {
 	char	*rl;
 
+	init_sighandler();
 	g_signal = -1;
 	rl = NULL;
 	if (read_until_complete(&rl) == -1)
@@ -49,7 +50,9 @@ void	display_prompt(t_minishell *minishell)
 	// print_token_list(minishell);
 	if (verify_tokens(minishell) == 1)
 	{
-		all_here_doc(minishell);
+		g_signal = -1;
+		if (all_here_doc(minishell) == -1)
+			return (clean_tokenized_cmd(minishell));
 		print_token_list(minishell);
 		// printf("\nCommand : %s\n\n", rl);
 		if (cmd_to_tree(minishell->cmd_tokens, minishell) == 1)
@@ -57,7 +60,7 @@ void	display_prompt(t_minishell *minishell)
 			minishell->ast_root = go_up_tree(minishell->ast_root);
 			printf_tree(minishell->ast_root, -1);
 			execute_ast(minishell);
-			free_tree(minishell->ast_root);
+			free_tree(minishell);
 		}
 		else
 		{

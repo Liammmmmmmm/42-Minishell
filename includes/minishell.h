@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/05 12:43:53 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 12:48:43 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,18 @@ int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
 char	*replace_variables(char *cmd, int last_res);
-void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
+void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 
-int		is_next_word_wildcard(char *line, int i);
 char	*replace_wildcards(char *cmd);
 char	*concat_wildcard(const char *pattern);
+int		is_next_word_wildcard(char *line, int i);
 // SPLIT ARGS
 
 char	**split_args(char *line);
 int		arg_len(char *line, int i);
-char	*ft_substr_rmq(char *line, int i, int len);
 int		arg_real_len(char *line, int i);
+char	*ft_substr_rmq(char *line, int i, int len);
 
 // shell
 
@@ -94,67 +94,73 @@ void	free_exit(t_minishell *minishell, int ret);
 // ERR
 
 void	other_error(char *err);
-int		unexpected_token_error(t_token_type token, char *text);
-void	incomplete_cmd_error(void);
 void	cmd_not_found(char *cmd);
-void	permission_denied(char *path, char *cmd);
+void	incomplete_cmd_error(void);
 int		perror_ret(t_minishell *minishell);
-int		perror_file(t_minishell *minishell, char *filename);
 void	perror_exit(t_minishell *minishell);
+void	permission_denied(char *path, char *cmd);
+int		free_ret(t_minishell *minishell, int ret);
+int		perror_file(t_minishell *minishell, char *filename);
+int		unexpected_token_error(t_token_type token, char *text);
 
 // tokenize
 
-int		add_token_last(t_token_type token, char *text, t_minishell *minishell);
-int		add_token(t_token_type token, char *text, t_cmd_part **last);
 void	clean_tokenized_cmd(t_minishell *minishell);
+int		add_token(t_token_type token, char *text, t_cmd_part **last);
+int		add_token_last(t_token_type token, char *text, t_minishell *minishell);
 
+int		verify_tokens(t_minishell *minishell);
 int		tokenize(char **rl, t_minishell *minishell);
 void	clean_tokenized_cmd(t_minishell *minishell);
 int		add_token_mid(t_token_type token, char *text, t_cmd_part **last,
 			t_minishell *msh);
-int		verify_tokens(t_minishell *minishell);
 int		add_token_bfr_redic(t_token_type token, char *text, t_minishell *msh);
 
 void	move_to_next_op(char *rl, int *y);
 void	move_to_next_word(char *rl, int *y);
 int		get_word(char **text, char *rl, int	*i);
 int		get_text(char **text, char *rl, int	*i);
-int		add_tok_and_incr(t_token_type token, t_minishell *minishell, int *i);
 int		case_text(char *rl, t_minishell *minishell, int *i);
 int		directly_after_filer(char *rl, t_minishell *minishell, int *i);
 int		directly_after_redirector(char *rl, t_minishell *minishell, int *i);
+int		add_tok_and_incr(t_token_type token, t_minishell *minishell, int *i);
 
 // CREATE AST
 int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
+void	free_tree(t_minishell *minishell);
 
 // EXECUTE
-
-int		exec_cmd(t_ast_node *command, t_minishell *minishell);
-void	execute_ast(t_minishell *minishell);
-int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
-int		exec_pipe(t_minishell *minishell, t_ast_node *node);
 int		char_tab_len(char **tab);
 void	free_cmd(t_cmd_exec *cmd);
+void	execute_ast(t_minishell *minishell);
+int		exec_pipe(t_minishell *minishell, t_ast_node *node);
+int		exec_cmd(t_ast_node *command, t_minishell *minishell);
+int		exec_redirect(t_minishell *minishell, t_ast_node *node);
+int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
+int 	exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and);
 
 // DEBUG
-void	print_token_list(t_minishell *minishell);
 char	*get_token(t_token_type token);
+void	print_token_list(t_minishell *minishell);
 
 
 // HERE DOC
-void	all_here_doc(t_minishell *minishell);
+int		all_here_doc(t_minishell *minishell);
 
 
 // FREEEE 
 void	free_msh(t_minishell *minishell);
 
 // BRUT CMDS
-void	echo_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	cd_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	pwd_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	unset_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	env_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	exit_bc(t_minishell *minishell, t_cmd_exec *cmd);
-void	export_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		cd_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		env_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		pwd_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		echo_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		exit_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		unset_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		export_bc(t_minishell *minishell, t_cmd_exec *cmd);
+
+// SIGNALS
+void	signal_handler_here_doc(int signum);
 
 #endif
