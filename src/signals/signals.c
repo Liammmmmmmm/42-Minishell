@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/05 16:38:43 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 10:14:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay(); // TODO regler une petite couille qu'il y a avec l'historique
 	}
-	// TODO va aussi falloir que ca se charge de kill tous les childs, et faut aussi gerer differament pendant les here doc : faut faire la meme + clear les tokens
+	// <3 TODO va aussi falloir que ca se charge de kill tous les childs, et faut aussi gerer differament pendant les here doc : faut faire la meme + clear les tokens
 }
 
 void	init_sighandler(void)

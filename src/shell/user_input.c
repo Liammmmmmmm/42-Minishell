@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/05 15:55:18 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 10:18:45 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	read_until_complete(char **rl)
 
 	*rl = readline("mishell$ ");
 	is_valid_synax = is_valid_command(*rl);
-	while (is_valid_synax != 1)
+	while (is_valid_synax != 1 && g_signal != SIGINT)
 	{
 		if (is_valid_synax == -1)
 			return (free(*rl), -1);
@@ -39,13 +39,14 @@ void	display_prompt(t_minishell *minishell)
 {
 	char	*rl;
 
+	g_signal = -1;
 	rl = NULL;
 	if (read_until_complete(&rl) == -1)
 		return ;
 	add_history(rl);
 	if (tokenize(&rl, minishell) == -1)
 		return ;
-	print_token_list(minishell);
+	// print_token_list(minishell);
 	if (verify_tokens(minishell) == 1)
 	{
 		all_here_doc(minishell);
