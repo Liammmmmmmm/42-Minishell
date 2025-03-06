@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 11:44:12 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 14:44:25 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,37 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
 		free(ln);
 		ln = readline("> ");
 	}
-	free_msh(minishell);
 	free(ln);
 	close(fd); // TODO ptet secur par la
 	if (g_signal == SIGINT)
-		exit(1);
-	exit(0);
+		free_exit(minishell, 1);
+	free_exit(minishell, 0);
+}
+
+int	unlink_here_doc_error(t_cmd_part *cmd_p)
+{
+	while (cmd_p)
+	{
+		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
+			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
+				unlink(cmd_p->text);
+		cmd_p = cmd_p->previous;
+	}
+	return (-1);
+}
+
+void	unlink_here_doc(t_minishell *minishell)
+{
+	t_cmd_part *cmd_p;
+
+	cmd_p = minishell->cmd_tokens;
+	while (cmd_p)
+	{
+		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
+			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
+				unlink(cmd_p->text);
+		cmd_p = cmd_p->next;
+	}
 }
 
 int	all_here_doc(t_minishell *minishell)
@@ -90,7 +115,7 @@ int	all_here_doc(t_minishell *minishell)
 			free(cmd_p->next->text);
 			cmd_p->next->text = hd_name;
 			if (WEXITSTATUS(status) == 1)
-				return (-1);
+				return (unlink_here_doc_error(cmd_p->next));
 		}
 		cmd_p = cmd_p->next;
 	}

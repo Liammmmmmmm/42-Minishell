@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 11:56:38 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 15:02:33 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	signal_handler_here_doc(int signum)
 		close(STDIN_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		write(1, "\n", 1);
+		// write(1, "\n", 1);
 	}
 }
 

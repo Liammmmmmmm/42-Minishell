@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:04:38 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 14:49:40 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,11 @@ void	display_prompt(t_minishell *minishell)
 			free_tree(minishell);
 		}
 		else
-		{
-			printf("Bah jsp trop la frerot l'arbre s'est pas construit\n");
-		}
+			ft_dprintf(2, "minishell: AST build error.\n");
+		unlink_here_doc(minishell);
 	}
 	else
 		print_token_list(minishell);
-	if (strcmp(rl, "exitstp") == 0)
-		exit(0);
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }

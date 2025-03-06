@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:39:43 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:34:03 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 14:58:52 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,12 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 			if (close(fd) == -1)
 				perror_ret(minishell);
 			if (node->token == HERE_DOC)
+			{
 				if (unlink(node->text) == -1)
 					perror_ret(minishell);
+				else
+					node->text[0] = '\0';
+			}
 		}
 	}
 	res = recursive_tree_read(minishell, node->child_left);

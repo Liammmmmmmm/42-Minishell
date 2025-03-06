@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:11:04 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 16:13:29 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_msh(t_minishell *minishell)
 	rl_clear_history();
 }
 
+
+
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell	minishell;
@@ -27,10 +29,11 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	minishell.ast_root = NULL;
 	minishell.cmd_tokens = NULL;
-	minishell.env = env;
+	minishell.env = get_chain_env(env);
 	minishell.last_res = 0;
 	minishell.have_red_in = 0;
 	minishell.have_red_out = 0;
+	// print_env(minishell.env);
 	while (1)
 		display_prompt(&minishell);
 }

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:53:32 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 16:01:24 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	cmd->right_path = NULL;
 	cmd->og_text = cmd_text;
 	// TODO verif si la command est pas export pour mettre l'arg 1 entre double quotes
-	cmd->full_cmd = replace_variables(cmd_text, minishell->last_res);
+	cmd->full_cmd = replace_variables(minishell, cmd_text, minishell->last_res);
 	cmd->full_cmd = replace_wildcards(cmd->full_cmd);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
 	if (!cmd->cmd_n_args[0])
@@ -101,7 +101,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	}
 	else
 	{
-		cmd->path = getenv("PATH");
+		cmd->path = get_env_variable(minishell->env, "PATH");
 		cmd->paths = ft_split(cmd->path, ":");
 		if (!cmd->paths)
 			return (free_cmd(cmd), -1);
@@ -178,7 +178,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		if (minishell->pid == 0)
 		{
 			free_msh(minishell);
-			if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1)
+			if (execve(cmd.right_path, cmd.cmd_n_args, construct_env(minishell->env)) == -1)
 			{
 				free(cmd.right_path);
 				free_cmd(&cmd);

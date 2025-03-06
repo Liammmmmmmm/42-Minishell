@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:48:43 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 16:00:57 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,19 @@
 # include "tokenization.h"
 # include "m_signals.h"
 # include "ast.h"
+# include "env.h"
 
 typedef struct s_minishell
 {
-	t_cmd_part		*cmd_tokens;
-	t_token_type	cmd_token_last;
-	t_ast_node		*ast_root;
-	char			**env;
-	int				last_res;
-	pid_t			pid;
-	int				pipe_fd[2];
-	int				have_red_in;
-	int				have_red_out;
+	t_cmd_part			*cmd_tokens;
+	t_token_type		cmd_token_last;
+	t_ast_node			*ast_root;
+	struct s_list_env	*env;
+	int					last_res;
+	pid_t				pid;
+	int					pipe_fd[2];
+	int					have_red_in;
+	int					have_red_out;
 }	t_minishell;
 
 typedef struct s_cmd_exec
@@ -66,12 +67,13 @@ typedef struct s_cor_infos
 	char		*new_str;
 	int			*n;
 	int			last_res;
+	t_minishell	*minishell;
 }	t_cor_infos;
 
 int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
-char	*replace_variables(char *cmd, int last_res);
+char	*replace_variables(t_minishell *minishell, char *cmd, int last_res);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 
@@ -146,7 +148,7 @@ void	print_token_list(t_minishell *minishell);
 
 // HERE DOC
 int		all_here_doc(t_minishell *minishell);
-
+void	unlink_here_doc(t_minishell *minishell);
 
 // FREEEE 
 void	free_msh(t_minishell *minishell);
