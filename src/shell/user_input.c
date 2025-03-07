@@ -6,32 +6,27 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 14:49:40 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 12:01:19 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	read_until_complete(char **rl)
+int	read_until_complete(char **rl, t_minishell *minishell)
 {
-	int		is_valid_synax;
-	char	*second_line;
+	int		is_valid;
 
 	*rl = readline("mishell$ ");
-	is_valid_synax = is_valid_command(*rl);
-	while (is_valid_synax != 1 && g_signal != SIGINT)
+	is_valid = is_valid_command(*rl);
+	if (is_valid == -2)
+		exit_eof(minishell);
+	if (is_valid <= 0)
 	{
-		if (is_valid_synax == -1)
-			return (free(*rl), -1);
-		else if (is_valid_synax == 0)
-		{
-			second_line = readline("> ");
-			*rl = ft_strjoin_free(*rl, second_line, "\n");
-			if (rl == NULL)
-				return (other_error("malloc failed"), -1);
-			is_valid_synax = is_valid_command(*rl);
-		}
-	}
+		free(*rl);
+		minishell->last_res = 2;
+		incomplete_cmd_error();
+		return (-1);
+	}	
 	return (1);
 }
 
@@ -40,9 +35,11 @@ void	display_prompt(t_minishell *minishell)
 	char	*rl;
 
 	init_sighandler();
+	if (g_signal == SIGINT)
+		minishell->last_res = 130;
 	g_signal = -1;
 	rl = NULL;
-	if (read_until_complete(&rl) == -1)
+	if (read_until_complete(&rl, minishell) == -1)
 		return ;
 	add_history(rl);
 	if (tokenize(&rl, minishell) == -1)
@@ -50,6 +47,8 @@ void	display_prompt(t_minishell *minishell)
 	// print_token_list(minishell);
 	if (verify_tokens(minishell) == 1)
 	{
+		if (g_signal == SIGINT)
+			minishell->last_res = 130;
 		g_signal = -1;
 		if (all_here_doc(minishell) == -1)
 			return (clean_tokenized_cmd(minishell));
@@ -59,6 +58,7 @@ void	display_prompt(t_minishell *minishell)
 		{
 			minishell->ast_root = go_up_tree(minishell->ast_root);
 			printf_tree(minishell->ast_root, -1);
+			signal(SIGINT, signal_handler_execution);
 			execute_ast(minishell);
 			free_tree(minishell);
 		}

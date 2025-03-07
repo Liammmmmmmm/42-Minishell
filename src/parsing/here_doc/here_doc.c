@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 14:44:25 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 11:32:50 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ char	*gen_hd_name()
 	return (params_to_string("/tmp/.minishell_heredoc_%d_%d", getpid(), counter++));
 }
 
-void	free_hd(t_cmd_part	*cmd_p, char *filename)
+void	free_hd(t_cmd_part	*cmd_p, char *filename, int fd)
 {
 	free(cmd_p->text);
 	cmd_p->text = NULL;
 	free(filename);
+	close(STDIN_FILENO);
+	if (fd != -1)
+		close(fd);
 }
 
 void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
@@ -34,13 +37,13 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
 
 	if (cmd_p->text == NULL || filename == NULL)
 	{
-		free_hd(cmd_p, filename);
+		free_hd(cmd_p, filename, -1);
 		free_exit(minishell, 1);
 	}
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		free_hd(cmd_p, filename);
+		free_hd(cmd_p, filename, -1);
 		free_exit(minishell, 1);
 	}
 	eof_len = ft_strlen(cmd_p->text);
@@ -53,7 +56,7 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
 		ln = readline("> ");
 	}
 	free(ln);
-	close(fd); // TODO ptet secur par la
+	free_hd(cmd_p, filename, fd);
 	if (g_signal == SIGINT)
 		free_exit(minishell, 1);
 	free_exit(minishell, 0);
@@ -64,8 +67,14 @@ int	unlink_here_doc_error(t_cmd_part *cmd_p)
 	while (cmd_p)
 	{
 		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
+		{
 			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
+			{
 				unlink(cmd_p->text);
+				free(cmd_p->text);
+				cmd_p->text = NULL;
+			}
+		}
 		cmd_p = cmd_p->previous;
 	}
 	return (-1);
@@ -79,8 +88,14 @@ void	unlink_here_doc(t_minishell *minishell)
 	while (cmd_p)
 	{
 		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
+		{
 			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
+			{
 				unlink(cmd_p->text);
+				free(cmd_p->text);
+				cmd_p->text = NULL;
+			}
+		}
 		cmd_p = cmd_p->next;
 	}
 }
@@ -99,19 +114,42 @@ int	all_here_doc(t_minishell *minishell)
 		if (tget_a(cmd_p) == HERE_DOC && tget_n(cmd_p) == FILE_R)
 		{
 			temp_fd = dup(STDIN_FILENO);
-			// secure
+			if (temp_fd == -1)
+			{
+				perror("minishell");
+				return (unlink_here_doc_error(cmd_p->next));
+			}
 			hd_name = gen_hd_name();
-			// secure
+			if (!hd_name)
+			{
+				close(temp_fd);
+				return (unlink_here_doc_error(cmd_p->next));
+			}
 			signal(SIGINT, signal_handler_here_doc);
 			pid = fork();
 			if (pid == -1)
+			{
+				close(temp_fd);
+				free(hd_name);
 				perror("minishell");
+				return (unlink_here_doc_error(cmd_p->next));
+			}
 			else if (pid == 0)
+			{
+				signal(SIGINT, signal_handler_child);
+				close(temp_fd);
 				create_here_doc(cmd_p->next, hd_name, minishell);
+			}
 			status = 0;
 			waitpid(pid, &status, 0);
-			dup2(temp_fd, STDIN_FILENO);
-			// secure
+			if (dup2(temp_fd, STDIN_FILENO) == -1)
+			{
+				perror("minishell");
+				close(temp_fd);
+				free(hd_name);
+				free_exit(minishell, 1);
+			}
+			close(temp_fd);
 			free(cmd_p->next->text);
 			cmd_p->next->text = hd_name;
 			if (WEXITSTATUS(status) == 1)

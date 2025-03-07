@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 16:01:24 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 09:54:18 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	free_cmd(t_cmd_exec *cmd)
 		ft_free_tab(cmd->cmd_n_args, char_tab_len(cmd->cmd_n_args));
 	if (cmd->paths)
 		ft_free_tab_null_term(cmd->paths);
+	if (cmd->right_path)
+		free(cmd->right_path);
 }
 
 void	find_right_path(t_cmd_exec *cmd)

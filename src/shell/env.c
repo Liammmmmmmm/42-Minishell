@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:05:21 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 16:27:06 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 12:17:52 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,17 @@ char	**construct_env(t_list_env *env)
 	return (res);
 }
 
-void	free_env()
+void	free_env(t_list_env *env)
 {
-	
+	t_list_env *temp;
+
+	while (env)
+	{
+		temp = env;
+		env = env->next;
+		free(temp->variable);
+		free(temp);
+	}
 }
 
 int	is_same_variable(char *env_content, char *var_name)
@@ -51,6 +59,8 @@ int	is_same_variable(char *env_content, char *var_name)
 	size_t	i;
 
 	i = 0;
+	if (!env_content || !var_name)
+		return (0);
 	while (var_name[i] && var_name[i] == env_content[i])
 		i++;
 	if (i == ft_sstrlen(var_name) && env_content[i] == '=')
@@ -104,8 +114,10 @@ t_list_env	*new_env_var(char *var)
 
 	new = malloc(sizeof(t_list_env));
 	if (new == NULL)
+	{
+		perror("minishell");
 		return (NULL);
-		
+	}
 	new->variable = ft_strdup(var);
 	new->next = NULL;
 	return (new);
@@ -145,4 +157,33 @@ void	print_env(t_list_env *env)
 			printf("%s\n", env->variable);
 		env = env->next;
 	}
+}
+
+void	print_env_export(t_list_env *env)
+{
+	while (env)
+	{
+		if (env->variable)
+			printf("export %s\n", env->variable);
+		env = env->next;
+	}
+}
+
+int update_var_env(t_list_env **env, char *var, char *value)
+{
+	char *new_value;
+	
+	del_env_var(env, var);
+	new_value = malloc((ft_sstrlen(var) + ft_sstrlen(value) + 2) * sizeof(char));
+	if (new_value == NULL)
+	{
+		perror("minishell");
+		return (1);
+	}
+	ft_strlcpy(new_value, var, ft_sstrlen(var) + 1);
+	new_value[ft_sstrlen(var)] = '=';
+	ft_strlcpy(new_value + ft_sstrlen(var) + 1, value, ft_sstrlen(value) + 1);
+	*env = add_end_env(*env, new_value);
+	free(new_value);
+	return (0);
 }

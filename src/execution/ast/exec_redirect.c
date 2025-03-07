@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:39:43 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 14:58:52 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 10:19:15 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 			close(STDOUT_FILENO); // secure
 			dup2(temp, STDOUT_FILENO);
 		}
+		close(temp);
 	}
 	return (res);
 }

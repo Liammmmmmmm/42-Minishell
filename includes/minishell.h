@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 16:00:57 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 12:00:34 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,11 @@ int		echo_bc(t_minishell *minishell, t_cmd_exec *cmd);
 int		exit_bc(t_minishell *minishell, t_cmd_exec *cmd);
 int		unset_bc(t_minishell *minishell, t_cmd_exec *cmd);
 int		export_bc(t_minishell *minishell, t_cmd_exec *cmd);
+int		exit_eof(t_minishell *minishell);
 
 // SIGNALS
 void	signal_handler_here_doc(int signum);
+void	signal_handler_child(int signum);
+void	signal_handler_execution(int signum);
 
 #endif

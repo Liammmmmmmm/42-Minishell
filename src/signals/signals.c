@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 15:02:33 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 11:46:16 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,39 @@ void	signal_handler_here_doc(int signum)
 	{
 		close(STDIN_FILENO);
 		rl_on_new_line();
+		printf("\n");
 		rl_replace_line("", 0);
-		// write(1, "\n", 1);
+	}
+}
+
+void	signal_handler_child(int signum)
+{
+	g_signal = signum;
+	if (signum == SIGINT)
+		close(STDIN_FILENO);
+}
+
+void	signal_handler_execution(int signum)
+{
+	g_signal = signum;
+	if (signum == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 }
 
 void	signal_handler(int signum)
 {
-
 	g_signal = signum;
 	if (signum == SIGINT)
 	{
-		write(1, "\n", 1);
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		rl_redisplay(); // TODO regler une petite couille qu'il y a avec l'historique
+		rl_redisplay();
 	}
-	// <3 TODO va aussi falloir que ca se charge de kill tous les childs, et faut aussi gerer differament pendant les here doc : faut faire la meme + clear les tokens
 }
 
 void	init_sighandler(void)

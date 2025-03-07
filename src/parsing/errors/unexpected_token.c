@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 14:51:11 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 09:51:37 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	unexpected_token_error(t_token_type token, char *text)
 void	free_exit(t_minishell *minishell, int ret)
 {
 	free_msh(minishell);
+	free_env(minishell->env);
 	exit(ret);
 }
 

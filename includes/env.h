@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:50:31 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 16:06:03 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 12:19:50 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ char		*get_env_variable(t_list_env *env, char *var_name);
 int			is_same_variable(char *env_content, char *var_name);
 char		**construct_env(t_list_env *env);
 void		print_env(t_list_env *env);
-
+void		print_env_export(t_list_env *env);
+void		free_env(t_list_env *env);
+int			update_var_env(t_list_env **env, char *var, char *value);
 #endif
