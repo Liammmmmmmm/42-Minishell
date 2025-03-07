@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 09:54:18 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 16:00:52 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	{
 		cmd_not_found("");
 		free_cmd(cmd);
-		free_exit(minishell, 127);
+		return (127);
 	}
 	if (!cmd->cmd_n_args)
 		return (free_cmd(cmd), -1);
@@ -126,8 +126,7 @@ int	manage_null_cmd(t_minishell *minishell)
 			line = get_next_line(0);
 		}
 	}
-	free_exit(minishell, 0);
-	return (1);
+	return (0);
 }
 
 int	is_builtins(t_cmd_exec *cmd)
@@ -170,8 +169,9 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 
 	if (command->text == NULL)
 		return (manage_null_cmd(minishell));
-	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
-		return (1);
+	ret = init_cmd_exec(&cmd, command->text, minishell);
+	if (ret != 0)
+		return (ret);
 	if (is_builtins(&cmd))
 		return (exec_builtins(minishell, &cmd));
 	if (cmd.cmd_perm == 1)
@@ -179,6 +179,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		minishell->pid = fork();
 		if (minishell->pid == 0)
 		{
+			signal(SIGQUIT, SIG_DFL);
 			free_msh(minishell);
 			if (execve(cmd.right_path, cmd.cmd_n_args, construct_env(minishell->env)) == -1)
 			{
@@ -190,6 +191,8 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 		}
 		waitpid(minishell->pid, &ret, 0);
 		free_cmd(&cmd);
+		if (ret == 131)
+			ft_dprintf(2, "Quit (core dumped)\n");
 		return (ret);
 	}
 	else

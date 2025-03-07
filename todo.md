@@ -18,13 +18,13 @@
     - [ ] `Ctrl-D` exit le shell
     - [ ] `Ctrl-\` does nothing (???)
   - [ ] Avoir ces commandes build in
-    - [ ] `echo`, et gerer l'option -n
+    - [x] `echo`, et gerer l'option -n
     - [ ] `cd`, avec seulement un path relatif ou absolut
     - [ ] `pwd` sans options
     - [ ] `export` sans options
     - [ ] `unset` sans options
-    - [ ] `env` sans options ni arg
-    - [ ] `exit` sans options
+    - [x] `env` sans options ni arg
+    - [x] `exit` sans options
 - [ ] BONUS
   - [ ] Gerer `||` avec prio de parentheses
   - [ ] Gerer `&&` avec prio de parentheses

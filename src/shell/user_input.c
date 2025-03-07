@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 15:25:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 15:57:01 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_folder_only(t_minishell *minishell)
 {
 	char	*res;
 
-	res = ft_strrchr(get_env_variable(minishell->env, "PWD"), "/");
+	res = ft_strrchr(get_env_variable(minishell->env, "PWD"), '/');
 	if (res[1])
 		return (res + 1);
 	else
@@ -31,9 +31,9 @@ char	*get_prompt(t_minishell *minishell)
 	if (get_env_variable(minishell->env, "USER") && get_env_variable(minishell->env, "PWD"))
 	{
 		if (minishell->last_res == 0)
-			ret = params_to_string(GREEN"➜ "YELLOW"["CYAN"%s"YELLOW"]"CYAN" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell->env));
+			ret = params_to_string(GREEN"➜ "BLUE"["BRIGHT_CYAN"%s"BLUE"]"YELLOW BOLD" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell));
 		else
-			ret = params_to_string(RED"➜ "YELLOW"["CYAN"%s"YELLOW"]"CYAN" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell->env));
+			ret = params_to_string(RED"➜ "BLUE"["BRIGHT_CYAN"%s"BLUE"]"YELLOW BOLD" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell));
 	}
 	return (ret);
 }
@@ -49,6 +49,7 @@ int	read_until_complete(char **rl, t_minishell *minishell)
 		*rl = readline(prompt);
 	else
 		*rl = readline(default_err);
+	free(prompt);
 	is_valid = is_valid_command(*rl);
 	if (is_valid == -2)
 		exit_eof(minishell);
@@ -84,12 +85,12 @@ void	display_prompt(t_minishell *minishell)
 		g_signal = -1;
 		if (all_here_doc(minishell) == -1)
 			return (clean_tokenized_cmd(minishell));
-		print_token_list(minishell);
+		// print_token_list(minishell);
 		// printf("\nCommand : %s\n\n", rl);
 		if (cmd_to_tree(minishell->cmd_tokens, minishell) == 1)
 		{
 			minishell->ast_root = go_up_tree(minishell->ast_root);
-			printf_tree(minishell->ast_root, -1);
+			// printf_tree(minishell->ast_root, -1);
 			signal(SIGINT, signal_handler_execution);
 			execute_ast(minishell);
 			free_tree(minishell);
@@ -98,8 +99,6 @@ void	display_prompt(t_minishell *minishell)
 			ft_dprintf(2, "minishell: AST build error.\n");
 		unlink_here_doc(minishell);
 	}
-	else
-		print_token_list(minishell);
 	clean_tokenized_cmd(minishell);
 	free(rl);
 }

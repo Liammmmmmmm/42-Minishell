@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:03:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 12:09:31 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 15:33:32 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	free_cmd_path_errno(t_cmd_exec *cmd, char *path)
 	perror("minishell");
 	return (1);
 }
+// TODO fix : minishell: No such file or directory peu importe ou on va
 
 void concat_home(t_minishell *minishell, t_cmd_exec *cmd, char *arg)
 {

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:39:43 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 10:19:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 16:29:39 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,16 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 
 	if (node->text)
 	{
+		/*	TODO On a un gros leak fd ici, en gros le temp est close quand on remonte du recursif,
+			sauf que en bas du recursif le programme est split en 2 : le execve dans un child et le parent qui remonte, 
+			mais donc celui dans le child close jamais tous les temp generés recursivement.
+			Ca veut donc dire qu'on est obligé de faire une liste chainéé de fd pour pouvoir close ces fameux fd dans le child aussi
+		*/
 		if (node->token == REDIRECT_IN || node->token == HERE_DOC)
 			temp = dup(STDIN_FILENO);
 		else
 			temp = dup(STDOUT_FILENO);
+		// ajouter un maillon a la liste chainée contenant temp
 		// secure
 		fd = -1;
 		if (node->token == REDIRECT_IN)
@@ -75,6 +81,7 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 			dup2(temp, STDOUT_FILENO);
 		}
 		close(temp);
+		// retirer le maillon de la liste chainée contenant temp
 	}
 	return (res);
 }
