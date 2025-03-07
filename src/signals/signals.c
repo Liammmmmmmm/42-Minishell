@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:43:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 11:46:16 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 15:27:20 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	signal_handler_here_doc(int signum)
 	if (signum == SIGINT)
 	{
 		close(STDIN_FILENO);
-		rl_on_new_line();
 		printf("\n");
+		rl_on_new_line();
 		rl_replace_line("", 0);
 	}
 }
@@ -54,11 +54,16 @@ void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	else if (signum == SIGSEGV)
+		printf("minishell: Segmentation fault\n");
+	else if (signum == SIGPIPE)
+		printf("minishell: Broken pipe\n");
 }
 
 void	init_sighandler(void)
 {
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
+	signal(SIGSEGV, signal_handler);
+	signal(SIGPIPE, signal_handler);
 }
-
-// Faire un sighandler custom pour le here doc. le here donc on dup la sortie standard et on la close pour exit direct 

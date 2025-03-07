@@ -6,17 +6,49 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 12:01:19 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 15:25:50 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*get_folder_only(t_minishell *minishell)
+{
+	char	*res;
+
+	res = ft_strrchr(get_env_variable(minishell->env, "PWD"), "/");
+	if (res[1])
+		return (res + 1);
+	else
+		return (res);
+}
+
+char	*get_prompt(t_minishell *minishell)
+{
+	char		*ret;
+
+	ret = NULL;
+	if (get_env_variable(minishell->env, "USER") && get_env_variable(minishell->env, "PWD"))
+	{
+		if (minishell->last_res == 0)
+			ret = params_to_string(GREEN"➜ "YELLOW"["CYAN"%s"YELLOW"]"CYAN" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell->env));
+		else
+			ret = params_to_string(RED"➜ "YELLOW"["CYAN"%s"YELLOW"]"CYAN" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell->env));
+	}
+	return (ret);
+}
+
 int	read_until_complete(char **rl, t_minishell *minishell)
 {
-	int		is_valid;
+	int			is_valid;
+	const char	default_err[47] = RED"➜"CYAN" minishell "BRIGHT_PURPLE"❯ "NC;
+	char		*prompt;
 
-	*rl = readline("mishell$ ");
+	prompt = get_prompt(minishell);
+	if (prompt)
+		*rl = readline(prompt);
+	else
+		*rl = readline(default_err);
 	is_valid = is_valid_command(*rl);
 	if (is_valid == -2)
 		exit_eof(minishell);
@@ -26,7 +58,7 @@ int	read_until_complete(char **rl, t_minishell *minishell)
 		minishell->last_res = 2;
 		incomplete_cmd_error();
 		return (-1);
-	}	
+	}
 	return (1);
 }
 
