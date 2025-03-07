@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:58:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/19 10:35:45 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 12:04:12 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,15 @@ typedef enum e_token_type
 	NULL_TOKEN
 }	t_token_type;
 
+/**
+ * Verifie si une commande envoyée est est correcte (en terme du nombre de quote
+ * ouvertes/fermées (single et double), et de parentheses).
+ * 
+ * @return -1 if the command is completly impossible
+ *         0 if it can be possible if completed
+ *         1 if it is correct
+ * 		   -2 if cmd is null
+ */
 int		is_valid_command(const char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 15:31:19 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 15:58:54 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	copy_variable(t_cor_infos *c, int last_res, int *i, int *n)
 	if (!var_name)
 		return (-1);
 	ft_strlcpy(var_name, c->cmd + *i + 1, var_name_length + 1);
-	var_content = getenv(var_name);
+	var_content = get_env_variable(c->minishell->env, var_name);
 	*i += var_name_length + 1;
 	if (c->new_str == NULL)
 		*n += ft_sstrlen(var_content) + count_quotes_to_add(var_content);
@@ -48,7 +48,7 @@ int	copy_var_dq(t_cor_infos *c, int last_res, int *i, int *n)
 	if (!var_name)
 		return (-1);
 	ft_strlcpy(var_name, c->cmd + *i + 1, y + 1);
-	var_content = getenv(var_name);
+	var_content = get_env_variable(c->minishell->env, var_name);
 	*i += y + 1;
 	if (c->new_str == NULL)
 		*n += ft_sstrlen(var_content);
@@ -92,18 +92,14 @@ static int	count_or_rep_itt(t_cor_infos *c)
 	return (0);
 }
 
-int	count_or_replace(const char *cmd, char *new_str, int *n, int last_res)
+int	count_or_replace(t_cor_infos cor, char *new_str, int last_res)
 {
-	t_cor_infos	cor;
-
 	cor.i = 0;
 	cor.is_sq = 0;
-	cor.is_dq = 0;
-	cor.n = n;
-	cor.cmd = cmd;
+	cor.is_dq = 0;	
 	cor.new_str = new_str;
 	cor.last_res = last_res;
-	while (cmd[cor.i])
+	while (cor.cmd[cor.i])
 	{
 		if (count_or_rep_itt(&cor) == -1)
 			return (-1);
@@ -111,18 +107,22 @@ int	count_or_replace(const char *cmd, char *new_str, int *n, int last_res)
 	return (0);
 }
 
-char	*replace_variables(char *cmd, int last_res)
+char	*replace_variables(t_minishell *minishell, char *cmd, int last_res)
 {
 	int		n;
 	char	*new_str;
+	t_cor_infos	cor;
 
+	cor.n = &n;
+	cor.cmd = cmd;
+	cor.minishell = minishell;
 	n = 0;
 	new_str = NULL;
-	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
+	if (count_or_replace(cor, new_str, last_res) == -1)
 		return (cmd);
 	new_str = malloc((n + 1) * sizeof(char));
 	n = 0;
-	if (count_or_replace(cmd, new_str, &n, last_res) == -1)
+	if (count_or_replace(cor, new_str, last_res) == -1)
 		return (free(new_str),
 			cmd);
 	new_str[n] = '\0';

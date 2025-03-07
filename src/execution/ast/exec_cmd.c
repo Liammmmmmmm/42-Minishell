@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:57:11 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 09:54:18 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	free_cmd(t_cmd_exec *cmd)
 		ft_free_tab(cmd->cmd_n_args, char_tab_len(cmd->cmd_n_args));
 	if (cmd->paths)
 		ft_free_tab_null_term(cmd->paths);
+	if (cmd->right_path)
+		free(cmd->right_path);
 }
 
 void	find_right_path(t_cmd_exec *cmd)
@@ -81,7 +83,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	cmd->right_path = NULL;
 	cmd->og_text = cmd_text;
 	// TODO verif si la command est pas export pour mettre l'arg 1 entre double quotes
-	cmd->full_cmd = replace_variables(cmd_text, minishell->last_res);
+	cmd->full_cmd = replace_variables(minishell, cmd_text, minishell->last_res);
 	cmd->full_cmd = replace_wildcards(cmd->full_cmd);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
 	if (!cmd->cmd_n_args[0])
@@ -101,7 +103,7 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	}
 	else
 	{
-		cmd->path = getenv("PATH");
+		cmd->path = get_env_variable(minishell->env, "PATH");
 		cmd->paths = ft_split(cmd->path, ":");
 		if (!cmd->paths)
 			return (free_cmd(cmd), -1);
@@ -128,47 +130,67 @@ int	manage_null_cmd(t_minishell *minishell)
 	return (1);
 }
 
-int	is_builtins(t_minishell *minishell, t_cmd_exec *cmd)
+int	is_builtins(t_cmd_exec *cmd)
+{
+	if (strcmp(cmd->cmd_n_args[0], "cd") == 0
+		|| strcmp(cmd->cmd_n_args[0], "env") == 0
+		|| strcmp(cmd->cmd_n_args[0], "pwd") == 0
+		|| strcmp(cmd->cmd_n_args[0], "echo") == 0
+		|| strcmp(cmd->cmd_n_args[0], "exit") == 0
+		|| strcmp(cmd->cmd_n_args[0], "unset") == 0
+		|| strcmp(cmd->cmd_n_args[0], "export") == 0)
+		return (1);
+	return (0);
+}
+
+int	exec_builtins(t_minishell *minishell, t_cmd_exec *cmd)
 {
 	if (strcmp(cmd->cmd_n_args[0], "echo") == 0)
-		echo_bc(minishell, cmd);
+		return (echo_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "cd") == 0)
-		cd_bc(minishell, cmd);
+		return (cd_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "pwd") == 0)
-		pwd_bc(minishell, cmd);
+		return (pwd_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "export") == 0)
-		export_bc(minishell, cmd);
+		return (export_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "unset") == 0)
-		unset_bc(minishell, cmd);
+		return (unset_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "env") == 0)
-		env_bc(minishell, cmd);
+		return (env_bc(minishell, cmd));
 	else if (strcmp(cmd->cmd_n_args[0], "exit") == 0)
-		exit_bc(minishell, cmd);
+		return (exit_bc(minishell, cmd));
 	else
-		return (0);
-	free_exit(minishell, 0);
-	return (1);
+		return (1);
 }
 
 int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 {
 	t_cmd_exec	cmd;
+	int			ret;
 
 	if (command->text == NULL)
 		return (manage_null_cmd(minishell));
 	if (init_cmd_exec(&cmd, command->text, minishell) == -1)
 		return (1);
-	is_builtins(minishell, &cmd);	
+	if (is_builtins(&cmd))
+		return (exec_builtins(minishell, &cmd));
 	if (cmd.cmd_perm == 1)
 	{
-		free_msh(minishell);
-		if (execve(cmd.right_path, cmd.cmd_n_args, minishell->env) == -1)
+		minishell->pid = fork();
+		if (minishell->pid == 0)
 		{
-			free(cmd.right_path);
-			free_cmd(&cmd);
-			rl_clear_history();
-			exit(1);
+			free_msh(minishell);
+			if (execve(cmd.right_path, cmd.cmd_n_args, construct_env(minishell->env)) == -1)
+			{
+				free(cmd.right_path);
+				free_cmd(&cmd);
+				rl_clear_history();
+				exit(1);
+			}
 		}
+		waitpid(minishell->pid, &ret, 0);
+		free_cmd(&cmd);
+		return (ret);
 	}
 	else
 	{
@@ -188,7 +210,7 @@ int	exec_cmd(t_ast_node *command, t_minishell *minishell)
 			cmd.status = 127;
 		}
 		free_cmd(&cmd);
-		free_exit(minishell, 0);
+		return (cmd.status);
 	}
 	free_cmd(&cmd);
 	return (1);

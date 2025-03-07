@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:31:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 19:05:21 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/06 12:03:51 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char		*null_or_txt(char *str);
 
 int			check_parent(t_ast_node *tree);
 
-void		free_tree(t_ast_node *tree);
 void		printf_tree(t_ast_node *tree, int niveau);
 void		cpy_node(t_ast_node *tree, t_ast_node *tree2);
 void		insert_node(t_ast_node *tree, t_ast_node *n_node);

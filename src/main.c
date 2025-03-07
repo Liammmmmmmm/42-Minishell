@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/04 16:50:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/07 09:50:09 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	free_msh(t_minishell *minishell)
 {
 	clean_tokenized_cmd(minishell);
-	free_tree(minishell->ast_root);
+	free_tree(minishell);
 	rl_clear_history();
 }
+
+
 
 int	main(int argc, char **argv, char **env)
 {
@@ -27,11 +29,11 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	minishell.ast_root = NULL;
 	minishell.cmd_tokens = NULL;
-	minishell.env = env;
+	minishell.env = get_chain_env(env);
 	minishell.last_res = 0;
 	minishell.have_red_in = 0;
 	minishell.have_red_out = 0;
-	init_sighandler();
+	// print_env(minishell.env);
 	while (1)
 		display_prompt(&minishell);
 }
