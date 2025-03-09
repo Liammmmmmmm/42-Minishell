@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 16:00:52 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/09 14:55:00 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 	else
 	{
 		cmd->path = get_env_variable(minishell->env, "PATH");
+		if (!cmd->path)
+		{
+			free_cmd(cmd);
+			ft_dprintf(2, "minishell: Can't find PATH\n");
+			return (-1);
+		}
 		cmd->paths = ft_split(cmd->path, ":");
 		if (!cmd->paths)
 			return (free_cmd(cmd), -1);
