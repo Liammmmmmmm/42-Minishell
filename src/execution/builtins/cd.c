@@ -6,7 +6,7 @@
 /*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:03:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/09 16:27:34 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:35:29 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	free_cmd_path_errno(t_cmd_exec *cmd, int error_flag)
 
 int	cd_bc(t_minishell *minishell, t_cmd_exec *cmd)
 {
+	char *old_pwd;
 	char *temp;
 	int argc;
-
+	
 	argc = char_tab_len(cmd->cmd_n_args);
 	if (argc >= 3)
 	{
@@ -44,7 +45,9 @@ int	cd_bc(t_minishell *minishell, t_cmd_exec *cmd)
 		else if (chdir(temp) == -1)
 			return (free_cmd_path_errno(cmd, 1));
 	}
-	temp = getcwd(NULL, 0);
+	temp = getcwd(NULL, PATH_MAX);
+	old_pwd = get_env_variable(minishell->env, "PWD");
+	update_var_env(&(minishell->env), "OLDPWD", old_pwd, 0);
 	update_var_env(&(minishell->env), "PWD", temp, 0);
 	free(temp);
 	return (free_cmd_path_errno(cmd, 0));
