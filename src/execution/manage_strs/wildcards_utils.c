@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/05 09:48:23 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/09 14:02:37 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*wildcard_loop(char *result, DIR *dir, const char *pattern)
 		if (entry->d_name[0] != '.' && wildcard_match(pattern, entry->d_name))
 		{
 			total_length += ft_sstrlen(entry->d_name) + 2;
-			result = realloc(result, total_length);
+			result = ft_realloc(result, total_length);
 			if (!result) {
 				perror("realloc");
 				closedir(dir);

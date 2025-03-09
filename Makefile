@@ -6,7 +6,7 @@
 #    By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/03/09 11:56:39 by agantaum         ###   ########.fr        #
+#    Updated: 2025/03/09 15:34:29 by agantaum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,18 @@ SRCS     =	parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c 
 			signals/signals.c \
 			main.c debug.c
 
+#Help from amazing gberso !
+
+VALGRIND_SUPPRESS_FILE := $(abspath .valgrind_suppress.txt)
+
+
+VALGRIND_FLAGS := valgrind \
+	--suppressions=$(VALGRIND_SUPPRESS_FILE) \
+	--leak-check=full \
+	--track-origins=yes \
+	--trace-children=yes \
+	--track-fds=yes \
+	--show-leak-kinds=all \
 
 # Object files directory
 OBJ_DIR   = .obj/
@@ -65,7 +77,7 @@ OBJ       = $(SRCS:%.c=$(OBJ_DIR)%.o)
 
 # Remake all if modified
 REMAKE   = libft/includes/libft.h libft/includes/ft_printf.h libft/includes/get_next_line.h libft/Makefile  \
-           Makefile includes/ast.h includes/env.h includes/minishell.h includes/m_signals.h includes/tokenization.h includes/tokens.h
+		   Makefile includes/ast.h includes/env.h includes/minishell.h includes/m_signals.h includes/tokenization.h includes/tokens.h
 
 # NORMINETTE
 NORM_RET = $(RED)[ERROR]$(BOLD) Norminette Disable$(NC)
@@ -124,6 +136,13 @@ $(NAME) : $(LIBFT) $(OBJ)
 libft_make:
 	@make --no-print-directory -C $(LIBFTDIR) all
 
+$(VALGRIND_SUPPRESS_FILE):
+	@echo "{\n    leak readline\n    Memcheck:Leak\n    ...\n    fun:readline\n}" > $@
+	@echo "{\n    leak add_history\n    Memcheck:Leak\n    ...\n    fun:add_history\n}" >> $@
+	
+valgrind: $(VALGRIND_SUPPRESS_FILE) $(NAME)
+	$(VALGRIND_FLAGS) ./$(NAME)
+
 clean :
 	@make --no-print-directory -C $(LIBFTDIR) clean
 	@echo "$(RED)[Removing] $(NC)object files"
@@ -149,4 +168,4 @@ rund:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
 
 
-.PHONY: all clean fclean nothing_to_be_done re end_message libft_make norminette run rund
+.PHONY: all clean fclean nothing_to_be_done re end_message libft_make norminette run rund valgrind

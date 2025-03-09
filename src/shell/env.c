@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:05:21 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 15:22:06 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/09 17:17:32 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	del_env_var(t_list_env **env, char *var_name)
 	}
 }
 
-t_list_env	*new_env_var(char *var)
+t_list_env	*new_env_var(char *var, int exported)
 {
 	t_list_env *new;
 
@@ -120,21 +120,22 @@ t_list_env	*new_env_var(char *var)
 	}
 	new->variable = ft_strdup(var);
 	new->next = NULL;
+	new->is_exported = exported;
 	return (new);
 }
 
-t_list_env	*add_end_env(t_list_env *env_lst, char *var)
+t_list_env	*add_end_env(t_list_env *env_lst, char *var, int exported)
 {
 	if (env_lst == NULL)
-		return (new_env_var(var));
+		return (new_env_var(var, exported));
 	if (env_lst->next == NULL)
-		env_lst->next = add_end_env(env_lst->next, var);
+		env_lst->next = add_end_env(env_lst->next, var, exported);
 	else
-		add_end_env(env_lst->next, var);
+		add_end_env(env_lst->next, var, exported);
 	return (env_lst);
 }
 
-t_list_env	*get_chain_env(char **env)
+t_list_env	*get_chain_env(char **env, int exported)
 {
 	int			i;
 	t_list_env	*env_lst;
@@ -143,7 +144,7 @@ t_list_env	*get_chain_env(char **env)
 	env_lst = NULL;
 	while (env[i])
 	{
-		env_lst = add_end_env(env_lst, env[i]);
+		env_lst = add_end_env(env_lst, env[i], exported);
 		i++;
 	}
 	return (env_lst);
@@ -153,7 +154,7 @@ void	print_env(t_list_env *env)
 {
 	while (env)
 	{
-		if (env->variable)
+		if (env->variable && env->is_exported == 0)
 			printf("%s\n", env->variable);
 		env = env->next;
 	}
@@ -161,15 +162,26 @@ void	print_env(t_list_env *env)
 
 void	print_env_export(t_list_env *env)
 {
+	int	i;
+	
 	while (env)
 	{
-		if (env->variable)
-			printf("export %s\n", env->variable);
+		i = 0;
+		while (env->variable && (env->variable)[i] && (env->variable)[i] != '=')
+			i++;
+		if ((env->variable)[i] == '=')
+		{
+			(env->variable)[i] = '\0';
+			printf("declare -x %s=\"%s\"\n", env->variable, &((env->variable)[i + 1]));
+			(env->variable)[i] = '=';
+		}
+		else
+			printf("declare -x %s\n", env->variable);
 		env = env->next;
 	}
 }
 
-int update_var_env(t_list_env **env, char *var, char *value)
+int update_var_env(t_list_env **env, char *var, char *value, int exported)
 {
 	char *new_value;
 	
@@ -181,9 +193,12 @@ int update_var_env(t_list_env **env, char *var, char *value)
 		return (1);
 	}
 	ft_strlcpy(new_value, var, ft_sstrlen(var) + 1);
-	new_value[ft_sstrlen(var)] = '=';
-	ft_strlcpy(new_value + ft_sstrlen(var) + 1, value, ft_sstrlen(value) + 1);
-	*env = add_end_env(*env, new_value);
+	if (value)
+	{
+		new_value[ft_sstrlen(var)] = '=';
+		ft_strlcpy(new_value + ft_sstrlen(var) + 1, value, ft_sstrlen(value) + 1);
+	}
+	*env = add_end_env(*env, new_value, exported);
 	free(new_value);
 	return (0);
 }
