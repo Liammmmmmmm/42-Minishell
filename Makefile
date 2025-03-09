@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/03/06 15:59:28 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/03/09 11:56:39 by agantaum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
