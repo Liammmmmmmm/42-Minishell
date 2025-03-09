@@ -6,7 +6,7 @@
 /*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:03:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/09 17:35:29 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/03/09 17:37:18 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	cd_bc(t_minishell *minishell, t_cmd_exec *cmd)
 	}
 	temp = getcwd(NULL, PATH_MAX);
 	old_pwd = get_env_variable(minishell->env, "PWD");
+	if (old_pwd == NULL)
+		old_pwd = "";
 	update_var_env(&(minishell->env), "OLDPWD", old_pwd, 0);
 	update_var_env(&(minishell->env), "PWD", temp, 0);
 	free(temp);
