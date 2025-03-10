@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 10:58:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 12:04:12 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:40:220 by agantaum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 /** 
  * Liste des tokens possibles a parser
  * 
- * Pas besoin de gerer les variables, c'est plus simple de directement les remplacer
+ * Pas besoin de gerer les variables,
+ * c'est plus simple de directement les remplacer
  * au moment du parsing sinon on va pas s'y retrouver
- * example con, `$> $USER` nous donne lilefebv: command not found ce qui signifie
+ * example, `$> $USER` nous donne lilefebv: command not found ce qui signifie
  * qu'il remplace la variable, puis la stock comme une commande puis execute
  * 
  * Attention faut penser a pas remplacer si l'argument est entre single quote
  * 
- * le managment des single et double quote doit pas se faire qu'au niveau des arguments
+ * le managment des single et
+ * double quote doit pas se faire qu'au niveau des arguments
  * mais a tous les points :
  * `$> '$USER'`
  * `$USER: command not found`

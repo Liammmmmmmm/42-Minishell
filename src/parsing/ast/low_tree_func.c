@@ -6,39 +6,12 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/03/06 12:03:28 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:42:51 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast_node	*go_up_tree(t_ast_node *tree)
-{
-	if (tree == NULL)
-		return (NULL);
-	if (tree->parent == NULL)
-		return (tree);
-	else
-		return (go_up_tree(tree->parent));
-}
-
-void	free_tree_rec(t_ast_node *tree)
-{
-	if (tree != NULL)
-	{
-		free_tree_rec(tree->child_left);
-		free_tree_rec(tree->child_right);
-		// if (tree != NULL && tree->text != NULL)
-		// 	free(tree->text);
-		free(tree);
-	}
-}
-
-void	free_tree(t_minishell *minishell)
-{
-	free_tree_rec(go_up_tree(minishell->ast_root));
-	minishell->ast_root = NULL;
-}
 
 t_ast_node	*new_node(void)
 {

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:14:00 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:50:20 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ char	*get_folder_only(t_minishell *minishell)
 
 char	*get_prompt(t_minishell *minishell)
 {
-	char		*ret;
+	char	*ret;
+	char	*user;
+	char	*pwd;
 
+	user = get_env_variable(minishell->env, "USER");
+	pwd = get_env_variable(minishell->env, "PWD");
 	ret = NULL;
-	if (get_env_variable(minishell->env, "USER") && get_env_variable(minishell->env, "PWD"))
+	if (user && pwd && user[0] && pwd[0])
 	{
 		if (minishell->last_res == 0)
 			ret = params_to_string(GREEN"➜ "BLUE"["BRIGHT_CYAN"%s"BLUE"]"YELLOW BOLD" %s "BRIGHT_PURPLE"❯ "NC, get_env_variable(minishell->env, "USER"), get_folder_only(minishell));

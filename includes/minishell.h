@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:37:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 12:59:43 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,9 @@ void	print_token_list(t_minishell *minishell);
 // HERE DOC
 int		all_here_doc(t_minishell *minishell);
 void	unlink_here_doc(t_minishell *minishell);
+int		unlink_here_doc_error(t_cmd_part *cmd_p);
+void	free_hd(t_cmd_part	*cmd_p, char *filename, int fd);
+char	*gen_hd_name(void);
 
 // FREEEE 
 void	free_msh(t_minishell *minishell);

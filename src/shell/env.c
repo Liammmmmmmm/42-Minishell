@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:05:21 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 11:23:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:36:04 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ int	is_same_variable(char *env_content, char *var_name)
 		return (0);
 	while (var_name[i] && var_name[i] == env_content[i] && env_content[i] != '=')
 		i++;
-	if (i == ft_sstrlen(var_name) && (env_content[i] == '=' || env_content[i] == '\0'))
+	if (i == ft_sstrlen(var_name) && env_content[i] == '=')
 		return (i + 1);
+	else if (i == ft_sstrlen(var_name) && env_content[i] == '\0')
+		return (i);
 	return (0);
 }
 

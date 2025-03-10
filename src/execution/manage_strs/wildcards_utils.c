@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:42:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:12:15 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static char	*try_open(DIR *dir, char *result)
 		closedir(dir);
 		return (NULL);
 	}
+	result[0] = '\0';
 	return (result);
 }
 
@@ -80,9 +81,10 @@ char	*concat_wildcard(const char *pattern)
 	char	*result;
 	char	**tab;
 
+	dir = NULL;
+	result = NULL;
 	if (try_open(dir, result) == NULL)
 		return (NULL);
-	result[0] = '\0';
 	result = wildcard_loop(result, dir, pattern);
 	if (result == NULL)
 		return (NULL);

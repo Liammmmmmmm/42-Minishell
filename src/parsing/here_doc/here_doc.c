@@ -6,34 +6,15 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 11:32:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:10:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*gen_hd_name()
+int	create_file(t_cmd_part *cmd_p, char *filename, t_minishell *minishell)
 {
-	static int	counter = 0;
-
-	return (params_to_string("/tmp/.minishell_heredoc_%d_%d", getpid(), counter++));
-}
-
-void	free_hd(t_cmd_part	*cmd_p, char *filename, int fd)
-{
-	free(cmd_p->text);
-	cmd_p->text = NULL;
-	free(filename);
-	close(STDIN_FILENO);
-	if (fd != -1)
-		close(fd);
-}
-
-void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
-{
-	int		fd;
-	int		eof_len;
-	char	*ln;
+	int	fd;
 
 	if (cmd_p->text == NULL || filename == NULL)
 	{
@@ -46,6 +27,16 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
 		free_hd(cmd_p, filename, -1);
 		free_exit(minishell, 1);
 	}
+	return (fd);
+}
+
+void	create_here_doc(t_cmd_part *cmd_p, char *filename, t_minishell *msh)
+{
+	int		fd;
+	int		eof_len;
+	char	*ln;
+
+	fd = create_file(cmd_p, filename, msh);
 	eof_len = ft_strlen(cmd_p->text);
 	ln = readline("> ");
 	while (g_signal != SIGINT && ft_strncmp(ln, cmd_p->text, eof_len) != 0)
@@ -58,100 +49,75 @@ void	create_here_doc(t_cmd_part	*cmd_p, char *filename, t_minishell *minishell)
 	free(ln);
 	free_hd(cmd_p, filename, fd);
 	if (g_signal == SIGINT)
+		free_exit(msh, 130);
+	free_exit(msh, 0);
+}
+
+static int	init_fork(int *temp_fd, t_cmd_part *cmd_p, pid_t *pid, char *hd_n)
+{
+	*temp_fd = dup(STDIN_FILENO);
+	if (*temp_fd == -1)
+	{
+		perror("minishell");
+		return (unlink_here_doc_error(cmd_p->next));
+	}
+	signal(SIGINT, signal_handler_here_doc);
+	*pid = fork();
+	if (*pid == -1)
+	{
+		close(*temp_fd);
+		free(hd_n);
+		perror("minishell");
+		return (unlink_here_doc_error(cmd_p->next));
+	}
+	return (0);
+}
+
+static int	all_here_doc_itt(t_cmd_part *cmd_p, t_minishell *minishell,
+	char *hd_name)
+{
+	int		temp_fd;
+	int		status;
+	pid_t	pid;
+
+	if (init_fork(&temp_fd, cmd_p, &pid, hd_name) == -1)
+		return (-1);
+	if (pid == 0)
+	{
+		signal(SIGINT, signal_handler_child);
+		close(temp_fd);
+		create_here_doc(cmd_p->next, hd_name, minishell);
+	}
+	status = 0;
+	waitpid(pid, &status, 0);
+	if (dup2(temp_fd, STDIN_FILENO) == -1)
+	{
+		perror("minishell");
+		close(temp_fd);
+		free(hd_name);
 		free_exit(minishell, 1);
-	free_exit(minishell, 0);
-}
-
-int	unlink_here_doc_error(t_cmd_part *cmd_p)
-{
-	while (cmd_p)
-	{
-		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
-		{
-			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
-			{
-				unlink(cmd_p->text);
-				free(cmd_p->text);
-				cmd_p->text = NULL;
-			}
-		}
-		cmd_p = cmd_p->previous;
 	}
-	return (-1);
-}
-
-void	unlink_here_doc(t_minishell *minishell)
-{
-	t_cmd_part *cmd_p;
-
-	cmd_p = minishell->cmd_tokens;
-	while (cmd_p)
-	{
-		if (tget_a(cmd_p) == FILE_R && tget_p(cmd_p) == HERE_DOC)
-		{
-			if (ft_strncmp(cmd_p->text, "/tmp/.minishell_heredoc_", 24) == 0)
-			{
-				unlink(cmd_p->text);
-				free(cmd_p->text);
-				cmd_p->text = NULL;
-			}
-		}
-		cmd_p = cmd_p->next;
-	}
+	close(temp_fd);
+	free(cmd_p->next->text);
+	cmd_p->next->text = hd_name;
+	return (status);
 }
 
 int	all_here_doc(t_minishell *minishell)
 {
 	t_cmd_part	*cmd_p;
-	int			temp_fd;
-	pid_t		pid;
-	char		*hd_name;
 	int			status;
+	char		*hd_name;
 
 	cmd_p = minishell->cmd_tokens;
 	while (cmd_p)
 	{
 		if (tget_a(cmd_p) == HERE_DOC && tget_n(cmd_p) == FILE_R)
 		{
-			temp_fd = dup(STDIN_FILENO);
-			if (temp_fd == -1)
-			{
-				perror("minishell");
-				return (unlink_here_doc_error(cmd_p->next));
-			}
 			hd_name = gen_hd_name();
 			if (!hd_name)
-			{
-				close(temp_fd);
 				return (unlink_here_doc_error(cmd_p->next));
-			}
-			signal(SIGINT, signal_handler_here_doc);
-			pid = fork();
-			if (pid == -1)
-			{
-				close(temp_fd);
-				free(hd_name);
-				perror("minishell");
-				return (unlink_here_doc_error(cmd_p->next));
-			}
-			else if (pid == 0)
-			{
-				signal(SIGINT, signal_handler_child);
-				close(temp_fd);
-				create_here_doc(cmd_p->next, hd_name, minishell);
-			}
-			status = 0;
-			waitpid(pid, &status, 0);
-			if (dup2(temp_fd, STDIN_FILENO) == -1)
-			{
-				perror("minishell");
-				close(temp_fd);
-				free(hd_name);
-				free_exit(minishell, 1);
-			}
-			close(temp_fd);
-			free(cmd_p->next->text);
-			cmd_p->next->text = hd_name;
+			status = all_here_doc_itt(cmd_p, minishell, hd_name);
 			if (WEXITSTATUS(status) == 1)
 				return (unlink_here_doc_error(cmd_p->next));
 		}

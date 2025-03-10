@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 10:45:03 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 13:40:46 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	free_msh(t_minishell *minishell)
 	clear_fd_garbage(minishell->fd_garbage);
 	rl_clear_history();
 }
-
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -35,7 +33,6 @@ int	main(int argc, char **argv, char **env)
 	minishell.have_red_in = 0;
 	minishell.have_red_out = 0;
 	minishell.fd_garbage = NULL;
-	// print_env(minishell.env);
 	while (1)
 		display_prompt(&minishell);
 }
