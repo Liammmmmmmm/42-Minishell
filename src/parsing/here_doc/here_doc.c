@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 17:40:53 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 17:52:26 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ int	create_file(t_cmd_part *cmd_p, char *filename, t_minishell *minishell)
 void	create_here_doc(t_cmd_part *cmd_p, char *filename, t_minishell *msh)
 {
 	int		fd;
-	int		eof_len;
+	int		el;
 	char	*ln;
 	int		count_ln;
 
 	fd = create_file(cmd_p, filename, msh);
 	rm_quotes(cmd_p->text);
-	eof_len = ft_strlen(cmd_p->text);
+	el = ft_strlen(cmd_p->text);
 	count_ln = 1;
 	ln = readline("> ");
-	while (ln && g_signal != SIGINT && ft_strncmp(ln, cmd_p->text, eof_len + 1) != 0)
+	while (ln && g_signal != SIGINT && ft_strncmp(ln, cmd_p->text, el + 1) != 0)
 	{
 		ft_putstr_fd(ln, fd);
 		ft_putstr_fd("\n", fd);
