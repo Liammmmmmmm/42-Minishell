@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:26:59 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 13:50:20 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 14:15:37 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int	unexpected_token_error(t_token_type token, char *text)
 	else if (token == AMPERSTAND)
 		ft_dprintf(2, "minishell: unsupported operator `&'\n");
 	else if (token == NEW_L || token == NULL_TOKEN)
-		ft_dprintf(2, "minishell: syntax error near unexpected token `newline'\n");
+		ft_dprintf(2,
+			"minishell: syntax error near unexpected token `newline'\n");
 	else if (token == COMMAND)
-		ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n", text);
+		ft_dprintf(2,
+			"minishell: syntax error near unexpected token `%s'\n", text);
 	return (-1);
 }
-
 
 void	incomplete_cmd_error(void)
 {

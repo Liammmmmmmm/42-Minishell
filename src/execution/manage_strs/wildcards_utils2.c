@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 12:33:25 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:37:41 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 15:46:30 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	*wildcard_loop(char *result, DIR *dir, const char *pattern)
 	size_t			total_length;
 
 	total_length = 1;
+	printf("%s\n", (char *)dir);
 	entry = readdir(dir);
 	while (entry != NULL)
 	{

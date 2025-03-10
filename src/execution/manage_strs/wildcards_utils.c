@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 13:12:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 15:49:51 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ char	*tab_to_str(char *result, char **tab)
 	return (result);
 }
 
-static char	*try_open(DIR *dir, char *result)
+static char	*try_open(DIR **dir, char *result)
 {
-	dir = opendir(".");
-	if (!dir)
+	*dir = opendir(".");
+	if (!*dir)
 	{
 		perror("opendir");
 		return (NULL);
@@ -68,7 +68,7 @@ static char	*try_open(DIR *dir, char *result)
 	if (!result)
 	{
 		perror("malloc");
-		closedir(dir);
+		closedir(*dir);
 		return (NULL);
 	}
 	result[0] = '\0';
@@ -83,7 +83,7 @@ char	*concat_wildcard(const char *pattern)
 
 	dir = NULL;
 	result = NULL;
-	if (try_open(dir, result) == NULL)
+	if (try_open(&dir, result) == NULL)
 		return (NULL);
 	result = wildcard_loop(result, dir, pattern);
 	if (result == NULL)

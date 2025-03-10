@@ -6,14 +6,14 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:41:53 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 14:06:24 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 16:00:44 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef tokenization_H
-# define tokenization_H
+#ifndef TOKENIZATION_H
+# define TOKENIZATION_H
 
-#include "tokens.h"
+# include "tokens.h"
 
 typedef struct s_cmd_part	t_cmd_part;
 

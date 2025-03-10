@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:47:32 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 15:20:43 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 14:20:01 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	pwd_bc(t_minishell *minishell, t_cmd_exec *cmd)
 {
-	(void)minishell;
 	char	*cwd;
 
+	(void)minishell;
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{

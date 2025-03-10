@@ -6,12 +6,11 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:33:53 by agantaum          #+#    #+#             */
-/*   Updated: 2025/03/10 13:42:51 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 15:08:46 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_ast_node	*new_node(void)
 {

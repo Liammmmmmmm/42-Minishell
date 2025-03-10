@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:59:43 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 16:17:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # include "m_signals.h"
 # include "ast.h"
 # include "env.h"
+
+# define CTRLD_HERE_DOC "minishell: warning: here-document at line %d delimited\
+ by end-of-file (wanted `%s')\n"
 
 typedef struct s_fd_garbage
 {
@@ -85,7 +88,7 @@ int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
 char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
-	int is_xprt);
+			int is_xprt);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 
@@ -146,7 +149,7 @@ int		directly_after_redirector(char *rl, t_minishell *minishell, int *i);
 int		add_tok_and_incr(t_token_type token, t_minishell *minishell, int *i);
 
 // CREATE AST
-int 	cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
+int		cmd_to_tree(t_cmd_part *cmd, t_minishell *minishell);
 void	free_tree(t_minishell *minishell);
 
 // EXECUTE
@@ -157,7 +160,7 @@ int		exec_pipe(t_minishell *minishell, t_ast_node *node);
 int		exec_cmd(t_ast_node *command, t_minishell *minishell);
 int		exec_redirect(t_minishell *minishell, t_ast_node *node);
 int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
-int 	exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and);
+int		exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and);
 int		is_cmd_export(char *cmd_text);
 int		exec_builtins(t_minishell *minishell, t_cmd_exec *cmd);
 int		is_builtins(t_cmd_exec *cmd);
@@ -168,7 +171,6 @@ int		init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell);
 // DEBUG
 char	*get_token(t_token_type token);
 void	print_token_list(t_minishell *minishell);
-
 
 // HERE DOC
 int		all_here_doc(t_minishell *minishell);
