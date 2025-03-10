@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:33:00 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 17:30:57 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,22 @@ static int	count_or_rep_itt(t_cor_infos *c, int is_xprt)
 
 int	count_or_replace(t_cor_infos cor, char *new_str, int last_res, int is_xprt)
 {
-	cor.i = 0;
+	int	have_varible;
+
+	have_varible = 0;
+	cor.i = -1;
 	cor.is_sq = 0;
 	cor.is_dq = 0;
 	cor.new_str = new_str;
 	cor.last_res = last_res;
+	while (cor.cmd[++cor.i])
+	{
+		if (cor.cmd[cor.i] == '$')
+			have_varible = 1;
+	}
+	if (have_varible == 0)
+		return (-1);
+	cor.i = 0;
 	while (cor.cmd[cor.i])
 	{
 		if (count_or_rep_itt(&cor, is_xprt) == -1)

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:44:09 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 11:52:01 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 16:46:15 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	is_cmd_export(char *cmd_text)
 
 void	free_cmd(t_cmd_exec *cmd)
 {
-	if (cmd->full_cmd)
+	if (cmd->full_cmd && cmd->full_cmd != cmd->og_text)
 		free(cmd->full_cmd);
 	if (cmd->cmd_n_args)
 		ft_free_tab(cmd->cmd_n_args, char_tab_len(cmd->cmd_n_args));

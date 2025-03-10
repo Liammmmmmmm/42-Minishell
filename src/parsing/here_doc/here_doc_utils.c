@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 12:46:40 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 13:01:22 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 17:40:08 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,30 @@ void	unlink_here_doc(t_minishell *minishell)
 		}
 		cmd_p = cmd_p->next;
 	}
+}
+
+void	rm_quotes(char *delimiter)
+{
+	int	is_dq;
+	int	is_sq;
+	int	i;
+	int	n;
+
+	if (!delimiter)
+		return ;
+	is_dq = 0;
+	is_sq = 0;
+	i = 0;
+	n = 0;
+	while (delimiter[i])
+	{
+		if (delimiter[i] == '"' && !is_sq)
+			is_dq = !is_dq;
+		else if (delimiter[i] == '\'' && !is_dq)
+			is_sq = !is_sq;
+		else
+			delimiter[n++] = delimiter[i];
+		i++;
+	}
+	delimiter[n] = '\0';
 }

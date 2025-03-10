@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 16:18:38 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 17:40:53 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	create_here_doc(t_cmd_part *cmd_p, char *filename, t_minishell *msh)
 	int		count_ln;
 
 	fd = create_file(cmd_p, filename, msh);
+	rm_quotes(cmd_p->text);
 	eof_len = ft_strlen(cmd_p->text);
 	count_ln = 1;
 	ln = readline("> ");
