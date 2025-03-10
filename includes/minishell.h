@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 12:00:34 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 12:37:50 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@
 # include "ast.h"
 # include "env.h"
 
+typedef struct s_fd_garbage
+{
+	int					fd;
+	struct s_fd_garbage	*next;
+}	t_fd_garbage;
+
+void	clear_fd_garbage(t_fd_garbage *fd_garbage);
+void	del_fd_garbage(t_fd_garbage **fd_garbage, int fd);
+int		new_fd_garbage(t_fd_garbage **fd_garbage, int fd);
+
 typedef struct s_minishell
 {
 	t_cmd_part			*cmd_tokens;
@@ -42,6 +52,7 @@ typedef struct s_minishell
 	int					pipe_fd[2];
 	int					have_red_in;
 	int					have_red_out;
+	t_fd_garbage		*fd_garbage;
 }	t_minishell;
 
 typedef struct s_cmd_exec
@@ -60,26 +71,33 @@ typedef struct s_cmd_exec
 
 typedef struct s_cor_infos
 {
-	int			i;
-	int			is_sq;
-	int			is_dq;
-	const char	*cmd;
-	char		*new_str;
-	int			*n;
-	int			last_res;
-	t_minishell	*minishell;
+	int				i;
+	int				is_sq;
+	int				is_dq;
+	const char		*cmd;
+	char			*new_str;
+	int				*n;
+	int				last_res;
+	t_minishell		*minishell;
 }	t_cor_infos;
 
 int		is_valid_var_char(char c);
 int		get_variable_length(const char *cmd);
 int		count_quotes_to_add(const char *var_content);
-char	*replace_variables(t_minishell *minishell, char *cmd, int last_res);
+char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
+	int is_xprt);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
 
 char	*replace_wildcards(char *cmd);
 char	*concat_wildcard(const char *pattern);
 int		is_next_word_wildcard(char *line, int i);
+int		is_next_word_wildcard(char *line, int i);
+int		case_insensitive_cmp(char *s1, char *s2);
+char	*wildcard_loop(char *result, DIR *dir, const char *pattern);
+char	*ft_realloc(char *str, size_t new_len);
+int		wildcard_match(const char *pattern, const char *str);
+
 // SPLIT ARGS
 
 char	**split_args(char *line);
@@ -140,6 +158,12 @@ int		exec_cmd(t_ast_node *command, t_minishell *minishell);
 int		exec_redirect(t_minishell *minishell, t_ast_node *node);
 int		recursive_tree_read(t_minishell *minishell, t_ast_node *node);
 int 	exec_and_or(t_minishell *minishell, t_ast_node *node, int is_and);
+int		is_cmd_export(char *cmd_text);
+int		exec_builtins(t_minishell *minishell, t_cmd_exec *cmd);
+int		is_builtins(t_cmd_exec *cmd);
+int		manage_null_cmd(t_minishell *minishell);
+void	find_right_path(t_cmd_exec *cmd);
+int		init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell);
 
 // DEBUG
 char	*get_token(t_token_type token);

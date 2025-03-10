@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agantaum <agantaum@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/09 14:34:28 by agantaum         ###   ########.fr       */
+/*   Updated: 2025/03/10 12:14:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	read_until_complete(char **rl, t_minishell *minishell)
 	const char	default_err[47] = RED"➜"CYAN" minishell "BRIGHT_PURPLE"❯ "NC;
 	char		*prompt;
 
+	// printf("%d last res\n", minishell->last_res);
 	prompt = get_prompt(minishell);
 	if (prompt)
 		*rl = readline(prompt);

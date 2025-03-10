@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 15:58:54 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 12:33:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ int	copy_var_dq(t_cor_infos *c, int last_res, int *i, int *n)
 	return (0);
 }
 
-static int	count_or_rep_itt(t_cor_infos *c)
+static int	count_or_rep_itt(t_cor_infos *c, int is_xprt)
 {
 	if (c->cmd[c->i] == '"')
 		c->is_dq = !c->is_dq;
 	if (c->cmd[c->i] == '\'' && !c->is_dq)
 		c->is_sq = !c->is_sq;
 	if (c->cmd[c->i] == '$' && (is_valid_var_char(c->cmd[c->i + 1])
-			|| c->cmd[c->i + 1] == '?') && !c->is_sq && c->is_dq)
+			|| c->cmd[c->i + 1] == '?') && !c->is_sq && (c->is_dq || is_xprt))
 	{
 		if (copy_var_dq(c, c->last_res, &c->i, c->n) == -1)
 			return (-1);
@@ -92,25 +92,26 @@ static int	count_or_rep_itt(t_cor_infos *c)
 	return (0);
 }
 
-int	count_or_replace(t_cor_infos cor, char *new_str, int last_res)
+int	count_or_replace(t_cor_infos cor, char *new_str, int last_res, int is_xprt)
 {
 	cor.i = 0;
 	cor.is_sq = 0;
-	cor.is_dq = 0;	
+	cor.is_dq = 0;
 	cor.new_str = new_str;
 	cor.last_res = last_res;
 	while (cor.cmd[cor.i])
 	{
-		if (count_or_rep_itt(&cor) == -1)
+		if (count_or_rep_itt(&cor, is_xprt) == -1)
 			return (-1);
 	}
 	return (0);
 }
 
-char	*replace_variables(t_minishell *minishell, char *cmd, int last_res)
+char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
+	int is_xprt)
 {
-	int		n;
-	char	*new_str;
+	int			n;
+	char		*new_str;
 	t_cor_infos	cor;
 
 	cor.n = &n;
@@ -118,11 +119,11 @@ char	*replace_variables(t_minishell *minishell, char *cmd, int last_res)
 	cor.minishell = minishell;
 	n = 0;
 	new_str = NULL;
-	if (count_or_replace(cor, new_str, last_res) == -1)
+	if (count_or_replace(cor, new_str, last_res, is_xprt) == -1)
 		return (cmd);
 	new_str = malloc((n + 1) * sizeof(char));
 	n = 0;
-	if (count_or_replace(cor, new_str, last_res) == -1)
+	if (count_or_replace(cor, new_str, last_res, is_xprt) == -1)
 		return (free(new_str),
 			cmd);
 	new_str[n] = '\0';

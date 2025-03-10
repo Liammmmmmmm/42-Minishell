@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:37:35 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:33:30 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/10 12:14:39 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ void	execute_ast(t_minishell *minishell)
 {
 	int		status;
 
-	// printf("ok %d, %s\n", minishell->ast_root->token, minishell->ast_root->text);
-	// deja faire une premiere fork ici dans tous les cas pour eviter d'avoir des pb genre si on a que une seule commande ici je peux mettre des <3 !!
-	
 	status = recursive_tree_read(minishell, minishell->ast_root);
 	minishell->last_res = status;
 }
