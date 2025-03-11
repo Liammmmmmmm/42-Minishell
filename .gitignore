@@ -13,3 +13,5 @@ valgrind-out.txt
 .vscode
 
 test*.txt
+
+minishell
