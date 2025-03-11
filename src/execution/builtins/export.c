@@ -6,13 +6,13 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:45:37 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 12:08:47 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:34:42 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exprt_env(t_minishell *minishell, t_cmd_exec *cmd, char *var_name, int i)
+int	exprt_env(t_minishell *minishell, char *var_name, int i)
 {
 	char	*temp;
 
@@ -20,7 +20,6 @@ int	exprt_env(t_minishell *minishell, t_cmd_exec *cmd, char *var_name, int i)
 	if (temp == NULL)
 	{
 		perror("minishell");
-		free_cmd(cmd);
 		return (1);
 	}
 	temp[0] = '\0';
@@ -68,7 +67,7 @@ int	manage_arg_exprt(t_minishell *minishell, t_cmd_exec *cmd, int argc)
 		while (var_name[i] && var_name[i] != '=')
 			i++;
 		if (var_name[i] == '=')
-			status = exprt_env(minishell, cmd, var_name, i);
+			status = exprt_env(minishell, var_name, i);
 		else
 			update_var_env(&(minishell->env), var_name, NULL, 1);
 	}

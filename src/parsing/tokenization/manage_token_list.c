@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:19:47 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/02/26 18:10:45 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:20:49 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,7 @@ int	add_token(t_token_type token, char *text, t_cmd_part **last)
 
 	new_node = malloc(sizeof(t_cmd_part));
 	if (!new_node)
-	{
-		if (text)
-			free(text);
 		return (-1);
-	}
 	new_node->next = NULL;
 	new_node->text = text;
 	new_node->token = token;

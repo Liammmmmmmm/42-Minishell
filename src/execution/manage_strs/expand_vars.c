@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 11:46:35 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:32:19 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
 	if (count_or_replace(cor, new_str, last_res, is_xprt) == -1)
 		return (cmd);
 	new_str = malloc((n + 1) * sizeof(char));
+	if (!new_str)
+		return (cmd);
 	n = 0;
 	if (count_or_replace(cor, new_str, last_res, is_xprt) == -1)
 		return (free(new_str),

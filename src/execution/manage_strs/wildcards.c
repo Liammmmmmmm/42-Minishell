@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:43:22 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:31:55 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:23:54 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ char	*replace_wildcards(char *cmd)
 	if (wc_amount == 0)
 		return (cmd);
 	new_str = malloc((n + 1) * sizeof(char));
+	if (!new_str)
+		return (cmd);
 	n = 0;
 	if (count_or_replace_wc(cmd, new_str, &n, &wc_amount) == -1)
 		return (free(new_str),

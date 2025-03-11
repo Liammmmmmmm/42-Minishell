@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:47:38 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 11:59:20 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:30:41 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ int	init_cmd_exec(t_cmd_exec *cmd, char *cmd_text, t_minishell *minishell)
 			is_cmd_export(cmd_text));
 	cmd->full_cmd = replace_wildcards(cmd->full_cmd);
 	cmd->cmd_n_args = split_args(cmd->full_cmd);
+	if (!cmd->cmd_n_args)
+		return (free_cmd(cmd),
+			1);
 	if (!cmd->cmd_n_args[0])
 	{
 		cmd_not_found("");

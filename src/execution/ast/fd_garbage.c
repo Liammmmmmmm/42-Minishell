@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 09:55:30 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:14:15 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:36:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	new_fd_garbage(t_fd_garbage **fd_garbage, int fd)
 	if (new == NULL)
 	{
 		perror("minishell");
+		close(fd);
 		return (0);
 	}
 	new->fd = fd;
