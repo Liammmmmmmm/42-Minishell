@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:47:38 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 12:30:41 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 16:07:04 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@ int	char_tab_len(char **tab)
 	return (i);
 }
 
-static int	cmd_have_access(t_cmd_exec *cmd, char *pathcmd, int i)
+static int	cmd_have_access(t_cmd_exec *cmd, char *pathcmd, int i, int fr)
 {
 	if (access(pathcmd, F_OK) != 0)
 	{
 		if (errno == ENOENT && cmd->cmd_perm != -2)
 			cmd->cmd_perm = -1;
-		free(pathcmd);
+		if (fr)
+			free(pathcmd);
 		return (0);
 	}
 	if (access(pathcmd, X_OK) != 0)
@@ -36,9 +37,11 @@ static int	cmd_have_access(t_cmd_exec *cmd, char *pathcmd, int i)
 		if (errno == EACCES)
 		{
 			cmd->cmd_perm = -2;
-			cmd->right_path = cmd->paths[i];
+			if (fr)
+				cmd->right_path = cmd->paths[i];
 		}
-		free(pathcmd);
+		if (fr)
+			free(pathcmd);
 		return (0);
 	}
 	return (1);
@@ -58,7 +61,7 @@ void	find_right_path(t_cmd_exec *cmd)
 		pathcmd = ft_strjoin_free_buff(pathcmd, cmd->cmd_n_args[0]);
 		if (!pathcmd)
 			continue ;
-		if (cmd_have_access(cmd, pathcmd, i) == 0)
+		if (cmd_have_access(cmd, pathcmd, i, 1) == 0)
 			continue ;
 		cmd->right_path = pathcmd;
 		cmd->cmd_perm = 1;
@@ -74,6 +77,7 @@ static int	abs_or_relative(t_cmd_exec *cmd, t_minishell *minishell)
 		cmd->cmd_perm = -3;
 		if (cmd->right_path)
 			cmd->cmd_perm = 1;
+		cmd_have_access(cmd, cmd->right_path, 0, 0);
 	}
 	else if (!is_builtins(cmd))
 	{

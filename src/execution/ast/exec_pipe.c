@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:12:08 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:30:31 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 16:13:04 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	exec_right_pipe(t_minishell *minishell, t_ast_node *node)
 		free_exit(minishell, ret);
 	}
 	waitpid(pid, &ret, 0);
+	ret = WEXITSTATUS(ret);
 	return (ret);
 }
 

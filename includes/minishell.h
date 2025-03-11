@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 15:10:45 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 15:47:24 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	permission_denied(char *path, char *cmd);
 int		free_ret(t_minishell *minishell, int ret);
 int		perror_file(t_minishell *minishell, char *filename);
 int		unexpected_token_error(t_token_type token, char *text);
+void	permission_denied_nc(char *cmd);
 
 // tokenize
 
