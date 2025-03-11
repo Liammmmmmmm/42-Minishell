@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:00:39 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 17:52:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:41:57 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	create_here_doc(t_cmd_part *cmd_p, char *filename, t_minishell *msh)
 		count_ln++;
 		ln = readline("> ");
 	}
-	if (!ln)
+	if (!ln && g_signal != SIGINT)
 		ft_dprintf(2, CTRLD_HERE_DOC, count_ln, cmd_p->text);
 	free(ln);
 	free_hd(cmd_p, filename, fd);
@@ -124,7 +124,7 @@ int	all_here_doc(t_minishell *minishell)
 			if (!hd_name)
 				return (unlink_here_doc_error(cmd_p->next));
 			status = all_here_doc_itt(cmd_p, minishell, hd_name);
-			if (WEXITSTATUS(status) == 1)
+			if (WEXITSTATUS(status) == 1 || WEXITSTATUS(status) == 130)
 				return (unlink_here_doc_error(cmd_p->next));
 		}
 		cmd_p = cmd_p->next;
