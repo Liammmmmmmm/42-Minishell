@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:04:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 14:06:14 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:20:07 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	print_env_export(t_list_env *env)
 		if ((env->variable)[i] == '=')
 		{
 			(env->variable)[i] = '\0';
-			printf("declare -x %s=\"%s\"\n",
+			printf("declare -x %s=%s\n",
 				env->variable, &((env->variable)[i + 1]));
 			(env->variable)[i] = '=';
 		}

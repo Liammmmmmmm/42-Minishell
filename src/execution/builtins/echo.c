@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:08:16 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/07 12:16:17 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:44:22 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	echo_bc(t_minishell *minishell, t_cmd_exec *cmd)
 		if (ft_strcmp(cmd->cmd_n_args[1], "-n") == 0)
 			print_nl = 0;
 	}
-	i = 1;
+	i = 1 + (print_nl == 0);
 	while (cmd->cmd_n_args[i])
 	{
 		printf("%s", cmd->cmd_n_args[i]);

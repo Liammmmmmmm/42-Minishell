@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:39:43 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 10:19:25 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:35:52 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	before_recursive(t_minishell *minishell, t_ast_node *node, int nsuc)
 	int	fd;
 
 	fd = -1;
+	rm_quotes(node->text);
 	if (node->token == REDIRECT_IN && nsuc)
 		fd = open(node->text, O_RDONLY);
 	else if (node->token == HERE_DOC && nsuc)

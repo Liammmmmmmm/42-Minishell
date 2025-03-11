@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 12:32:19 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:24:39 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	copy_var_dq(t_cor_infos *c, int last_res, int *i, int *n)
 
 static int	count_or_rep_itt(t_cor_infos *c, int is_xprt)
 {
-	if (c->cmd[c->i] == '"')
+	if (c->cmd[c->i] == '"' && !c->is_sq)
 		c->is_dq = !c->is_dq;
 	if (c->cmd[c->i] == '\'' && !c->is_dq)
 		c->is_sq = !c->is_sq;

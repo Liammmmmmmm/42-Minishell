@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 13:52:08 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 12:31:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:51:39 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_tabs(char *line, int i)
 			is_dq = !is_dq;
 		else if (line[i] == '\'' && !is_dq)
 			is_sq = !is_sq;
-		else if ((line[i] == ' ' && !is_sq && !is_dq) && is_new_word == 0)
+		if ((line[i] == ' ' && !is_sq && !is_dq) && is_new_word == 0)
 			is_new_word = 1;
 		else if ((line[i] != ' ' || is_sq || is_dq) && is_new_word == 1)
 		{

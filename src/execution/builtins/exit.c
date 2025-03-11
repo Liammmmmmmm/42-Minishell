@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:45:25 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 15:08:46 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 13:15:06 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	is_valid_num(char *nb)
 		i++;
 	if (!ft_isdigit(nb[i]))
 	{
-		printf("minishell: exit: %s: numeric argument required", nb);
+		printf("minishell: exit: %s: numeric argument required\n", nb);
 		return (0);
 	}
 	while (ft_isdigit(nb[i]))
@@ -32,7 +32,7 @@ static int	is_valid_num(char *nb)
 		i++;
 	if (nb[i])
 	{
-		printf("minishell: exit: %s: numeric argument required", nb);
+		printf("minishell: exit: %s: numeric argument required\n", nb);
 		return (0);
 	}
 	return (1);
@@ -56,9 +56,10 @@ static unsigned int	atoui_secure(char *nb)
 	while (ft_isdigit(nb[i]))
 	{
 		res = res * 10 + nb[i] - '0';
-		if (res > __UINT32_MAX__)
+		if ((res - 1 > __INT64_MAX__ && sign == -1)
+			|| (res > __INT64_MAX__ && sign == 1))
 		{
-			printf("minishell: exit: %s: numeric argument required", nb);
+			printf("minishell: exit: %s: numeric argument required\n", nb);
 			return (2);
 		}
 		i++;
@@ -69,19 +70,24 @@ static unsigned int	atoui_secure(char *nb)
 int	exit_bc(t_minishell *minishell, t_cmd_exec *cmd)
 {
 	unsigned int	res;
+	int				num_error;
 
 	res = 0;
+	num_error = 0;
 	printf("See you later !\n");
 	if (cmd->cmd_n_args[1])
 	{
 		if (is_valid_num(cmd->cmd_n_args[1]) == 0)
+		{
+			num_error = 1;
 			res = 2;
+		}
 		else
 			res = atoui_secure(cmd->cmd_n_args[1]);
 	}
-	if (cmd->cmd_n_args[1] && cmd->cmd_n_args[2])
-		ft_dprintf(2, "minishell: exit: too many arguments");
-	else
+	if (cmd->cmd_n_args[1] && cmd->cmd_n_args[2] && !num_error)
+		ft_dprintf(2, "minishell: exit: too many arguments\n");
+	else if (!cmd->cmd_n_args[1] || (cmd->cmd_n_args[1] && !cmd->cmd_n_args[2]))
 	{
 		free_cmd(cmd);
 		free_exit(minishell, res);
