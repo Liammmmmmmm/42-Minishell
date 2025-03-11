@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:13:17 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 14:56:41 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,19 @@ static int	manage_error_access(t_cmd_exec *cmd)
 
 static int	exec_cmd_and_fork(t_minishell *minishell, t_cmd_exec *cmd)
 {
-	int	ret;
+	int		ret;
+	char	**res;
 
 	minishell->pid = fork();
 	if (minishell->pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		free_msh(minishell);
-		if (execve(cmd->right_path, cmd->cmd_n_args,
-				construct_env(minishell->env)) == -1)
+		res = construct_env(minishell->env);
+		if (execve(cmd->right_path, cmd->cmd_n_args, res) == -1)
 		{
-			free(cmd->right_path);
+			ft_dprintf(2, "minishell: Cannot execute %s\n", cmd->right_path);
+			ft_free_tab_null_term(res);
 			free_cmd(cmd);
 			rl_clear_history();
 			exit(1);

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 11:47:14 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 15:10:45 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include "ast.h"
 # include "env.h"
 
+# define ARROW "\001\xe2\x9e\002\x9c"
+# define BRACKET "\001\xe2\x9d\002\xaf"
 # define CTRLD_HERE_DOC "minishell: warning: here-document at line %d delimited\
  by end-of-file (wanted `%s')\n"
 

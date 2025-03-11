@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 11:02:00 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 15:13:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ char	*get_prompt(t_minishell *minishell)
 	if (user && pwd && user[0] && pwd[0])
 	{
 		if (minishell->last_res == 0)
-			ret = params_to_string(GREEN"➜ "BLUE"["BRIGHT_CYAN"%s"BLUE"]"YELLOW
-					BOLD" %s "BRIGHT_PURPLE"❯ "NC,
+			ret = params_to_string(GREEN ARROW BLUE" ["BRIGHT_CYAN"%s"BLUE"]"
+					YELLOW BOLD" %s "BRIGHT_PURPLE BRACKET" "NC,
 					get_env_variable(minishell->env, "USER"),
 					get_folder_only(minishell));
 		else
-			ret = params_to_string(RED"➜ "BLUE"["BRIGHT_CYAN"%s"BLUE"]"YELLOW
-					BOLD" %s "BRIGHT_PURPLE"❯ "NC,
+			ret = params_to_string(RED ARROW BLUE" ["BRIGHT_CYAN"%s"BLUE"]"
+					YELLOW BOLD" %s "BRIGHT_PURPLE BRACKET" "NC,
 					get_env_variable(minishell->env, "USER"),
 					get_folder_only(minishell));
 	}
@@ -51,7 +51,8 @@ char	*get_prompt(t_minishell *minishell)
 int	read_until_complete(char **rl, t_minishell *minishell)
 {
 	int			is_valid;
-	const char	default_err[47] = RED"➜"CYAN" minishell "BRIGHT_PURPLE"❯ "NC;
+	const char	default_err[59] = RED ARROW CYAN" minishell "BRIGHT_PURPLE
+		BRACKET" "NC;
 	char		*prompt;
 
 	prompt = get_prompt(minishell);
