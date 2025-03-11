@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:45:37 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 14:42:53 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 12:08:47 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@ int	exprt_env(t_minishell *minishell, t_cmd_exec *cmd, char *var_name, int i)
 	return (0);
 }
 
+int	is_valid_var_name(char *var_name)
+{
+	int	i;
+
+	if (var_name[0] != '_' && !ft_isalpha(var_name[0]))
+		return (0);
+	i = 1;
+	while (var_name[i] && var_name[i] != '=')
+	{
+		if (!is_valid_var_char(var_name[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	manage_arg_exprt(t_minishell *minishell, t_cmd_exec *cmd, int argc)
 {
 	char	*var_name;
@@ -43,14 +59,18 @@ int	manage_arg_exprt(t_minishell *minishell, t_cmd_exec *cmd, int argc)
 	while (j < argc && status == 0)
 	{
 		i = 0;
-		var_name = cmd->cmd_n_args[j];
+		var_name = cmd->cmd_n_args[j++];
+		if (!is_valid_var_name(var_name))
+		{
+			other_error("export: not a valid identifier");
+			continue ;
+		}
 		while (var_name[i] && var_name[i] != '=')
 			i++;
 		if (var_name[i] == '=')
 			status = exprt_env(minishell, cmd, var_name, i);
 		else
 			update_var_env(&(minishell->env), var_name, NULL, 1);
-		j++;
 	}
 	return (status);
 }
