@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:40:33 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 16:13:26 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 16:23:14 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int	exec_cmd_and_fork(t_minishell *minishell, t_cmd_exec *cmd)
 		}
 	}
 	waitpid(minishell->pid, &ret, 0);
-	ret = WEXITSTATUS(ret);
+	if (WIFEXITED(ret))
+		ret = WEXITSTATUS(ret);
 	free_cmd(cmd);
 	if (ret == 131)
 		ft_dprintf(2, "Quit (core dumped)\n");
