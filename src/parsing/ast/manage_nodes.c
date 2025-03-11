@@ -28,7 +28,7 @@ t_cmd_part	*manage_open(t_ast_node *tree, t_cmd_part *cmd, int *flag)
 		tree2 = tree2->child_left;
 		free(tree2->parent);
 	}
-	cpy_node(tree, tree2);
+	cpy_tree(tree, tree2);
 	free(tree2);
 	if (check_parent(tree) == 0)
 		return (flag_off(flag));

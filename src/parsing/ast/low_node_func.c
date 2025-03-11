@@ -18,7 +18,7 @@ void	*flag_off(int *flag)
 	return (NULL);
 }
 
-void	cpy_node(t_ast_node *tree, t_ast_node *tree2)
+void	cpy_tree(t_ast_node *tree, t_ast_node *tree2)
 {
 	tree->child_left = tree2->child_left;
 	tree->child_right = tree2->child_right;

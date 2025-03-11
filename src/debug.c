@@ -36,26 +36,26 @@ void	print_token_list(t_minishell *minishell)
 	}
 }
 
-void	printf_tree(t_ast_node *tree, int niveau)
+void	printf_tree(t_ast_node *tree, int level)
 {
 	int	i;
 
 	i = -1;
 	if (tree == NULL)
 	{
-		while (++i < niveau)
+		while (++i < level)
 			ft_printf("        ");
 		ft_printf("--| (nil)\n\n");
 		return ;
 	}
-	if (niveau == -1 && tree->parent == NULL)
-		niveau = 0;
-	if (niveau == -1)
-		return (printf_tree(tree->parent, niveau));
-	printf_tree(tree->child_right, niveau + 1);
-	while (++i < niveau)
+	if (level == -1 && tree->parent == NULL)
+		level = 0;
+	if (level == -1)
+		return (printf_tree(tree->parent, level));
+	printf_tree(tree->child_right, level + 1);
+	while (++i < level)
 		ft_printf("        ");
 	ft_printf("--| %s txt %s\n\n", get_token(tree->token), \
 		null_or_txt(tree->text));
-	printf_tree(tree->child_left, niveau + 1);
+	printf_tree(tree->child_left, level + 1);
 }
