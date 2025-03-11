@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:44:09 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 10:18:46 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 11:43:18 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	is_cmd_export(char *cmd_text)
 		while (ft_isspace(cmd_text[i]) || cmd_text[i] == '"'
 			|| cmd_text[i] == '\'')
 			i++;
-		if (ft_strncmp(&cmd_text[i], "export", 7) == 0)
+		if (ft_strncmp(&cmd_text[i], "export", 6) == 0)
 			return (1);
 	}
 	return (0);

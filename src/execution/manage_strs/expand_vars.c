@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:58:57 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 17:30:57 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 11:46:35 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,7 @@ int	copy_var_dq(t_cor_infos *c, int last_res, int *i, int *n)
 	ft_strlcpy(var_name, c->cmd + *i + 1, y + 1);
 	var_content = get_env_variable(c->minishell->env, var_name);
 	*i += y + 1;
-	if (c->new_str == NULL)
-		*n += ft_sstrlen(var_content);
-	else
-	{
-		if (var_content == NULL)
-			return (free(var_name), 0);
-		y = -1;
-		while (var_content[++y])
-			c->new_str[(*n)++] = var_content[y];
-	}
+	copy_var_content_dq_export(c, n, var_content);
 	free(var_name);
 	return (0);
 }
@@ -125,6 +116,7 @@ char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
 	char		*new_str;
 	t_cor_infos	cor;
 
+	cor.is_export = is_xprt;
 	cor.n = &n;
 	cor.cmd = cmd;
 	cor.minishell = minishell;

@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 17:35:53 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 11:47:14 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_cor_infos
 	char			*new_str;
 	int				*n;
 	int				last_res;
+	int				is_export;
 	t_minishell		*minishell;
 }	t_cor_infos;
 
@@ -91,6 +92,7 @@ char	*replace_variables(t_minishell *minishell, char *cmd, int last_res,
 			int is_xprt);
 int		copy_qmark(t_cor_infos *c, int last_res, int *i, int *n);
 void	copy_var_and_quotes(const char *var_content, char *new_str, int *n);
+void	copy_var_content_dq_export(t_cor_infos *c, int *n, char *var_content);
 
 char	*replace_wildcards(char *cmd);
 char	*concat_wildcard(const char *pattern);

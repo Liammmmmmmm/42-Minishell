@@ -6,7 +6,7 @@
 #    By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:27:53 by lilefebv          #+#    #+#              #
-#    Updated: 2025/03/10 17:11:54 by lilefebv         ###   ########lyon.fr    #
+#    Updated: 2025/03/11 11:47:47 by lilefebv         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRCS     =	parsing/tokenization/valid_command.c parsing/tokenization/tokenize.c 
 			parsing/here_doc/here_doc.c parsing/here_doc/here_doc_utils.c \
 			shell/user_input.c shell/env.c  shell/env_utils.c shell/env2.c\
 			parsing/ast/ast_tree.c parsing/ast/low_tree_func.c parsing/ast/manage_nodes.c parsing/ast/low_node_func.c parsing/ast/low_tree_func2.c \
-			execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/split_args.c execution/manage_strs/wildcards.c execution/manage_strs/wildcards_utils.c execution/manage_strs/wildcards_utils2.c \
+			execution/manage_strs/expand_vars.c execution/manage_strs/expand_vars_utils.c execution/manage_strs/expand_vars_utils2.c execution/manage_strs/split_args.c execution/manage_strs/wildcards.c execution/manage_strs/wildcards_utils.c execution/manage_strs/wildcards_utils2.c \
 			execution/ast/read.c execution/ast/exec_cmd.c execution/ast/exec_cmd_utils.c execution/ast/exec_cmd_utils2.c execution/ast/exec_pipe.c execution/ast/exec_or_and.c execution/ast/exec_redirect.c execution/ast/fd_garbage.c \
 			execution/builtins/cd.c execution/builtins/echo.c execution/builtins/env.c execution/builtins/exit.c execution/builtins/export.c execution/builtins/pwd.c execution/builtins/unset.c \
 			signals/signals.c \
