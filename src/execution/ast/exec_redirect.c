@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:39:43 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:29:20 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/11 10:19:25 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	open_success(t_minishell *minishell, t_ast_node *node, int fd)
 	}
 }
 
-static void	before_recursive(t_minishell *minishell, t_ast_node *node, int nsuc)
+static int	before_recursive(t_minishell *minishell, t_ast_node *node, int nsuc)
 {
 	int	fd;
 
@@ -51,9 +51,15 @@ static void	before_recursive(t_minishell *minishell, t_ast_node *node, int nsuc)
 	else if (node->token == REDIRECT_OUT_APPEND && nsuc)
 		fd = open(node->text, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
+	{
 		perror_file(minishell, node->text);
+		return (0);
+	}
 	else
+	{
 		open_success(minishell, node, fd);
+		return (1);
+	}
 }
 
 static void	after_recursive(t_minishell *minishell, t_ast_node *node, int temp)
@@ -76,7 +82,9 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 	int	temp;
 	int	res;
 	int	node_success;
+	int	open_success;
 
+	open_success = 0;
 	if (node->text)
 	{
 		if (node->token == REDIRECT_IN || node->token == HERE_DOC)
@@ -84,9 +92,12 @@ int	exec_redirect(t_minishell *minishell, t_ast_node *node)
 		else
 			temp = dup(STDOUT_FILENO);
 		node_success = new_fd_garbage(&minishell->fd_garbage, temp);
-		before_recursive(minishell, node, node_success);
+		open_success = before_recursive(minishell, node, node_success);
 	}
-	res = recursive_tree_read(minishell, node->child_left);
+	if (open_success)
+		res = recursive_tree_read(minishell, node->child_left);
+	else
+		res = 1;
 	if (node->text && node_success)
 		after_recursive(minishell, node, temp);
 	return (res);
