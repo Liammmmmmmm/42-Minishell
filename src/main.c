@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 13:40:46 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/12 13:01:17 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_minishell	minishell;
 
+
+	if (!isatty(STDOUT_FILENO) || !isatty(STDIN_FILENO))
+	{
+		other_error("not a tty");
+		exit(EXIT_FAILURE);
+	}
 	(void)argc;
 	(void)argv;
 	minishell.ast_root = NULL;
