@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:49:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 10:59:44 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/12 10:17:07 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_token(t_token_type token)
 {
 	static char	tokens[20][20] = {"PAREN_OPEN", "PAREN_CLOSE", "PIPE", "AND",
 		"OR", "REDIRECT_OUT", "REDIRECT_OUT_APPEND", "REDIRECT_IN", "HERE_DOC",
-		"COMMAND", "END_VAL", "FILE_R", "NEW_L", "AMPERSTAND", "NULL_TOKEN"};
+		"COMMAND", "FILE_R", "NEW_L", "AMPERSTAND", "NULL_TOKEN"};
 
 	return (tokens[(int)token]);
 }

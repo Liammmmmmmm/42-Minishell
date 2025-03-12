@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:31:18 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/06 12:03:51 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/12 09:52:00 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void		cpy_tree(t_ast_node *tree, t_ast_node *tree2);
  * @param n_node The node to insert after tree;
  */
 void		insert_node(t_ast_node *tree, t_ast_node *n_node);
-
 
 /**
  * @brief Return a pointer to a allocated NULL node for a ast tree
