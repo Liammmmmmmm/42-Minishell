@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:19:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/10 12:45:21 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/12 09:39:32 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static int	verify_token_itt(t_cmd_part *cmd_part)
 			|| tget_n(cmd_part) == NULL_TOKEN))
 		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (tget_a(cmd_part) == PAREN_OPEN && tget_n(cmd_part) != COMMAND
-		&& !is_redir_t(tget_n(cmd_part)))
+		&& !is_redir_t(tget_n(cmd_part)) && tget_n(cmd_part) != PAREN_OPEN)
 		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)));
 	if (tget_a(cmd_part) == PAREN_CLOSE && tget_n(cmd_part) != NULL_TOKEN
 		&& !is_op_t(tget_n(cmd_part)) && !is_redir_t(tget_n(cmd_part)))
 		return (unexpected_token_error(tget_n(cmd_part), sget_n(cmd_part)));
 	if ((!is_op_t(tget_a(cmd_part)) && tget_a(cmd_part) != NULL_TOKEN)
-		&& tget_n(cmd_part) == PAREN_OPEN)
+		&& tget_a(cmd_part) != PAREN_OPEN && tget_n(cmd_part) == PAREN_OPEN)
 		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (is_redir_t(tget_a(cmd_part)) && (tget_n(cmd_part) == NULL_TOKEN
 			|| is_op_or_pc_t(tget_n(cmd_part))))
