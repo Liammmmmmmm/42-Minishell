@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:19:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/12 09:39:32 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/13 12:31:55 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	verify_token_itt(t_cmd_part *cmd_part)
 		&& tget_a(cmd_part) != PAREN_OPEN && tget_n(cmd_part) == PAREN_OPEN)
 		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (is_redir_t(tget_a(cmd_part)) && (tget_n(cmd_part) == NULL_TOKEN
-			|| is_op_or_pc_t(tget_n(cmd_part))))
+			|| is_op_or_pc_t(tget_n(cmd_part)) || is_redir_t(tget_n(cmd_part))))
 		return (unexpected_token_error(tget_n(cmd_part), NULL));
 	if (tget_a(cmd_part) == HERE_DOC && tget_n(cmd_part) != FILE_R)
 		return (unexpected_token_error(tget_n(cmd_part), NULL));
@@ -77,3 +77,5 @@ int	verify_tokens(t_minishell *minishell)
 	}
 	return (1);
 }
+// print is_redir_t(tget_a(cmd_part))
+// print is_redir_t(tget_n(cmd_part))

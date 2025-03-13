@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:27:01 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/13 11:45:50 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/13 12:25:02 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	update_shell_level(t_minishell *minishell)
 	shlvl = ft_itoa(shell_level + 1);
 	if (shlvl)
 		update_var_env(&minishell->env, "SHLVL", shlvl, 0);
+	free(shlvl);
 }
 
 void	init_null_env(t_minishell *minishell)
