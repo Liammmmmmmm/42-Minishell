@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:47:38 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 16:07:04 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/13 11:26:39 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	find_right_path(t_cmd_exec *cmd)
 
 static int	abs_or_relative(t_cmd_exec *cmd, t_minishell *minishell)
 {
-	if (ft_strchr(cmd->cmd_n_args[0], '/'))
+	if (cmd->cmd_n_args[0][0] != '\0' && ft_strchr(cmd->cmd_n_args[0], '/'))
 	{
 		cmd->right_path = ft_strdup(cmd->cmd_n_args[0]);
 		cmd->cmd_perm = -3;
@@ -79,7 +79,7 @@ static int	abs_or_relative(t_cmd_exec *cmd, t_minishell *minishell)
 			cmd->cmd_perm = 1;
 		cmd_have_access(cmd, cmd->right_path, 0, 0);
 	}
-	else if (!is_builtins(cmd))
+	else if (cmd->cmd_n_args[0][0] != '\0' && !is_builtins(cmd))
 	{
 		cmd->path = get_env_variable(minishell->env, "PATH");
 		if (!cmd->path)
