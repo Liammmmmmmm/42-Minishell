@@ -1,4 +1,5 @@
 echo '$USER'"$HOME_test]123'$PATH'"$PWD_$SHELL"'$VAR_name'"$HOME_test]123
+# pour des tests effectifs remplacez command par des vrai commandes
 < r1 < r2 command > r3 > r4 && > r1 > r2 command > r3 > r4
 > r1 > r2 command arg1 > r3 arg2 > r4 arg3 && > r1 > r2 command arg1 > r3 arg2 > r4 arg3
 command | (command || command) | command

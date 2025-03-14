@@ -99,3 +99,45 @@ Hope this README helped you understand how our Minishell works! 🚀
 ## 🔗 Contributors
 - [Audric](https://github.com/pandhacker)
 - [Liam](https://github.com/Liammmmmmmm)
+
+</br></br></br>
+
+## 🛠 You Might Need This Too  
+
+Debugging a shell can be a nightmare, so here are some useful tools to help you track down memory issues and unexpected behaviors.  
+
+### 🔍 Full Memory Leak Check with Valgrind  
+
+To check for memory leaks, file descriptor issues, and other tricky bugs, you can use Valgrind with the following command:
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell
+```  
+
+This will:  
+- Detect **all types of memory leaks** (definitely lost, indirectly lost, etc.).  
+- Track **invalid memory accesses** and **mismatched frees**.  
+- Show **unclosed file descriptors**, which can be crucial for debugging a shell.  
+- Trace **child processes**, ensuring that forks don’t leave memory leaks undetected.  
+
+### 📜 Suppression File (Avoid False Positives)  
+
+Since **readline** has known memory leaks that we can’t fix, we use a suppression file (`supp.supp`) to ignore them:  
+
+```text
+{
+    ignore_libreadline_leaks
+    Memcheck:Leak
+    ...
+    obj:*/libreadline.so.*
+}
+```  
+
+This prevents Valgrind from reporting leaks inside `libreadline`, making debugging more focused on **actual leaks in Minishell**.  
+
+
+### ⚔️ Torture Testing  
+
+In the repository, you'll also find a file named **`testsdesenfer`**. This contains a collection of **extreme edge cases and tricky commands** that helped us push Minishell to its limits.  
+
+If you want to see how well your shell holds up, run those tests—you might be surprised by what breaks! 🚀
