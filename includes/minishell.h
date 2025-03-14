@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:25:04 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/12 11:28:59 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/14 11:20:50 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include "m_signals.h"
 # include "ast.h"
 # include "env.h"
+
+# define DEBUG 1
 
 # define ARROW "\001\xe2\x9e\002\x9c"
 # define BRACKET "\001\xe2\x9d\002\xaf"
