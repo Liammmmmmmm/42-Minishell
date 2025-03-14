@@ -9,42 +9,44 @@
 
 # Minishell
 
-**Minishell** is a project from 42 School that challenges us to recreate a minimal yet functional Unix shell almost from scratch. Built entirely in C, this project was built by the two of us, pushing our skills in system programming, process management, and string parsing to the limit—while also pushing our patience to its breaking point more times than we'd like to admit!
+**Minishell** is a project from 42 School that challenges us to recreate a minimal yet functional Unix shell almost from scratch. Built entirely in C, this project was developed by the two of us, pushing our skills in system programming, process management, and string parsing to the limit—while also testing our patience more times than we'd like to admit!
 
 ## 🚀 Features
 
-- **Custom Prompt** → A stylish arrow that changes color based on the last return value.
-- **Command Execution** → Run executables from the system's `$PATH`, including absolute and relative paths.
-- **Pipes (`|`)** → Chain multiple commands together, just like in a real shell.
-- **Redirections (`>`, `>>`, `<`, `<<`)** → Handle file input/output redirections seamlessly.
-- **Environment Variables (`$VAR`)** → Expand variables, including `$?` for the last command’s exit status.
-- **Built-in Commands** → Includes `echo`, `cd`, `pwd`, `export`, `unset`, `env`, and `exit`.
-- **Signal Handling** → Proper response to `Ctrl-C`, `Ctrl-D`, and `Ctrl-\`.
-- **Logical Operators (`&&` and `||`)** → Execute commands conditionally based on exit statuses.
-- **Wildcard Expansion (`*`)** → Expand wildcards (only on the current directory).
+- **Custom Prompt** → A stylish arrow that changes color based on the last return value.  
+- **Command Execution** → Run executables from the system’s `$PATH`, including absolute and relative paths.  
+- **Pipes (`|`)** → Chain multiple commands together, just like in a real shell.  
+- **Redirections (`>`, `>>`, `<`, `<<`)** → Handle file input/output redirections seamlessly.  
+- **Environment Variables (`$VAR`)** → Expand variables, including `$?` for the last command’s exit status.  
+- **Built-in Commands** → Supports `echo`, `cd`, `pwd`, `export`, `unset`, `env`, and `exit`.  
+- **Signal Handling** → Properly responds to `Ctrl-C`, `Ctrl-D`, and `Ctrl-\`.  
+- **Logical Operators (`&&` and `||`)** → Execute commands conditionally based on exit statuses.  
+- **Wildcard Expansion (`*`)** → Expands wildcards (only within the current directory).  
 
 ## 🎭 Example Usages
 
-![Example usage](./img/example.png)
+![Example usage](./img/example.png)  
 
 ## ⚙️ How It Works
 
 Minishell is not just a simple command parser. It follows a structured pipeline to interpret and execute commands:
 
 1. **Lexing & Tokenization** → The input string is split into tokens and stored in a linked list.
-2. **Syntax Validation** → We ensure the correct use of quotes, parentheses, pipes, and redirections.
-3. **Here-Document Processing** → If `<<` is detected, we pre-fetch user input and store it in a temporary file.
-4. **Abstract Syntax Tree (AST) Construction** → Commands are structured hierarchically based on their execution order.
+2. **Syntax Validation** → Ensures correct use of quotes, parentheses, pipes, and redirections.
+3. **Here-Document Processing** → If `<<` is detected, user input is pre-fetched and stored in a temporary file.
+4. **Abstract Syntax Tree (AST) Construction** → Commands are structured hierarchically based on execution order.
 5. **Execution** → The AST is recursively executed, handling pipes, redirections, and operators dynamically.
 
-### Example
+### Example  
 
-With the command :
+Given the following command:  
+
 ```bash
 ➜ [lilefebv] 42-Minishell ❯ (echo $PWD && (ls -l | grep *.c) || echo "No .c files found") > output.txt && cat output.txt | wc -l
 ```
 
-First this command is tokenized. It transform into this :
+First, it is **tokenized**, resulting in:  
+
 ```
         Token                       Text     Previous       Self       Next
    PAREN_OPEN                     (null)        (nil)  0x1a78b40  0x1a78b70
@@ -66,31 +68,34 @@ First this command is tokenized. It transform into this :
       COMMAND                      wc -l    0x1a78a80  0x1a78ab0      (nil)
 ```
 
-The syntax here is valid, there isn't 2 consecutive operators or things like this so we can go to the next step.
+Since the syntax is **valid** (no consecutive operators, misplaced parentheses, etc.), we proceed to the next step.  
 
-The next step is the creation of the tree. It will look like that :
+### Abstract Syntax Tree (AST)  
 
-![AST](img/ast.png)
+The parsed command is converted into an **AST**:  
 
-And lastly, the execution recursively do it's job.
-- A command node is executed
-- A redirect node change the input or output where all the commands under it will input/output their content.
-- A pipe open a pipe between the left node and the right node. Basicly it do the same thing as a redirect but with a pipe. That mean that we can have more things under it, not just a command.
-- A AND/OR node will execute it's left part, and the execution of the right part depend on the return of the commands
+![AST](img/ast.png)  
 
-And here is how is it interpreted. (yes, seeing this can cause headheakes)
-![Execution shema](img/exec.png)
+### Execution
 
+Execution happens **recursively**, following these principles:
+- **Command nodes** are executed directly.
+- **Redirection nodes** modify input/output for all child nodes.
+- **Pipe nodes** create pipes between left and right child nodes, allowing multiple commands to interact.
+- **AND/OR nodes** execute the left child first, then conditionally execute the right child based on the return value.
 
-## Conclusion
+Here’s a visual representation of the execution flow (warning: brain overload ahead 😵):  
 
-This wasn't the project I prefered, but it allow us to see a lot of different notions and understand how a shell really work.
+![Execution schema](img/exec.png)
 
-This minishell is pretty solid, it survived multiple beatings by others students, pushing it to it's limits. If you found a bug or crash feel free to open an issue (I don't garranty you we will have the motivation to correct it).
+## Conclusion  
 
-Hope this readme helped you understand how our minishell works!
+This wasn't our favorite project, but it covered a wide range of fundamental topics and gave us a deeper understanding of how a shell really works.  
+
+Our Minishell is **quite robust**—it survived extensive testing and abuse from fellow students, pushing it to its limits. If you find a bug or crash, feel free to open an issue (though we can't promise we'll have the motivation to fix it 😆).
+
+Hope this README helped you understand how our Minishell works! 🚀
 
 ## 🔗 Contributors
 - [Audric](https://github.com/pandhacker)
 - [Liam](https://github.com/Liammmmmmmm)
-
