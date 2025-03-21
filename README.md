@@ -141,3 +141,11 @@ This prevents Valgrind from reporting leaks inside `libreadline`, making debuggi
 In the repository, you'll also find a file named **`testsdesenfer`**. This contains a collection of **extreme edge cases and tricky commands** that helped us push Minishell to its limits.  
 
 If you want to see how well your shell holds up, run those tests—you might be surprised by what breaks! 🚀
+
+
+## Try it out  
+
+```bash
+git clone https://github.com/Liammmmmmmm/42-Minishell.git
+git submodule --init --recursive
+```
