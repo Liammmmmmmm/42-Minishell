@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:29:19 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/14 11:14:36 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/03/31 16:52:17 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	continue_token_valid(t_minishell *minishell)
 	}
 	if (cmd_to_tree(minishell->cmd_tokens, minishell) == 1)
 	{
-		print_token_list(minishell);
-		printf_tree(minishell->ast_root, -1);
+		// print_token_list(minishell);
+		// printf_tree(minishell->ast_root, -1);
 		minishell->ast_root = go_up_tree(minishell->ast_root);
 		signal(SIGINT, signal_handler_execution);
 		execute_ast(minishell);
