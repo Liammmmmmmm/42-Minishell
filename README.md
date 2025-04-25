@@ -138,10 +138,19 @@ This prevents Valgrind from reporting leaks inside `libreadline`, making debuggi
 
 ### ⚔️ Torture Testing  
 
-In the repository, you'll also find a file named **`testsdesenfer`**. This contains a collection of **extreme edge cases and tricky commands** that helped us push Minishell to its limits.  
+In the repository, you'll also find a file named **`testsdesenfer`**. This contains a collection of **extreme edge cases and tricky commands** that helped us push Minishell to its limits.
 
 If you want to see how well your shell holds up, run those tests—you might be surprised by what breaks! 🚀
 
+This test battery is really usefull to see how the minishell react on cases where it should work, but if you want to see any potential leak on bad user input, you can try this command
+
+```bash
+cat /dev/urandom | valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell 2> outerror
+```  
+
+This command will fill your minishell with a lot of random characters and it will often leak.
+It can also create weird files it's normal.
+If you have a not a tty check disable it when you use this command.
 
 ## Try it out  
 

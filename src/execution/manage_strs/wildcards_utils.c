@@ -6,7 +6,7 @@
 /*   By: lilefebv <lilefebv@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:53:49 by lilefebv          #+#    #+#             */
-/*   Updated: 2025/03/11 12:26:08 by lilefebv         ###   ########lyon.fr   */
+/*   Updated: 2025/04/25 11:36:42 by lilefebv         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*concat_wildcard(const char *pattern)
 	if (result == NULL)
 		return (NULL);
 	if (result[0] == '\0')
-		return (ft_strdup(pattern));
+		return (free(result), ft_strdup(pattern));
 	tab = ft_split(result, " ");
 	if (tab == NULL)
 	{
